@@ -70,9 +70,9 @@ export class TasksComponent {
 
   openAssignedBeats(beat: beat) {
     console.log('beat', beat)
-    if (beat.team_type.toLowerCase() == 'sales'){
+    if (beat.team_type.toLowerCase() == 'marketing'){
       this.router.navigate(['./manager/task/view-visits', beat.beat_id])
-    } else if (beat.team_type.toLowerCase() == 'marketing') {
+    } else if (beat.team_type.toLowerCase() == 'sales') {
       this.router.navigate(['./manager/task/view-tasks', beat.beat_id])
     }
   }

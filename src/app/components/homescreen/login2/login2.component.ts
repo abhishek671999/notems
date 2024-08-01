@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../../shared/services/register/login.service';
 import { Router } from '@angular/router';
 import { Utility } from '../../../shared/site-variables';
 import { SignupService } from '../../../shared/services/register/signup.service';
 import { interval, Observable, PartialObserver, Subject, takeUntil } from 'rxjs';
+import { sixDigitValidator } from '../../../shared/utils/form-validators';
 
 @Component({
   selector: 'app-login2',
@@ -19,39 +20,31 @@ export class Login2Component {
     private _utility: Utility,
     private _signUpService: SignupService
   ) {
+
     this.loginObj = this._fb.group({
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.pattern(this.regex),
-        ],
-      ],
-      otp: ['', 
-      [
-        Validators.required, 
-        Validators.minLength(6)]
-      ],
+      username: new FormControl({ value: '', disabled: false }, [Validators.required, Validators.minLength(4), Validators.pattern(this.regex),]),
+      otp: new FormControl('', [Validators.required, sixDigitValidator()]),
     });
+
     this.timer = interval(1000)
     .pipe(
       takeUntil(this.ispause)
     );
 
     this.timerObserver = {
-   
-    next: (_: number) => {  
-       if(this.time==0){
-        this.ispause.next;
-        this.resendOTP = true
+      next: (_: number) => {  
+        if(this.time == 0){
+          this.ispause.next;
+          this.resendOTP = true
+        } else {
+          this.time -= 1;
+        }
       }
-        this.time -= 1;        
-    }
-  };
+    };
+    
   }
   ispause = new Subject();
-  public resend_otp_time = 45 // seconds
+  public resend_otp_time = 5 // seconds
   public time = this.resend_otp_time;
   timer: Observable<number>;
   timerObserver: PartialObserver<number>;
@@ -65,6 +58,8 @@ export class Login2Component {
     var sDisplay = s > 0 ? s + (s == 1 ? "" : "") : "00";
     return mDisplay + sDisplay ; 
   }
+
+  
   resendOTP = true
   goOn() {
     if(this.resendOTP){
@@ -100,30 +95,28 @@ export class Login2Component {
     );
   }
 
-  editEmail(){
+  editEmail() {
+    console.log('edit mail called')
     this.freezeEmail = false
     this.disableLogin = false
     this.loginFormControl['username'].enable()
+    this.loginFormControl['otp'].disable()
   }
 
   freezeEmail = false
   disableLogin = false
   authUser() {
       this.disableLogin = true
-      console.log('authUser called');
       this.loginFormControl['username'].enable()
       this._signUpService.authUser(this.loginObj.value.username).subscribe(
         (data) => {
-          console.log('call 2 response')
-          console.log('sucess: ', data);
-          console.log(data['detail']);
           this.freezeEmail = true
           this.loginFormControl['username'].disable()
+          this.loginFormControl['otp'].enable()
           this.goOn()
         },
         (error) => {
           console.log('Error in authUser: ', error);
-        
           alert(error.error);
         }
       );

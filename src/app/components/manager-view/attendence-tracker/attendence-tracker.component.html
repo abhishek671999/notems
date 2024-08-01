@@ -13,7 +13,9 @@
     <div>
         <button (click)="applyLeave()" mat-raised-button>Appy Leave</button>
     </div> -->
+
     <div class="attendence">
+        <h2 style="text-align: center;">Today's attendence</h2>
         <table mat-table [dataSource]="attendenceDataSource" class="mat-elevation-z8 demo-table">
             <!-- Position Column -->
             <ng-container matColumnDef="sl_no">
@@ -48,7 +50,9 @@
             <tr mat-row *matRowDef="let row; columns: attendenceTableColumn;"></tr>
         </table>
     </div>
+    <mat-divider></mat-divider>
     <div class="leave-management">
+      <h2 style="text-align: center;">Leave management</h2>
       <table mat-table [dataSource]="leaveDataSource" class="mat-elevation-z8 demo-table">
         <ng-container matColumnDef="sl_no">
           <th mat-header-cell *matHeaderCellDef>Sl No.</th>

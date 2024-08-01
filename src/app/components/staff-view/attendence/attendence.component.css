@@ -9,7 +9,6 @@
 .punch-in-section{
     display: flex;
     flex-direction: column;
-    border-style: outset;
     border-radius: 2em;
     padding: 0.5em;
 }

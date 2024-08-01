@@ -36,7 +36,7 @@ export class BeatsComponent {
 
   openBeat(beat: beat) {
     console.log(beat)
-    if (beat.team_type.toLowerCase() == 'sales') this.router.navigate(['./staff/add-visit', beat.beat_id]);
-    else if(beat.team_type.toLowerCase() == 'marketing') this.router.navigate(['./staff/add-sale', beat.beat_id])
+    if (beat.team_type.toLowerCase() == 'marketing') this.router.navigate(['./staff/add-visit', beat.beat_id]);
+    else if(beat.team_type.toLowerCase() == 'sales') this.router.navigate(['./staff/add-sale', beat.beat_id])
   }
 }

@@ -5,8 +5,6 @@ import { HomeRoutingModule } from './home-routing.module';
 import { SharedModulesModule } from '../../../shared/services/shared-modules/shared-modules.module';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
-import { HeaderComponent } from '../../shared/header/header.component';
-import { FooterComponent } from '../../shared/footer/footer.component';
 import { MatButtonModule } from '@angular/material/button';
 import { AttendenceTrackerComponent } from '../attendence-tracker/attendence-tracker.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -16,7 +14,7 @@ import { CustomersComponent } from '../clients/customers/customers.component';
 import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditCustomerProspectComponent } from '../dialog-box/edit-customer-prospect/edit-customer-prospect.component';
 import { ProspectsComponent } from '../clients/prospects/prospects.component';
 import { BeatsComponent } from '../task-management/beats/beats.component';
@@ -25,6 +23,8 @@ import { AddBeatComponent } from '../dialog-box/add-beat/add-beat.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ViewVisitsComponent } from '../task-management/view-visits/view-visits.component';
 import { ViewSalesComponent } from '../task-management/view-sales/view-sales.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDivider } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,12 @@ import { ViewSalesComponent } from '../task-management/view-sales/view-sales.com
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    CommonModule,
+    MatInputModule,
+    FormsModule,
+    MatDivider
   ],
 })
 export class HomeModule {}

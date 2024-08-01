@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { LoginService } from '../../../shared/services/register/login.service';
 import { Router } from '@angular/router';
 import { meAPIUtility, sessionWrapper } from '../../../shared/site-variables';
-import { MatIcon } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-header',
@@ -15,7 +14,6 @@ export class HeaderComponent {
     private _loginService: LoginService, 
     private router: Router,
     private _meAPIutility: meAPIUtility,
-    private __sessionWrapper: sessionWrapper
   ) {
     }
     AvailableDropdownList: any = {

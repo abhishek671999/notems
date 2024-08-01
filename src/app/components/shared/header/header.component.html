@@ -14,8 +14,8 @@
                 class="toggle-menu">
       <div class="hamburger"></div>
       <ul class="menu">
-        <li *ngFor="let item of dropdownList; index as i;" (click)="onClick(i)">
-          <p>{{item.name}}</p>
+        <li style="margin: 0;" *ngFor="let item of dropdownList; index as i;" (click)="onClick(i)">
+          <p style="padding: 0; margin: 0; padding-left: 1em;">{{item.name}}</p>
       </ul>
     </div>
     {{message}}

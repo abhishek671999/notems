@@ -2,7 +2,7 @@
     display: flex;
     position: relative;
     height: 86vh;
-    background-image: url("../../../../assests/images/loginBG.jpg");
+    background-image: url("/assets/loginBG.jpg");
     background-size: 100%;
     background-size: cover;
     justify-content: center;
@@ -48,6 +48,7 @@
   
   .section {
     padding-bottom: 10px;
+    width: 100%;
   }
   
   .btn-login {
@@ -119,3 +120,11 @@
     width: 100%;
   }
   
+  .edit-icon{
+    position: relative;
+    z-index: 2;
+  }
+
+  input{
+    width: 100%;
+  }

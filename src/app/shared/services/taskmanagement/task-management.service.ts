@@ -20,10 +20,21 @@ export class TaskManagementService {
   private deleteTaskEndpoint = host + 'tasks/delete_task/'
   private getTasksEndpoint = host + 'tasks/get_tasks/'
 
+  private addSaleEndpoint = host + 'sales/add_sale_invoice/'
+  private getSalesEndpoint = host + 'sales/get_sale_invoices/'
+
   private assignBeatEndpoint = host + 'tasks/assign_beat/'
   private unassignBeatEndpoint = host + 'tasks/unassign_beat/'
 
   constructor(private httpClient: HttpClient) { }
+
+  addSale(body: any) {
+    return this.httpClient.post(this.addSaleEndpoint, body)
+  }
+
+  getSales(body: any) {
+    return this.httpClient.post(this.getSalesEndpoint, body)
+  }
 
   addBeat(body: addBeat) {
     return this.httpClient.post(this.addBeatEndpoint, body)
