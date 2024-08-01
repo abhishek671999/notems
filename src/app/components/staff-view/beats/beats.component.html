@@ -1,0 +1,10 @@
+<div class="main-container">
+    <div class="box-wrapper">
+        <div class="beat-box" *ngFor="let beat of beats; let i=index" (click)="openBeat(beat)">
+            <h2>{{beat.title}}</h2>
+            <br>
+            <p>{{beat.decription}}</p>
+        </div>
+    </div>
+
+</div>

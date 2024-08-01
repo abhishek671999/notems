@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Apply leave</h2>
+<mat-dialog-content>
+    <form [formGroup]="leaveForm">
+        <mat-form-field>
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Start date">
+              <input matEndDate formControlName="end" placeholder="End date">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker" format="YYYY/MM/DD"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          
+            @if (leaveForm.controls.start.hasError('matStartDateInvalid')) {
+              <mat-error>Invalid start date</mat-error>
+            }
+            @if (leaveForm.controls.end.hasError('matEndDateInvalid')) {
+              <mat-error>Invalid end date</mat-error>
+            }
+            @if (leaveForm.controls.start.hasError('required')) {
+                <mat-error>Start date is mandatory</mat-error>
+              }
+              @if (leaveForm.controls.end.hasError('required')) {
+                <mat-error>End date is mandatory</mat-error>
+              }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Select leave type</mat-label>
+            <mat-select formControlName="leaveTypeId" required>
+              <mat-option>--</mat-option>
+              @for (leaveType of leaveTypes; track leaveType) {
+                <mat-option [value]="leaveType.leave_type_id">{{leaveType.leave_type_name}}</mat-option>
+              }
+            </mat-select>
+            @if (leaveForm.controls.leaveTypeId.hasError('required')) {
+              <mat-error>Please choose a leave type</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Please enter reason" formControlName='reason'>
+        </mat-form-field>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close]>No</button>
+    <button (click)="applyLeave()" [disabled]="!leaveForm.valid" mat-raised-button>Apply</button>
+</mat-dialog-actions>

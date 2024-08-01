@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Edit {{getTypeString()}}</h2>
+<div mat-dialog-content>
+    <div>
+        <form [formGroup]="editCustomerForm">
+            <mat-form-field>
+                <mat-label>Enter outlet name</mat-label>
+                <input matInput formControlName="outlet_name">
+                <mat-hint>Outlet name</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Enter contact person</mat-label>
+                <input matInput formControlName="contact_person">
+                <mat-hint>Contact person</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Enter mobile number</mat-label>
+                <input matInput formControlName="mobile">
+                <mat-hint>Mobile number</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Enter note</mat-label>
+                <input matInput formControlName="note">
+                <mat-hint>Note</mat-hint>
+            </mat-form-field>
+        </form>
+    </div>
+</div>
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close] cdkFocusInitial>Close</button>
+    <button mat-raised-button (click)="editCustomer()">Submit</button>
+</mat-dialog-actions>

@@ -1,0 +1,23 @@
+.main-container{
+    height: 85vh;
+}
+.box-wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.beat-box{
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw/2);
+    padding: 0.5em;
+    margin: 0.5em;
+    background-color: rgb(115, 186, 249);
+    justify-content: center;
+    align-items: center;
+}
+
+p, h1, h2{
+    margin: 0;
+}

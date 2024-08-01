@@ -1,0 +1,30 @@
+
+.top-section-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    height: max-content;
+}
+
+.punch-in-section{
+    display: flex;
+    flex-direction: column;
+    border-style: outset;
+    border-radius: 2em;
+    padding: 0.5em;
+}
+
+.nav-button-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.calendar{
+    padding: 0.5em;
+}
+
+.mdc-data-table__cell {
+    padding: 0;
+    text-align: center;
+}
