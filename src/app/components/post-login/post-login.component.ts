@@ -5,6 +5,8 @@ import { meAPIUtility } from '../../shared/site-variables';
 import { LoginService } from '../../shared/services/register/login.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { PopUpMsgComponent } from '../shared/pop-up-msg/pop-up-msg.component';
 
 @Component({
   selector: 'app-post-login',
@@ -16,10 +18,11 @@ import { CommonModule } from '@angular/common';
 export class PostLoginComponent {
 
   constructor(
-    private _router: Router,
-    private _cc: ConnectcomponentsService, 
+    private router: Router,
+    private cc: ConnectcomponentsService, 
     public meAPIUtility: meAPIUtility,
-    public loginService: LoginService
+    public loginService: LoginService,
+    private matdialog: MatDialog
   ) { }
   showSpinner = true
   errorOccured = false
@@ -28,15 +31,25 @@ export class PostLoginComponent {
     this.meAPIUtility.getMeData().subscribe((data: any) => {
       this.myInfo = data;
       sessionStorage.setItem('user_id', data['user_id'])
-      if (this.myInfo['organizations'].length > 0) {
-        sessionStorage.setItem('organization_id', this.myInfo['organizations'][0]['organization_id'])  //hardcode
-        sessionStorage.setItem(
-          'organization_name',
-          this.myInfo['organizations'][0]['organization_name']
-        );
-        if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'manager') this._router.navigate(['manager/attendence']);
-        else if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'team member') this._router.navigate(['staff/attendence'])
+      if (this.myInfo['first_name']) {
+        if (this.myInfo['organizations'].length > 0) {
+          sessionStorage.setItem('organization_id', this.myInfo['organizations'][0]['organization_id'])  //hardcode
+          sessionStorage.setItem(
+            'organization_name',
+            this.myInfo['organizations'][0]['organization_name']
+          );
+          if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'manager') this.router.navigate(['manager/attendence/attendence']);
+          else if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'team member') this.router.navigate(['staff/attendence'])
+          else {
+            this.matdialog.open(PopUpMsgComponent, { data: { title: 'Team not assigned', content: 'Please contact admin' } })
+            this.showSpinner = false;
+            this.errorOccured = true;
+          }
+        }
+      } else {
+        this.router.navigate(['profile'])
       }
+      
       this.showSpinner = false;
     },
       error => {

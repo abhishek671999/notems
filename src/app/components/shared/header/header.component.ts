@@ -19,32 +19,23 @@ export class HeaderComponent {
     AvailableDropdownList: any = {
       'profile': {
         name: 'Profile',
-        action: () => {
-          console.log('My Profile');
-          this.router.navigate(['./admin/myprofile']);
-        },
+        action: () => this.router.navigate(['./profile'])
       },
       'analytics': {
         name: 'Analytics',
-        action: () => {
-          this.router.navigate(['./manager/analytics']);
-        },
+        action: () => this.router.navigate(['./manager/analytics'])
       },
       'attendence': {
         name: 'Attendence',
-        action: () => {
-          this.router.navigate(['./manager/attendence']);
-        },
+        action: () => this.router.navigate(['./manager/attendence/leave'])
       },
       'customer_manager': {
         name: 'Customer',
-        action : () => {
-          this.router.navigate(['./manager/client/customers'])
-        }
+        action : () => this.router.navigate(['./manager/client/customers'])
       },
       'items_manager': {
         name: 'Items',
-        action: () => this.router.navigate(['./manager/items']),
+        action: () => this.router.navigate(['./manager/items'])
       },
       'team_management': {
         name: 'Team management',
@@ -68,10 +59,12 @@ export class HeaderComponent {
       },
       'support': {
         name: 'Support',
-        action: () => {
-          this.router.navigate(['./user/support'])
-        }
+        action: () => this.router.navigate(['./user/support'])
       },
+      'calendar': {
+        name: 'Calendar',
+        action: () => this.router.navigate(['./manager/calendar'])
+      }
 
 
     }
@@ -79,7 +72,7 @@ export class HeaderComponent {
     addManagerNavOptions(organaization: any){
       this.location = organaization.organization_name
       let managerNavOptions: Array<string>
-      managerNavOptions = ['profile', 'analytics','task_management', 'team_management', 'attendence', 'customer_manager', 'items_manager']
+      managerNavOptions = ['profile', 'calendar', 'analytics','task_management', 'team_management', 'attendence', 'customer_manager', 'items_manager']
       for(let option of managerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])

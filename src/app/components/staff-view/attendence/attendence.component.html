@@ -1,24 +1,27 @@
-<div>
+<div class="main-container">
     <div class="top-section-wrapper">
         <div class="nav-button-section">
             <button (click)="applyLeave()" mat-raised-button>Appy Leave</button>
             <button (click)="navigateToBeats()" mat-raised-button>Beats</button>
+            <button (click)="openCalendar()" mat-raised-button>Calendar</button>
         </div>
         <div class="punch-in-section">
             <div class="clock">
-                <b>Clock:</b>{{ currentTime | date: 'hh:mm:ss a' }}
+                <b>Clock:&nbsp;</b>{{ currentTime | date: 'hh:mm:ss a' }}
             </div>
             <div class="punch-in-info">
-                <span *ngIf="attendence?.punch_in">Punch in: {{attendence.punch_in}}</span>
+                <span *ngIf="attendence?.punch_in">Punch in:&nbsp; {{attendence.punch_in}}</span>
                 <button *ngIf="!attendence?.punch_in" mat-raised-button (click)="clockIn()" color="primary">Punch in</button>
             </div>
             <div>
-                <span *ngIf="attendence?.punch_out">Punch out: {{attendence?.punch_out}}</span>
+                <span *ngIf="attendence?.punch_out">Punch out:&nbsp; {{attendence?.punch_out}}</span>
                 <button *ngIf="attendence?.punch_in && !attendence?.punch_out" mat-raised-button (click)="clockOut()" color="warning">Punch out</button>
             </div>
         </div>
     </div>
-
+    <br>
+    <mat-divider></mat-divider>
+    <h2 style="text-align: center;">Leave history</h2>
     <div class="my-leaves-section">
         <table mat-table [dataSource]="myAppliedLeavesDataSource" class="mat-elevation-z8 demo-table">
             <ng-container matColumnDef="sl_no">
@@ -50,11 +53,6 @@
             <tr mat-row *matRowDef="let row; columns: myAppliedLeavesTableColumns;" (click)="displayMoreInfo(row)"></tr>
         </table>
     </div>
-
-    <div>
-            <button (click)="toggleCalendar()" mat-raised-button>Show calendar</button>
-        <div *ngIf="showCalendar" class="calendar">
-            <full-calendar [options]="calendarOptions"></full-calendar>
-        </div>
-    </div>
+    <br>
+    <mat-divider></mat-divider>
 </div>

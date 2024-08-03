@@ -27,8 +27,9 @@ export class CustomersComponent {
   public customerDataSource = [];
   public customerTableColumns = [
     'outlet_name',
-    'contact_person',
-    'mobile',
+    'contact_persons_details',
+    'address',
+    'gst_no',
     'note',
     'edit',
     'delete',
@@ -76,5 +77,13 @@ export class CustomersComponent {
         });
       }
     );
+  }
+
+  parseCustomerContact(contact: []) {
+    let contactInfoStirng = ''
+    contact.forEach((cust: any) => 
+      contactInfoStirng += `${cust.contact_person_name} | ${cust.email_or_phone} <br>`
+    )
+    return contactInfoStirng
   }
 }

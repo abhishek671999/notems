@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Event: {{data.date}}</h2>
+<div mat-dialog-content>
+    <form [formGroup]="holidayForm">
+        <mat-form-field>
+            <mat-label>Enter Name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+    </form>
+</div>
+<mat-dialog-actions>
+    <button [mat-dialog-close] mat-raised-button>Close</button>
+    <button *ngIf="data.holiday_id" (click)="deleteHoliday()" mat-raised-button>Delete</button>
+    <button (click)="submit()" mat-flat-button>Submit</button>
+</mat-dialog-actions>

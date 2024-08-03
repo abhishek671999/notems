@@ -5,6 +5,6 @@ export type beat = {
     "team_id": number,
     "team_type": string,
     "title": string,
-    "decription": string,
+    "description": string,
     "note": string
 }

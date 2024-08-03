@@ -6,18 +6,20 @@ export type editCustomer = {
     customer_id: number,
     type: number,
     outlet_name: string,
-    contact_person: string,
-    mobile: string,
+    contact_persons_details: string,
     note: string,
+    gst_no: string,
+    address: string,
     organization_id: number
 }
 
 export type addCustomer = {
     type: number,
     outlet_name: string,
-    contact_person: string,
-    mobile: string,
+    contact_persons_details: string,
     note: string,
+    gst_no: string,
+    address: string,
     organization_id: number
 }
 

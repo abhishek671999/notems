@@ -9,7 +9,5 @@ export class TaskManagementHomeComponent {
   managementPages = [
     {name: 'Board' , href: `tasks`},
     {name: 'Beats', href: "beats"} ,
-
-   
   ]
 }

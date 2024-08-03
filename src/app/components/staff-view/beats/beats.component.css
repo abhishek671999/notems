@@ -15,7 +15,20 @@
     margin: 0.5em;
     background-color: rgb(115, 186, 249);
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+}
+
+.box-footer{
+    display: flex;
+    width: 100% ;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.beat-header{
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }
 
 p, h1, h2{

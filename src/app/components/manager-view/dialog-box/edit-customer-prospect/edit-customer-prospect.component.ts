@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { editCustomer } from '../../../../shared/custom_dtypes/customers';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
@@ -17,35 +17,46 @@ export class EditCustomerProspectComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomersService,
-    private formBuilder: FormBuilder,
+    private formbuilder: FormBuilder,
     private sessionWrapper: sessionWrapper,
     private matDialog: MatDialog,
     private matDialogRef: MatDialogRef<EditCustomerProspectComponent>
   ) {
-    this.editCustomerForm = this.formBuilder.group({
+
+
+    this.editCustomerForm = this.formbuilder.group({
       outlet_name: [data.customer.outlet_name, [Validators.required]],
-      contact_person: [data.customer.contact_person, [Validators.required]],
-      mobile: [data.customer.mobile, Validators.required],
-      note: [data.customer.note]
+      contact_persons_details: this.formbuilder.array([], [Validators.required]),
+      note: [data.customer.note],
+      gst_no: [data.gst_no],
+      address: [data.address]
+    })
+
+    data.customer.contact_persons_details.forEach((contact: any) => {
+      this.contactPersonsFormArray().push(this.formbuilder.group(contact))
     })
    }
 
   public editCustomerForm: FormGroup;
 
+  ngOnInit() {
+    console.log('data', this.data)
+  }
 
   editCustomer() {
     let body: editCustomer = {
       "type": this.data.type, // 1 refers to customer, 2 refers to prospects
       "customer_id": this.data.customer.customer_id,
       "outlet_name": this.editCustomerForm.value.outlet_name,
-      "contact_person": this.editCustomerForm.value.contact_person,
-      "mobile": this.editCustomerForm.value.mobile,
+      "contact_persons_details": this.editCustomerForm.value.contact_persons_details,
       "note": this.editCustomerForm.value.note,
+      "gst_no": this.editCustomerForm.value.gst_no,
+      "address": this.editCustomerForm.value.address,
       "organization_id": Number(this.sessionWrapper.getItem('organization_id'))
     }
-    this.customerService.addCustomer(body).subscribe(
+    this.customerService.editCustomer(body).subscribe(
       (data: any) => {
-        this.matDialog.open(SuccessMsgComponent, { data: { msg:  `${this.getTypeString} edit successfully` } })
+        this.matDialog.open(SuccessMsgComponent, { data: { msg:  `${this.getTypeString()} edited successfully` } })
         this.matDialogRef.close()
       },
       (error: any) => {
@@ -64,5 +75,23 @@ export class EditCustomerProspectComponent {
   close() {
     // this.matDialogRef.close()
   }
+
+  contactPersonsFormArray(): FormArray{
+    return this.editCustomerForm.get('contact_persons_details') as FormArray;
+  }
+
+  addContactPersonsDetailsControl() {
+    this.contactPersonsFormArray().push(
+      this.formbuilder.group({
+        'contact_person_name': ['', [Validators.required]],
+        'email_or_phone': ['', [Validators.required]]
+      })
+    )
+  }
+
+  removeContactPersonsDetailsControl(index: number) {
+    this.contactPersonsFormArray().removeAt(index)
+  }
+
 
 }

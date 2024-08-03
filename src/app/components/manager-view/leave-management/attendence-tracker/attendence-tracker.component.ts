@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { AttendenceService } from '../../../shared/services/attendence/attendence.service';
+import { AttendenceService } from '../../../../shared/services/attendence/attendence.service';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { sessionWrapper } from '../../../../shared/site-variables';
 import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { MatDialog } from '@angular/material/dialog';
-import { ApplyLeaveComponent } from '../dialog-box/apply-leave/apply-leave.component';
-import { leaveType } from '../../../shared/custom_dtypes/attendence';
-import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.component';
+import { ApplyLeaveComponent } from '../../dialog-box/apply-leave/apply-leave.component';
+import { leaveType } from '../../../../shared/custom_dtypes/attendence';
+import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 
 @Component({
   selector: 'app-attendence-tracker',
@@ -33,12 +33,6 @@ export class AttendenceTrackerComponent {
     events: [],
   };
 
-  leaveState = {
-    PENDING: 0,
-    APPROVED: 1,
-    REJECTED: 2,
-    CANCELLED: 3,
-  };
 
   attendenceTableColumn: string[] = [
     'sl_no',
@@ -47,18 +41,9 @@ export class AttendenceTrackerComponent {
     'punch_in',
     'punch_out',
   ];
-  leaveTableColumn: string[] = [
-    'sl_no',
-    'user',
-    'leave_type',
-    'from_date',
-    'to_date',
-    'reason',
-    'approve',
-    'reject',
-  ];
+
   attendenceDataSource = [];
-  leaveDataSource = [];
+
 
   private LeaveType: leaveType[] | null;
   private intervalId: any;
@@ -80,21 +65,6 @@ export class AttendenceTrackerComponent {
       },
       () => {
         this.calendarOptions.events = [];
-      }
-    );
-
-    // Get my leaves
-    this.attendenceService.getMyLeaves().subscribe((data) => {
-      console.log('Your leaves are: ', data);
-    });
-
-    // get leaves
-    this.attendenceService.getLeaves().subscribe(
-      (data: any) => {
-        this.leaveDataSource = data['leaves'];
-      },
-      (error) => {
-        this.leaveDataSource = [];
       }
     );
 
@@ -169,35 +139,6 @@ export class AttendenceTrackerComponent {
     });
   }
 
-  apporveLeave(leave: any) {
-    let body = {
-      leave_id: leave.leave_id,
-      new_status: this.leaveState.APPROVED,
-    };
-    this.attendenceService.updateLeaveStatus(body).subscribe(
-      (data: any) => {
-        leave.status = 'Approved';
-      },
-      (error: any) => {
-        alert('Failed to Approve');
-      }
-    );
-  }
-
-  rejectLeave(leave: any) {
-    let body = {
-      leave_id: leave.leave_id,
-      new_status: this.leaveState.REJECTED,
-    };
-    this.attendenceService.updateLeaveStatus(body).subscribe(
-      (data: any) => {
-        leave.status = 'Rejected';
-      },
-      (error: any) => {
-        alert('Failed to Reject');
-      }
-    );
-  }
 
   openLocationScreen(attendence: any) {
     let location = attendence.split(',');

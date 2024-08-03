@@ -2,8 +2,11 @@
     <div class="box-wrapper">
         <div class="beat-box" *ngFor="let beat of beats; let i=index" (click)="openBeat(beat)">
             <h2>{{beat.title}}</h2>
-            <br>
-            <p>{{beat.decription}}</p>
+            <p>{{beat.description}}</p>
+            <div class="box-footer">
+                <h2>{{beat.beat_id}}</h2>
+                <p>{{beat.team_type}}</p>
+            </div>
         </div>
     </div>
 

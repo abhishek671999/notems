@@ -5,6 +5,7 @@ import { PostLoginComponent } from './components/post-login/post-login.component
 import { TestComponent } from './components/shared/test/test.component';
 import { NotfountComponent } from './components/shared/notfount/notfount.component';
 import { authGuard2 } from './guard/auth/auth.guard';
+import { ProfileComponent } from './components/shared/profile/profile.component';
 
 export const routes: Routes = [
     {
@@ -19,6 +20,11 @@ export const routes: Routes = [
         path: 'home',
         canActivate: [authGuard2],
         component: PostLoginComponent
+    },
+    {
+        path: 'profile',
+        canActivate: [authGuard2],
+        component: ProfileComponent
     },
     {
         path: 'manager',

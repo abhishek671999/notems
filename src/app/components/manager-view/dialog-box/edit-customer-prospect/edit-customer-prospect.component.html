@@ -5,22 +5,34 @@
             <mat-form-field>
                 <mat-label>Enter outlet name</mat-label>
                 <input matInput formControlName="outlet_name">
-                <mat-hint>Outlet name</mat-hint>
+            </mat-form-field>
+            <div formArrayName="contact_persons_details">
+                <div *ngFor="let control of contactPersonsFormArray().controls; let i=index" [formGroupName]="i" >
+                    <mat-form-field>
+                        <mat-label>Enter name {{i + 1}}</mat-label>
+                        <input matInput formControlName="contact_person_name">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Enter email/mobile  {{i + 1}}</mat-label>
+                        <input matInput formControlName="email_or_phone">
+                    </mat-form-field>
+                    <span *ngIf="i != 0" (click)="removeContactPersonsDetailsControl(i)" class="material-symbols-outlined">
+                        delete
+                    </span>
+                </div>
+                <button (click)="addContactPersonsDetailsControl()" mat-raised-button>Add another customer</button>
+            </div>
+            <mat-form-field>
+                <mat-label>Enter GST number</mat-label>
+                <input matInput formControlName="gst_no">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Enter contact person</mat-label>
-                <input matInput formControlName="contact_person">
-                <mat-hint>Contact person</mat-hint>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Enter mobile number</mat-label>
-                <input matInput formControlName="mobile">
-                <mat-hint>Mobile number</mat-hint>
+                <mat-label>Enter address</mat-label>
+                <input matInput formControlName="address">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Enter note</mat-label>
                 <input matInput formControlName="note">
-                <mat-hint>Note</mat-hint>
             </mat-form-field>
         </form>
     </div>

@@ -7,8 +7,8 @@ import { addItem, deleteItem, editItem, item } from '../../../shared/custom_dtyp
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../dialog-box/error-msg/error-msg.component';
-import { ConfirmationBoxComponent } from '../dialog/confirmation-box/confirmation-box.component';
-import { AddItemComponent } from '../dialog/add-item/add-item.component';
+import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
+import { AddItemComponent } from '../dialog-box/add-item/add-item.component';
 
 @Component({
   selector: 'app-items',

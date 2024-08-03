@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { addCustomer } from '../../../../shared/custom_dtypes/customers';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
@@ -24,20 +24,42 @@ export class AddCustomerComponent {
   ) { 
     this.newCustomerForm = this.formbuilder.group({
       outlet_name: ['', [Validators.required]],
-      contact_person: ['', [Validators.required]],
-      mobile: ['', Validators.required],
-      note: ['']
+      contact_persons_details: this.formbuilder.array([this.formbuilder.group({
+        'contact_person_name': ['', [Validators.required]],
+        'email_or_phone': ['', [Validators.required]]
+      })]),
+      note: [''],
+      gst_no: [''],
+      address: ['']
     })
   }
   public newCustomerForm: FormGroup;
+
+  contactPersonsFormArray(): FormArray{
+    return this.newCustomerForm.get('contact_persons_details') as FormArray;
+  }
+
+  addContactPersonsDetailsControl() {
+    this.contactPersonsFormArray().push(
+      this.formbuilder.group({
+        'contact_person_name': ['', [Validators.required]],
+        'email_or_phone': ['', [Validators.required]]
+      })
+    )
+  }
+
+  removeContactPersonsDetailsControl(index: number) {
+    this.contactPersonsFormArray().removeAt(index)
+  }
 
   addCustomer() {
     let body: addCustomer = {
       "type": this.data.type, // 1 refers to customer, 2 refers to prospects
       "outlet_name": this.newCustomerForm.value.outlet_name,
-      "contact_person": this.newCustomerForm.value.contact_person,
-      "mobile": this.newCustomerForm.value.mobile,
+      "contact_persons_details": this.newCustomerForm.value.contact_persons_details,
       "note": this.newCustomerForm.value.note,
+      "gst_no": this.newCustomerForm.value.gst_no,
+      "address": this.newCustomerForm.value.address,
       "organization_id": Number(this.sessionWrapper.getItem('organization_id'))
     }
     this.customerService.addCustomer(body).subscribe(
@@ -59,6 +81,7 @@ export class AddCustomerComponent {
   }
 
   close() {
-    this.matDialogRef.close()
+    console.log(this.newCustomerForm)
+    // this.matDialogRef.close()
   }
 }

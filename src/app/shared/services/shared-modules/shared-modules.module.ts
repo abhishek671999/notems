@@ -13,23 +13,31 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { ConfirmationBoxComponent } from '../../../components/shared/dialog/confirmation-box/confirmation-box.component';
-import { AddItemComponent } from '../../../components/shared/dialog/add-item/add-item.component';
+import { ConfirmationBoxComponent } from '../../../components/shared/dialog-box/confirmation-box/confirmation-box.component';
+import { AddItemComponent } from '../../../components/shared/dialog-box/add-item/add-item.component';
+import { ProfileComponent } from '../../../components/shared/profile/profile.component';
+import { PopUpMsgComponent } from '../../../components/shared/pop-up-msg/pop-up-msg.component';
+import { ViewCalendarComponent } from '../../../components/shared/bottom-sheet/view-calendar/view-calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
+    ProfileComponent,
     MapViewComponent,
-    SafePipe,
+    PopUpMsgComponent,
     ItemsComponent,
     ConfirmationBoxComponent,
-    AddItemComponent
+    AddItemComponent,
+    ViewCalendarComponent,
+    SafePipe,
   ],
   imports: [
     CommonModule, 
     FormsModule,
+    FullCalendarModule,
     MatIcon,
     MatDialogModule,
     MatFormFieldModule,

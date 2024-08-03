@@ -11,6 +11,8 @@ import { dateUtils } from '../../../shared/utils/date_utils';
 import { Router } from '@angular/router';
 import { appliedLeaves } from '../../../shared/custom_dtypes/leave';
 import { LeaveActionComponent } from '../dialog/leave-action/leave-action.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ViewCalendarComponent } from '../../shared/bottom-sheet/view-calendar/view-calendar.component';
 
 @Component({
   selector: 'app-attendence',
@@ -23,7 +25,8 @@ export class AttendenceComponent {
     private matDialog: MatDialog,
     private sessionWrapper: sessionWrapper,
     private dateUtils: dateUtils,
-    private router: Router
+    private router: Router,
+    private bottomSheet: MatBottomSheet
   ) {
     this.LeaveType = null;
     this.currentTime = new Date();
@@ -144,5 +147,9 @@ export class AttendenceComponent {
   displayMoreInfo(leave: any) {
     console.log(leave)
     this.matDialog.open(LeaveActionComponent, { data: {leave: leave} })
+  }
+
+  openCalendar() {
+    this.bottomSheet.open(ViewCalendarComponent)
   }
 }

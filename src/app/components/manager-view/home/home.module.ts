@@ -6,7 +6,7 @@ import { SharedModulesModule } from '../../../shared/services/shared-modules/sha
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { MatButtonModule } from '@angular/material/button';
-import { AttendenceTrackerComponent } from '../attendence-tracker/attendence-tracker.component';
+import { AttendenceTrackerComponent } from '../leave-management/attendence-tracker/attendence-tracker.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
@@ -25,6 +25,9 @@ import { ViewVisitsComponent } from '../task-management/view-visits/view-visits.
 import { ViewSalesComponent } from '../task-management/view-sales/view-sales.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDivider } from '@angular/material/divider';
+import { CalendarComponent } from '../calendar/calendar.component';
+import { HolidayComponent } from '../dialog-box/holiday/holiday.component';
+import { LeaveComponent } from '../leave-management/leave/leave.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { MatDivider } from '@angular/material/divider';
     EditCustomerProspectComponent,
     AddBeatComponent,
     ViewVisitsComponent,
-    ViewSalesComponent
+    ViewSalesComponent,
+    CalendarComponent,
+    HolidayComponent,
+    LeaveComponent,
   ],
   imports: [
     CommonModule,

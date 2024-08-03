@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AttendenceService } from '../../../../shared/services/attendence/attendence.service';
-import { ConfirmationBoxComponent } from '../../../shared/dialog/confirmation-box/confirmation-box.component';
+import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';
 import { updateLeaveStatus } from '../../../../shared/custom_dtypes/leave';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
