@@ -23,10 +23,12 @@ export class EditCustomerProspectComponent {
     private matDialogRef: MatDialogRef<EditCustomerProspectComponent>
   ) {
 
+    console.log('This is type: ', data.type)
 
     this.editCustomerForm = this.formbuilder.group({
       outlet_name: [data.customer.outlet_name, [Validators.required]],
       contact_persons_details: this.formbuilder.array([], [Validators.required]),
+      type: [data.type],
       note: [data.customer.note],
       gst_no: [data.gst_no],
       address: [data.address]
@@ -39,16 +41,24 @@ export class EditCustomerProspectComponent {
 
   public editCustomerForm: FormGroup;
 
+
+  public clientType = [
+    { typeId: 2, typeName: 'B2B' },
+    { typeId: 1, typeName: 'B2C' }
+  ]
+
+
+
   ngOnInit() {
     console.log('data', this.data)
   }
 
   editCustomer() {
     let body: editCustomer = {
-      "type": this.data.type, // 1 refers to customer, 2 refers to prospects
       "customer_id": this.data.customer.customer_id,
       "outlet_name": this.editCustomerForm.value.outlet_name,
       "contact_persons_details": this.editCustomerForm.value.contact_persons_details,
+      "type": this.editCustomerForm.value.type,
       "note": this.editCustomerForm.value.note,
       "gst_no": this.editCustomerForm.value.gst_no,
       "address": this.editCustomerForm.value.address,

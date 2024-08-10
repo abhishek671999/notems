@@ -10,7 +10,7 @@ import { AttendenceTrackerComponent } from '../leave-management/attendence-track
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
-import { CustomersComponent } from '../clients/customers/customers.component';
+import { CustomersComponent } from '../customers/customers.component';
 import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +28,10 @@ import { MatDivider } from '@angular/material/divider';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { HolidayComponent } from '../dialog-box/holiday/holiday.component';
 import { LeaveComponent } from '../leave-management/leave/leave.component';
+import { UserManagementComponent } from '../team-management-home/user-management/user-management.component';
+import { TeamManagementComponent } from '../team-management-home/team-management/team-management.component';
+import { AddUserToTeamComponent } from '../dialog-box/add-user-to-team/add-user-to-team.component';
+import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -45,6 +49,9 @@ import { LeaveComponent } from '../leave-management/leave/leave.component';
     CalendarComponent,
     HolidayComponent,
     LeaveComponent,
+    UserManagementComponent,
+    TeamManagementComponent,
+    AddUserToTeamComponent,
   ],
   imports: [
     CommonModule,
@@ -60,11 +67,13 @@ import { LeaveComponent } from '../leave-management/leave/leave.component';
     ReactiveFormsModule,
     MatButtonModule,
     MatSelectModule,
+    MatRadioButton,
+    MatRadioModule,
     MatDatepickerModule,
     CommonModule,
     MatInputModule,
     FormsModule,
-    MatDivider
+    MatDivider,
   ],
 })
 export class HomeModule {}

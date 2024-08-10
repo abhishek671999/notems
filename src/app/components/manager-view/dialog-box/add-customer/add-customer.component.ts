@@ -28,12 +28,18 @@ export class AddCustomerComponent {
         'contact_person_name': ['', [Validators.required]],
         'email_or_phone': ['', [Validators.required]]
       })]),
+      type: ['', [Validators.required] ],
       note: [''],
       gst_no: [''],
       address: ['']
     })
   }
   public newCustomerForm: FormGroup;
+
+  public clientType = [
+    { typeId: 2, typeName: 'B2B' },
+    { typeId: 1, typeName: 'B2C' }
+  ]
 
   contactPersonsFormArray(): FormArray{
     return this.newCustomerForm.get('contact_persons_details') as FormArray;
@@ -80,8 +86,5 @@ export class AddCustomerComponent {
     }[Number(this.data.type)]
   }
 
-  close() {
-    console.log(this.newCustomerForm)
-    // this.matDialogRef.close()
-  }
+
 }

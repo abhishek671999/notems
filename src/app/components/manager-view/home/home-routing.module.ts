@@ -5,10 +5,12 @@ import { MarketingComponent } from '../marketing/marketing.component';
 import { SalesComponent } from '../sales/sales.component';
 import { AttendenceTrackerComponent } from '../leave-management/attendence-tracker/attendence-tracker.component';
 import { AnalyticsComponent } from '../analytics/analytics.component';
-import { CustomersComponent } from '../clients/customers/customers.component';
+import { CustomersComponent } from '../customers/customers.component';
 import { ItemsComponent } from '../../shared/items/items.component';
-import { TeamManagementComponent } from '../team-management/team-management.component';
+import { TeamManagementComponent } from '../team-management-home/team-management/team-management.component';
 import { CalendarComponent } from '../calendar/calendar.component';
+import { UserManagementComponent } from '../team-management-home/user-management/user-management.component';
+import { ProspectsComponent } from '../clients/prospects/prospects.component';
 
 const routes: Routes = [
   {
@@ -21,34 +23,34 @@ const routes: Routes = [
       { path: 'analytics', component: AnalyticsComponent },
       { path: 'items', component: ItemsComponent },
       { path: 'team-management', component: TeamManagementComponent },
-      { path: 'calendar', component: CalendarComponent},
-      {
-        path: 'client',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('./../clients/client-management-home/client-management-home.module').then(m => m.ClientManagementHomeModule)
-          }
-        ]
-      },
+      { path: 'user-management/:team_id', component: UserManagementComponent },
+      { path: 'calendar', component: CalendarComponent },
+      { path: 'customers', component: CustomersComponent },
+      { path: 'prospects', component: ProspectsComponent},
       {
         path: 'attendence',
         children: [
           {
             path: '',
-            loadChildren: () => import('./../leave-management/leave-management.module').then(m => m.LeaveManagementModule)
-          }
-        ]
+            loadChildren: () =>
+              import('./../leave-management/leave-management.module').then(
+                (m) => m.LeaveManagementModule
+              ),
+          },
+        ],
       },
       {
         path: 'task',
         children: [
           {
             path: '',
-            loadChildren: () => import('./../task-management/task-management-home/task-management-home.module').then(m => m.TaskManagementHomeModule)
-          }
-        ]
-      }
+            loadChildren: () =>
+              import(
+                './../task-management/task-management-home/task-management-home.module'
+              ).then((m) => m.TaskManagementHomeModule),
+          },
+        ],
+      },
     ],
   },
 ];

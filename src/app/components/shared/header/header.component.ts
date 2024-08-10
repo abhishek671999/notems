@@ -31,7 +31,7 @@ export class HeaderComponent {
       },
       'customer_manager': {
         name: 'Customer',
-        action : () => this.router.navigate(['./manager/client/customers'])
+        action : () => this.router.navigate(['./manager/customers'])
       },
       'items_manager': {
         name: 'Items',

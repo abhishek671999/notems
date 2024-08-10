@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Add user to {{data.team_name}}</h2>
+<div mat-dialog-content>
+    <form class="form-container" [formGroup]="addUserToTeamForm">
+        <mat-form-field>
+            <mat-label>Select user</mat-label>
+            <mat-select formControlName="user_id" required>
+                @for (user of allUsers; track user) {
+                  <mat-option [value]="user.user_id">{{user.user_identity}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+            <mat-radio-group formControlName="role_id">
+                @for (role of roles; track role) {
+                    <mat-radio-button [value]="role.roleId">{{role.roleName}}</mat-radio-button>
+                }
+            </mat-radio-group>
+    </form>
+</div>
+<mat-dialog-actions>
+    <button mat-raised-button [mat-dialog-close]>Close</button>
+    <button mat-flat-button (click)="addUserToTeam()" [disabled]="addUserToTeamForm.invalid">Add</button>
+</mat-dialog-actions>

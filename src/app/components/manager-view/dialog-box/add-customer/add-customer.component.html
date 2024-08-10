@@ -20,8 +20,13 @@
                         delete
                     </span>
                 </div>
-                <button (click)="addContactPersonsDetailsControl()" mat-raised-button>Add another customer</button>
+                <button (click)="addContactPersonsDetailsControl()" mat-raised-button>Add another contact</button>
             </div>
+            <mat-radio-group formControlName="type">
+                @for (type of clientType; track type) {
+                    <mat-radio-button [value]="type.typeId">{{type.typeName}}</mat-radio-button>
+                }
+            </mat-radio-group>
             <mat-form-field>
                 <mat-label>Enter GST number</mat-label>
                 <input matInput formControlName="gst_no">
@@ -38,6 +43,6 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button (click)="close()" cdkFocusInitial>Close</button>
+    <button mat-button [mat-dialog-close] cdkFocusInitial>Close</button>
     <button [disabled]="!newCustomerForm.valid" mat-raised-button (click)="addCustomer()">Submit</button>
 </mat-dialog-actions>

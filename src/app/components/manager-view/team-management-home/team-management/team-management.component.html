@@ -1,0 +1,72 @@
+<div class="main-container">
+    <div class="team-management">
+        <table mat-table [dataSource]="teamDataSource" class="mat-elevation-z8 demo-table">
+          <ng-container matColumnDef="sl_no">
+            <th mat-header-cell *matHeaderCellDef>Sl No.</th>
+            <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
+          </ng-container>
+    
+          <ng-container matColumnDef="team_name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element.team_name">
+                {{element.team_name}}
+              </div>
+              <mat-form-field *ngIf="!element.team_name" class="float-above">
+                <mat-label>Team name</mat-label>
+                <input type="test" matInput [(ngModel)]="newTeam">
+              </mat-form-field>
+            
+            </td>
+          </ng-container>
+    
+          <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef>Department</th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element.team_type">
+                {{element.team_type}}
+              </div>
+              <mat-form-field *ngIf="!element.team_type" class="float-above">
+                <mat-label>Days</mat-label>
+                <mat-select [(ngModel)]="selectedDepartment">
+                    <mat-option *ngFor="let department of departmentList; let i=index" [value]="department.id">{{department.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef>Edit</th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element.team_name">
+                <span (click)="editTeam(element, $event)" class="material-symbols-outlined float-above">edit</span>
+              </div>
+              <div *ngIf="!element.team_name">
+                <button (click)="addTeam()" mat-raised-button [disabled]="!(selectedDepartment && newTeam)">Add team</button>
+              </div>
+              
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef>Delete</th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element.team_name">
+                <span (click)="deleteTeam(element, $event)" class="material-symbols-outlined float-above">delete</span>
+              </div>
+            </td>
+          </ng-container>
+          
+          <tr mat-header-row *matHeaderRowDef="teamDataSourceColumns"></tr>
+          <tr (click)="redirectToUsers(row)" mat-row *matRowDef="let row; columns: teamDataSourceColumns;"></tr>
+
+          <tr>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+        </table>
+      </div>
+</div>
+
