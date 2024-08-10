@@ -19,6 +19,10 @@ import { ProfileComponent } from '../../../components/shared/profile/profile.com
 import { PopUpMsgComponent } from '../../../components/shared/pop-up-msg/pop-up-msg.component';
 import { ViewCalendarComponent } from '../../../components/shared/bottom-sheet/view-calendar/view-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { AddCategoryComponent } from '../../../components/shared/bottom-sheet/add-category/add-category.component';
 
 
 @NgModule({
@@ -32,6 +36,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     ConfirmationBoxComponent,
     AddItemComponent,
     ViewCalendarComponent,
+    AddCategoryComponent,
     SafePipe,
   ],
   imports: [
@@ -44,7 +49,10 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatDividerModule,
+    MatOptionModule,
+    MatSelectModule
   ],
   exports: [HeaderComponent, FooterComponent]
 })

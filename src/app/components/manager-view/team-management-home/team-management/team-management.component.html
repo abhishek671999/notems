@@ -1,4 +1,5 @@
 <div class="main-container">
+    <h2 style="text-align: center;">Teams</h2>
     <div class="team-management">
         <table mat-table [dataSource]="teamDataSource" class="mat-elevation-z8 demo-table">
           <ng-container matColumnDef="sl_no">
@@ -27,7 +28,7 @@
                 {{element.team_type}}
               </div>
               <mat-form-field *ngIf="!element.team_type" class="float-above">
-                <mat-label>Days</mat-label>
+                <mat-label>Department</mat-label>
                 <mat-select [(ngModel)]="selectedDepartment">
                     <mat-option *ngFor="let department of departmentList; let i=index" [value]="department.id">{{department.name}}</mat-option>
                 </mat-select>
@@ -58,14 +59,8 @@
           </ng-container>
           
           <tr mat-header-row *matHeaderRowDef="teamDataSourceColumns"></tr>
-          <tr (click)="redirectToUsers(row)" mat-row *matRowDef="let row; columns: teamDataSourceColumns;"></tr>
+          <tr (click)="redirectToUsers(row)" style="cursor: pointer;" mat-row *matRowDef="let row; columns: teamDataSourceColumns;"></tr>
 
-          <tr>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
         </table>
       </div>
 </div>

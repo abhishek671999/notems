@@ -79,6 +79,12 @@ export class Login2Component {
     return this.loginObj.controls;
   }
 
+  ngOnInit() {
+    if (this._loginService.isLoggedIn()) {
+      this._router.navigate(['/home'])
+    }
+  }
+
   logIn(){
     this.loginFormControl['username'].enable()
     this._signUpService.validateUser(this.loginObj.value.username, this.loginObj.value.otp).subscribe(

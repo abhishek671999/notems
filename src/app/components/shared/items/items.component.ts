@@ -50,8 +50,11 @@ export class ItemsComponent {
   }
 
   addItem() {
-    this.matDialog.open(AddItemComponent)
-  }
+    let dialogRef = this.matDialog.open(AddItemComponent)
+    dialogRef.afterClosed().subscribe(
+      (data: any) => this.ngOnInit()
+      )
+    }
 
   editItem(item: item) {
     item.is_edit = !item.is_edit

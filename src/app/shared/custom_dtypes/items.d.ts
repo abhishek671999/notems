@@ -1,7 +1,8 @@
 export type addItem = {
     item_name: string,
     price: number,
-    organization_id: number
+    organization_id: number,
+    category_id: number
 }
 
 export type editItem = {

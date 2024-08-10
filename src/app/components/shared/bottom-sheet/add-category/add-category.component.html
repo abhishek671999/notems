@@ -1,0 +1,12 @@
+<div>
+    <h2 style="text-align: center;">Add catgory</h2>
+    <form style="text-align: center;" [formGroup]="newCategoryForm">
+        <mat-form-field>
+            <mat-label>Enter category name</mat-label>
+            <input matInput formControlName="category_name">
+        </mat-form-field>
+    </form>
+    <div style="text-align: center;">
+        <button (click)="addCateogry()" [disabled]="newCategoryForm.invalid" mat-raised-button>Submit</button>
+    </div>
+</div>
