@@ -11,7 +11,7 @@ export class AttendenceService {
   private getLeavesEndpoint = host + 'attendance/get_leaves/'
   private getLeaveTypesEndpoint = host + 'attendance/get_leave_types/'
   private getHolidayListEndpoint = host + 'attendance/get_holiday_list/'
-  private getTodaysAttendenceEndpoint = host + 'attendance/get_todays_attendance/'
+  private getAttendenceEndpoint = host + 'attendance/get_todays_attendance/'
   private applyLeaveEndpoint = host + 'attendance/apply_leave/'
   private updateStatusOfLeaveEndpoint = host + 'attendance/update_status_of_leave/'
   private punchInEndpoint = host + 'attendance/punch_in/'
@@ -36,8 +36,8 @@ export class AttendenceService {
     return this.httpClient.get(this.getHolidayListEndpoint, {params: httpParams})
   }
 
-  getTodaysAttendence() {
-    return this.httpClient.get(this.getTodaysAttendenceEndpoint)
+  getTodaysAttendence(httpParams: HttpParams) {
+    return this.httpClient.get(this.getAttendenceEndpoint, {params: httpParams})
   }
 
   applyLeave(body: any) {

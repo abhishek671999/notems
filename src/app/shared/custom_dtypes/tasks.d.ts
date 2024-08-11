@@ -80,3 +80,27 @@ export type deleteSaleInvoice = {
 export type deleteSaleInvoiceLineItem = {
     "line_item_id": number
 }
+
+export type getTasks = {
+    customer_id?: number,
+    type?: number,
+    beat_id?: number,
+    time_frame?: string,
+    from_date?: string ,
+    to_date?: string,
+    added_by?: number,
+    offset?: number,
+    count?: number,
+}
+
+export type getSales = {
+    customer_id?: number,
+    type?: number,
+    beat_id?: number,
+    time_frame?: string,
+    from_date?: string ,
+    to_date?: string,
+    recorded_by?: number,
+    offset?: number,
+    count?: number,
+}

@@ -32,6 +32,9 @@ import { UserManagementComponent } from '../team-management-home/user-management
 import { TeamManagementComponent } from '../team-management-home/team-management/team-management.component';
 import { AddUserToTeamComponent } from '../dialog-box/add-user-to-team/add-user-to-team.component';
 import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
+import { SalesAnalyticsComponent } from '../analytics/sales-analytics/sales-analytics.component';
+import { MarketingAnalyticsComponent } from '../analytics/marketing-analytics/marketing-analytics.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -52,6 +55,8 @@ import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
     UserManagementComponent,
     TeamManagementComponent,
     AddUserToTeamComponent,
+    SalesAnalyticsComponent,
+    MarketingAnalyticsComponent
   ],
   imports: [
     CommonModule,
@@ -70,6 +75,7 @@ import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
     MatRadioButton,
     MatRadioModule,
     MatDatepickerModule,
+    MatPaginatorModule,
     CommonModule,
     MatInputModule,
     FormsModule,

@@ -23,7 +23,7 @@ export class HeaderComponent {
       },
       'analytics': {
         name: 'Analytics',
-        action: () => this.router.navigate(['./manager/analytics'])
+        action: () => this.router.navigate(['./manager/analytics/sales'])
       },
       'attendence': {
         name: 'Attendence',

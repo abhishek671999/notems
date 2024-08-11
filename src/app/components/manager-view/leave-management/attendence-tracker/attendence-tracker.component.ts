@@ -5,9 +5,9 @@ import { sessionWrapper } from '../../../../shared/site-variables';
 import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { MatDialog } from '@angular/material/dialog';
-import { ApplyLeaveComponent } from '../../dialog-box/apply-leave/apply-leave.component';
-import { leaveType } from '../../../../shared/custom_dtypes/attendence';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
+import { dateUtils } from '../../../../shared/utils/date_utils';
+
 
 @Component({
   selector: 'app-attendence-tracker',
@@ -18,14 +18,14 @@ export class AttendenceTrackerComponent {
   constructor(
     private attendenceService: AttendenceService,
     private sessionWrapper: sessionWrapper,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private dateUtils: dateUtils
   ) {
-    this.LeaveType = null;
     this.currentTime = null;
   }
   public isClockedIn: boolean = false;
   public holidayList: [] = [];
-  public clockInLocation: string = '';
+
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -45,11 +45,12 @@ export class AttendenceTrackerComponent {
   attendenceDataSource = [];
 
 
-  private LeaveType: leaveType[] | null;
   private intervalId: any;
   public currentTime: Date | null;
+  public attendenceDate = new Date()
 
   ngOnInit() {
+    this.fetchAttendence()
     this.intervalId = setInterval(() => {
       this.currentTime = new Date();
     }, 1000);
@@ -68,16 +69,13 @@ export class AttendenceTrackerComponent {
       }
     );
 
-    // get leave type
-    this.attendenceService.getLeaveTypes(httpParams).subscribe(
-      (data: any) => {
-        this.LeaveType = data['leave_types'];
-      },
-      (error: any) => {}
-    );
-
-    //get todays attendence
-    this.attendenceService.getTodaysAttendence().subscribe(
+    
+  }
+  
+  fetchAttendence() {
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('date', String(this.dateUtils.getStandardizedDateFormate(this.attendenceDate)) )
+    this.attendenceService.getTodaysAttendence(httpParams).subscribe(
       (data: any) => {
         this.attendenceDataSource = data['attendance_list'];
       },
@@ -85,60 +83,7 @@ export class AttendenceTrackerComponent {
         this.attendenceDataSource = [];
       }
     );
-
-    //
   }
-
-  clockOut() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        let body = {
-          punch_out_location: `http://maps.google.com?q=${position.coords.latitude},${position.coords.longitude}`,
-        };
-        this.attendenceService.punchOut(body).subscribe(
-          () => {
-            this.isClockedIn = false;
-          },
-          () => {
-            alert('Error while clocking out');
-          }
-        );
-      });
-    } else {
-      alert(
-        `Browser doesn't support location service. Please use other browser`
-      );
-    }
-  }
-
-  clockIn() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        let body = {
-          punch_in_location: `http://maps.google.com?q=${position.coords.latitude},${position.coords.longitude}`,
-        };
-        this.attendenceService.punchIn(body).subscribe(
-          () => {
-            this.isClockedIn = true;
-          },
-          () => {
-            alert('Error while clocking in');
-          }
-        );
-      });
-    } else {
-      alert(
-        `Browser doesn't support location service. Please use other browser`
-      );
-    }
-  }
-
-  applyLeave() {
-    this.matDialog.open(ApplyLeaveComponent, {
-      data: { leaveTypes: this.LeaveType },
-    });
-  }
-
 
   openLocationScreen(attendence: any) {
     let location = attendence.split(',');
@@ -150,4 +95,6 @@ export class AttendenceTrackerComponent {
   ngOnDestroy() {
     clearInterval(this.intervalId);
   }
+
+
 }

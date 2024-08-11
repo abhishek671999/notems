@@ -4,6 +4,7 @@ import { HttpParams } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { MatTableModule } from '@angular/material/table';
+import { getTasks } from '../../../../shared/custom_dtypes/tasks';
 
 @Component({
   selector: 'app-assigned-beats-view',
@@ -32,9 +33,10 @@ export class AssignedBeatsViewComponent {
     this.taskManagementService.getBeats(httpParams).subscribe(
       (data: any) => {
         data['beats'].forEach((beat: any) => {
-          let httpParams = new HttpParams()
-          httpParams = httpParams.append('beat_id', beat.beat_id)
-          this.taskManagementService.getTasks(httpParams).subscribe(
+          let body: getTasks = {
+            beat_id: beat.beat_id
+          }
+          this.taskManagementService.getTasks(body).subscribe(
             (data: any) => this.tasksDataSource = [...this.tasksDataSource, ...data['tasks']]
           )
         });

@@ -27,6 +27,7 @@ export class CustomersComponent {
 
   public customerDataSource = [];
   public customerTableColumns = [
+    'sl_no',
     'outlet_name',
     'type_name',
     'contact_persons_details',
@@ -67,7 +68,7 @@ export class CustomersComponent {
     let dialogRef = this.matDialog.open(ConfirmationBoxComponent, { data: { msg: 'Are you sure want to delete this customer?' } })
     dialogRef.afterClosed().subscribe(
       (data: any) => {
-        if (data.result) {
+        if (data?.result) {
           let body: deleteCustomer = {
             customer_id: customer.customer_id,
           };

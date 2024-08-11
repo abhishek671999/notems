@@ -1,6 +1,6 @@
 <div class="main-container">
   <h2 style="text-align: center;">Items</h2>
-  <table mat-table [dataSource]="itemSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="itemSource" class="mat-elevation-z8 table-section">
     <ng-container matColumnDef="sl_no">
       <th mat-header-cell *matHeaderCellDef> Sl No </th>
       <td mat-cell *matCellDef="let element; let i=index"> {{i + 1}} </td>
@@ -8,17 +8,23 @@
   
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> 
-        <mat-form-field>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="!element.is_edit">
+          {{element.item_name}}
+        </div>
+        <mat-form-field *ngIf="element.is_edit">
           <input type="text" matInput [(ngModel)]="element.item_name" (blur)="submitEditItem(element)" [disabled]="!element.is_edit">
         </mat-form-field>
-        </td>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef> Price </th>
       <td mat-cell *matCellDef="let element">
-        <mat-form-field>
+        <div *ngIf="!element.is_edit">
+          {{element.price}}
+        </div>
+        <mat-form-field *ngIf="element.is_edit">
           <input type="text" matInput [(ngModel)]="element.price" (blur)="submitEditItem(element)" [disabled]="!element.is_edit">
         </mat-form-field>
       </td>
@@ -44,7 +50,7 @@
   </div>
 
   <div style="text-align: center;">
-    <button (click)="addItem()" mat-raised-button>Add Item</button>
+    <button (click)="addItem()" mat-flat-button>Add Item</button>
   </div>
 
 </div>

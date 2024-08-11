@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomersService } from '../../../shared/services/customer/customers.service';
 import { sessionWrapper } from '../../../shared/site-variables';
 import { customer } from '../../../shared/custom_dtypes/customers';
-import { addTask } from '../../../shared/custom_dtypes/tasks';
+import { addTask, getTasks } from '../../../shared/custom_dtypes/tasks';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../shared/dialog-box/error-msg/error-msg.component';
@@ -59,9 +59,10 @@ export class AddVisitComponent {
 
     this.route.params.subscribe((params: Params) => {
       this.beatId = params['beat_id']
-      let httpParams = new HttpParams()
-      httpParams = httpParams.append('beat_id', this.beatId)
-      this.taskService.getTasks(httpParams).subscribe(
+      let body: getTasks = {
+        beat_id: this.beatId
+      }
+      this.taskService.getTasks(body).subscribe(
         (data: any) => {
           console.log('data', data)
         },

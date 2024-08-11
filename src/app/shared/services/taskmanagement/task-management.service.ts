@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { host } from '../../site-variables';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { addBeat, addTask, assignBeat, deleteBeat, deleteSaleInvoice, deleteSaleInvoiceLineItem, deleteTask, editBeat, editSaleInvoiceHeader, editTask, unassignBeat, updateSalesInvoiceLineItem } from '../../custom_dtypes/tasks';
+import { addBeat, addTask, assignBeat, deleteBeat, deleteSaleInvoice, deleteSaleInvoiceLineItem, deleteTask, editBeat, editSaleInvoiceHeader, editTask, getTasks, unassignBeat, updateSalesInvoiceLineItem } from '../../custom_dtypes/tasks';
 
 
 @Injectable({
@@ -91,8 +91,8 @@ export class TaskManagementService {
     return this.httpClient.delete(this.deleteTaskEndpoint, {body: body})
   }
 
-  getTasks(httpParams: HttpParams) {
-    return this.httpClient.get(this.getTasksEndpoint, {params: httpParams})
+  getTasks(body: getTasks) {
+    return this.httpClient.post(this.getTasksEndpoint, body)
   }
   
   assignBeat(body: assignBeat) {

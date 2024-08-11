@@ -1,0 +1,20 @@
+.main-container{
+    height: 85vh;
+}
+
+.filter-section{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+td, th {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.mat-sort-header-container {
+    justify-content: center !important;
+}
