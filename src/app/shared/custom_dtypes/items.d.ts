@@ -21,5 +21,6 @@ export type item = {
     item_name: string,
     price: number,
     is_edit?: boolean,
-    quantity?: number
+    quantity?: number,
+    line_item_id?: number
 }

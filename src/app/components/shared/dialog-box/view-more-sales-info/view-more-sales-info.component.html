@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>More</h2>
+<div mat-dialog-content>
+    <p>Type_name : {{data.type_name}}</p>
+    <p>Customer : {{data.customer}}</p>
+    <p>Total amount: {{data.total_amount}}</p>
+    <p>Discount: {{data.discount}}</p>
+    <p>Received amount: {{data.received_amount}}</p>
+    <p>Recorded on : {{data.recorded_at}}</p>
+    <p>Recorded by : {{data.recorded_by}}</p>
+    <p>Note : {{data.note}}</p>
+    <div *ngFor="let image of data.image_details">
+        <img src="{{image.image_url}}" alt="">
+    </div>
+</div>

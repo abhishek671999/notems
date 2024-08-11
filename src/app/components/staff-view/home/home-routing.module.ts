@@ -4,7 +4,8 @@ import { HomeComponent } from './home.component';
 import { AttendenceComponent } from '../attendence/attendence.component';
 import { BeatsComponent } from '../beats/beats.component';
 import { AddVisitComponent } from '../add-visit/add-visit.component';
-import { AddSaleComponent } from '../add-sale/add-sale.component';
+import { AddSaleComponent } from '../../shared/dialog-box/add-sale/add-sale.component';
+import { SalesComponent } from '../../manager-view/sales/sales.component';
 
 
 const routes: Routes = [
@@ -14,8 +15,8 @@ const routes: Routes = [
     children: [
       { path: 'attendence', component: AttendenceComponent },
       { path: 'beats', component: BeatsComponent },
-      { path: 'add-visit/:beat_id', component: AddVisitComponent },
-      { path: 'add-sale/:beat_id', component: AddSaleComponent}
+      { path: 'visit/:beat_id', component: AddVisitComponent },
+      { path: 'sales/:beat_id', component: SalesComponent}
     ]
   }
 ];

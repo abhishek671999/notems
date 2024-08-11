@@ -1,3 +1,5 @@
+import { item } from "./items"
+
 export type addBeat = {
     "team_id": number,
     "title": string,
@@ -55,4 +57,26 @@ export type unassignBeat = {
     "beat_id": number,
     "assignee_id": number,
     "date": string,
+}
+
+export type editSaleInvoiceHeader = {
+    "sale_invoice_id": number,
+    "customer_id": number,
+    "discount": number,
+    "received_amount": number,
+    "note": string,
+    "beat_id": number,
+}
+
+export type updateSalesInvoiceLineItem = {
+    "sale_invoice_id": number,
+    "item_details": item[]
+}
+
+export type deleteSaleInvoice = {   
+    "sale_invoice_id": number
+}
+
+export type deleteSaleInvoiceLineItem = {
+    "line_item_id": number
 }

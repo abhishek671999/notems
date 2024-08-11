@@ -9,6 +9,7 @@ import { SuccessMsgComponent } from '../dialog-box/success-msg/success-msg.compo
 import { ErrorMsgComponent } from '../dialog-box/error-msg/error-msg.component';
 import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
 import { AddItemComponent } from '../dialog-box/add-item/add-item.component';
+import { category } from '../../../shared/custom_dtypes/category';
 
 @Component({
   selector: 'app-items',
@@ -30,7 +31,7 @@ export class ItemsComponent {
    }
 
   public newItem: FormGroup;
-  public itemSource = []
+  public itemSource: any[] = []
   public itemsTableColumns = ['sl_no', 'name', 'price', 'edit', 'delete']
   
   ngOnInit() {
@@ -41,7 +42,15 @@ export class ItemsComponent {
         data['items'].forEach((item: item) => {
           item.is_edit = false
         });
-        this.itemSource = data['items']
+        let itemsPresent: any[] = []
+        data['items'].forEach((category: category) => {
+          category.items?.forEach((item: item) => {
+            console.log(item)
+            itemsPresent.push(item)
+          }
+          )
+        })
+        this.itemSource = itemsPresent
       },
       (error: any) => {
         console.log(error)
@@ -61,7 +70,6 @@ export class ItemsComponent {
   }
 
   submitEditItem(item: item) {
-    debugger
     let body: editItem = {
       item_id: item.item_id,
       item_name: item.item_name,

@@ -23,6 +23,11 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { AddCategoryComponent } from '../../../components/shared/bottom-sheet/add-category/add-category.component';
+import { AddSaleComponent } from '../../../components/shared/dialog-box/add-sale/add-sale.component';
+import { SalesComponent } from '../../../components/manager-view/sales/sales.component';
+import { ViewMoreSalesInfoComponent } from '../../../components/shared/dialog-box/view-more-sales-info/view-more-sales-info.component';
+import { EditSalesInfoComponent } from '../../../components/shared/dialog-box/edit-sales-info/edit-sales-info.component';
+import { AddItemsToSaleComponent } from '../../../components/shared/dialog-box/add-items-to-sale/add-items-to-sale.component';
 
 
 @NgModule({
@@ -37,6 +42,11 @@ import { AddCategoryComponent } from '../../../components/shared/bottom-sheet/ad
     AddItemComponent,
     ViewCalendarComponent,
     AddCategoryComponent,
+    AddSaleComponent,
+    SalesComponent,
+    EditSalesInfoComponent,
+    ViewMoreSalesInfoComponent,
+    AddItemsToSaleComponent,
     SafePipe,
   ],
   imports: [

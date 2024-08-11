@@ -41,7 +41,7 @@ export class AddItemComponent {
   
   ngOnInit() {
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organziation_id')))
+    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
     this.categoryService.getCategories(httpParams).subscribe(
       (data: any) =>  this.availableCategories = data['categories'],
       (error: any) => console.log(error)

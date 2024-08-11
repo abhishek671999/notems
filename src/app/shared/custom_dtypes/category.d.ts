@@ -1,3 +1,4 @@
+import { item } from "./items"
 
 export type addCategory = {
     category_name: string,
@@ -15,5 +16,6 @@ export type deleteCategory = {
 
 export type category = {
     category_id: number,
-    category_name: string
+    category_name: string,
+    items?: item[]
 }

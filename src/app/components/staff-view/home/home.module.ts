@@ -12,7 +12,7 @@ import { LeaveActionComponent } from '../dialog/leave-action/leave-action.compon
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { BeatsComponent } from '../beats/beats.component';
-import { AddSaleComponent } from '../add-sale/add-sale.component';
+import { AddSaleComponent } from '../../shared/dialog-box/add-sale/add-sale.component';
 import { AddVisitComponent } from '../add-visit/add-visit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,7 +31,6 @@ import {
     AttendenceComponent,
     LeaveActionComponent,
     BeatsComponent,
-    AddSaleComponent,
     AddVisitComponent,
   ],
   imports: [
