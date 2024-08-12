@@ -8,6 +8,7 @@ import { removeUserFromTeam, users } from '../../../../shared/custom_dtypes/user
 import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
+import { team } from '../../../../shared/custom_dtypes/team';
 
 @Component({
   selector: 'app-user-management',
@@ -23,6 +24,7 @@ export class UserManagementComponent {
   ) { }
 
   private teamId: number = 0
+  public teamInfo: any;
   public teamMembersDataSource: users[] = []
   public teamMemberDataSourceColumns: string[] = ['sl_no', 'user_identity', 'role_name', 'delete']
 
@@ -31,6 +33,7 @@ export class UserManagementComponent {
 
     this.route.params.subscribe((params: Params) => {
       this.teamId = params['team_id']
+      
       let httpParams = new HttpParams()
       httpParams = httpParams.append('team_id', this.teamId)
       this.teamManagementService.getUsers(httpParams).subscribe(
@@ -38,6 +41,11 @@ export class UserManagementComponent {
           this.teamMembersDataSource = data['users']
         },
         (error: any) => alert('Failed to fetch users')
+      )
+
+      this.teamManagementService.getMyTeams(httpParams).subscribe(
+        (data: any) => this.teamInfo = data['teams'][0],
+        (error: any) => alert('Failed to fetch teams')
       )
     })
   }

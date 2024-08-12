@@ -1,0 +1,5 @@
+.table-row:hover{
+    transform: scale(1.01) ;
+    background-color: rgb(222, 221, 221);
+}
+

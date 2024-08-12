@@ -10,12 +10,12 @@ export type removeUserFromTeam = {
 }
 
 export type users = {
-    "user_id": number,
-    "email": string,
-    "mobile": string,
-    "first_name": string,
-    "last_name": string,
-    "user_identity": string
+    user_id: number,
+    email: string,
+    mobile: string,
+    first_name: string,
+    last_name: string,
+    user_identity: string
 }
 
 export type addTeam = {
@@ -25,5 +25,11 @@ export type addTeam = {
 }
 
 export type deleteTeam = {
+    team_id: number
+}
+
+export type editTeam = {
+    name: string,
+    type: number,
     team_id: number
 }

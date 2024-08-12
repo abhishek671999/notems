@@ -14,6 +14,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
+import { beat } from '../../../../shared/custom_dtypes/beats';
 
 @Component({
   selector: 'app-assign-beat',
@@ -31,37 +33,77 @@ export class AssignBeatComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private taskManagementService: TaskManagementService,
+    private teamService: TeamManagementService,
     private matdialog: MatDialog,
     private formBuilder: FormBuilder
   ) {
 
   }
+
   public selectedDate: string = ''
   public selectedType: number = 1
+  public selectedTeam: any;
+  public selectedTeamMember: any;
+
   public beatsSource: any = []
-  public beatsSourceColumns = ['sl_no', 'title', 'reporter', 'assign']
+  public beatsSourceColumns = ['sl_no', 'title', 'reporter', 'assignee' ,'assign']
+
   public availableType = [
     { typeId: 1, typeName: 'Single day' },
     { typeId: 2, typeName: 'Weekly' },
     { typeId: 3, typeName: 'Day wise'}
   ]
+
   public weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday', 'Saturday', 'Sunday']
   public selectedDays = []
 
+  public teams: any;
+  public teamMembers: any = []
+
   ngOnInit() {
+    this.fetchTeam()
+  }
+
+  fetchBeats(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('team_id', this.data.team_id)
-    httpParams = httpParams.append('assignee_id', this.data.user_id)
+    httpParams = httpParams.append('team_id', this.selectedTeam)
     this.taskManagementService.getBeats(httpParams).subscribe(
-      (data: any) => this.beatsSource = data['beats'],
+      (data: any) => {
+        data['beats'].forEach((beat: beat) => {
+          beat.assignee_id = null
+        });
+        this.beatsSource = data['beats']
+      },
       (error: any) => alert('Failed to fetch beats')
     )
   }
 
-  assignBeat(beat: any) {
+  fetchTeamMembers() {
+    let body: any = {
+      team_id: this.selectedTeam
+    }
+    this.teamService.getUsers(body).subscribe(
+      (data: any) => this.teamMembers = data['users'],
+      (error: any) => console.log(error)
+    )
+  }
+
+  fetchTeam(){
+    let httpParams = new HttpParams()
+    this.teamService.getMyTeams(httpParams).subscribe(
+      (data: any) => {
+       this.teams = data['teams']
+      }
+      ,
+      (error: any) => console.log(error)
+    )
+  }
+
+  assignBeat(beat: beat) {
+    debugger
     let body: assignBeat = {
       beat_id: beat.beat_id,
-      assignee_id: this.data.user_id,
+      assignee_id: beat.assignee_id,
       date: this.selectedDate,
       type: this.selectedType,
       days: this.selectedDays
@@ -75,4 +117,6 @@ export class AssignBeatComponent {
       }
     )
   }
+
+
 }

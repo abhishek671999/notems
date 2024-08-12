@@ -7,3 +7,17 @@
     padding: 1em;
     margin: 1em;
 }
+
+.header-section{
+    display: flex;
+    justify-content: space-between;
+}
+
+.category-button{
+    align-self: center;
+}
+
+.header-text{
+    text-align: center;
+    align-self: self-end ;
+}

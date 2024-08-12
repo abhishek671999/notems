@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LoginService } from '../../../shared/services/register/login.service';
 import { Router } from '@angular/router';
 import { meAPIUtility, sessionWrapper } from '../../../shared/site-variables';
+import { team } from '../../../shared/custom_dtypes/team';
 
 
 @Component({
@@ -53,6 +54,10 @@ export class HeaderComponent {
         name: 'Attendence',
         action: () => this.router.navigate(['./staff/attendence'])
       },
+      'staff_analytics': {
+          name: 'Analytics',
+          action: () => this.router.navigate(['./staff/analytics/sales'])
+      },
       'logout': {
         name: 'Logout',
         action: () => this._loginService.logOut(),
@@ -79,10 +84,19 @@ export class HeaderComponent {
         }
       }
     }
+
+    addTeamManagerNavOptions(team: team){
+      let teamManagerNavOptions = ['profile', 'staff_task_management', 'staff_analytics','staff_attendence']
+      for(let option of teamManagerNavOptions){
+        if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
+          this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
+        }
+      }
+    }
   
 
-  addStaffNavOptions(organaization: any){
-    let staffNavOptions = ['profile' ,'staff_task_management', 'staff_attendence']
+  addStaffNavOptions(team: any){
+    let staffNavOptions = ['profile' ,'staff_task_management','staff_analytics', 'staff_attendence']
     for(let option of staffNavOptions){
       if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
         this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -99,8 +113,8 @@ export class HeaderComponent {
 
   ngOnInit(){
     this._meAPIutility.getMeData().subscribe((data: any) => {
-      console.log(data)
-    this.username = data['username'] ? data['username'] : data['email']
+      this.username = data['username'] ? data['username'] : data['email']
+      if(data['organizations'].length > 0){
         for(let organaization of data['organizations']){
           if(organaization.role.toLowerCase() == 'manager'){
             this.addManagerNavOptions(organaization)
@@ -111,18 +125,18 @@ export class HeaderComponent {
             break
           }
         }
-      //   for(let restaurant of data['restaurants']){
-      //     if(restaurant.role_name == 'restaurant_admin'){
-      //       this.addRestaurantOwnerNavOptions(restaurant)
-      //       break
-      //     }else if(restaurant.role_name == 'restaurant_staff'){
-      //       this.addRestaurantStaffNavOptions()
-      //       break
-      //     }
-      //   }
-      //   if(data['restaurants'].length == 0 && data['companies'].length == 0){
-      //     this.addUserNavOptions()
-      // }
+      }else if(data['teams'].length > 0){
+        debugger
+        for(let team of data['teams']){
+          if(team.role.toLowerCase() == 'manager'){
+            this.addTeamManagerNavOptions(team)
+            break
+          }else if(team.role.toLowerCase() == 'team member'){
+            this.addStaffNavOptions(team)
+            break
+          }
+        }
+      }
     })
     
    }  

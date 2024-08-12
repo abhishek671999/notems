@@ -28,6 +28,9 @@ import { SalesComponent } from '../../../components/manager-view/sales/sales.com
 import { ViewMoreSalesInfoComponent } from '../../../components/shared/dialog-box/view-more-sales-info/view-more-sales-info.component';
 import { EditSalesInfoComponent } from '../../../components/shared/dialog-box/edit-sales-info/edit-sales-info.component';
 import { AddItemsToSaleComponent } from '../../../components/shared/dialog-box/add-items-to-sale/add-items-to-sale.component';
+import { CategoryComponent } from '../../../components/shared/category/category.component';
+import { SalesMoreInfoComponent } from '../../../components/shared/dialog-box/sales-more-info/sales-more-info.component';
+import { PageNotFoundComponent } from '../../../components/shared/page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -38,6 +41,7 @@ import { AddItemsToSaleComponent } from '../../../components/shared/dialog-box/a
     MapViewComponent,
     PopUpMsgComponent,
     ItemsComponent,
+    CategoryComponent,
     ConfirmationBoxComponent,
     AddItemComponent,
     ViewCalendarComponent,
@@ -47,6 +51,8 @@ import { AddItemsToSaleComponent } from '../../../components/shared/dialog-box/a
     EditSalesInfoComponent,
     ViewMoreSalesInfoComponent,
     AddItemsToSaleComponent,
+    SalesMoreInfoComponent,
+    PageNotFoundComponent,
     SafePipe,
   ],
   imports: [

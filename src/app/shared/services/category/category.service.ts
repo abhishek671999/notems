@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { host } from '../../site-variables';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { addCategory, deleteCategory } from '../../custom_dtypes/category';
+import { addCategory, deleteCategory, editCategory } from '../../custom_dtypes/category';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,7 @@ export class CategoryService {
   private addCategoryEndpoint = host + 'sales/add_category/'
   private deleteCategoryEndpoint = host + 'sales/delete_category/'
   private getCategoriesEndpoint = host + 'sales/get_categories/'
+  private editCategoriesEndpoint = host + 'sales/edit_category/'
 
   constructor(private httpClient: HttpClient) { }
 
@@ -24,6 +25,10 @@ export class CategoryService {
 
   getCategories(httpParams: HttpParams) {
     return this.httpClient.get(this.getCategoriesEndpoint, {params: httpParams})
+  }
+
+  editCategories(body: editCategory) {
+    return this.httpClient.post(this.editCategoriesEndpoint, body)
   }
 
 }

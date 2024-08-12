@@ -24,6 +24,12 @@ import {
   MatBottomSheetModule,
   MatBottomSheetRef,
 } from '@angular/material/bottom-sheet';
+import { AnalyticsHomeComponent } from '../analytics/analytics-home/analytics-home.component';
+import { SalesAnalyticsComponent } from '../analytics/sales-analytics/sales-analytics.component';
+import { MarketingAnalyticsComponent } from '../analytics/marketing-analytics/marketing-analytics.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -32,6 +38,8 @@ import {
     LeaveActionComponent,
     BeatsComponent,
     AddVisitComponent,
+    SalesAnalyticsComponent,
+    MarketingAnalyticsComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +57,10 @@ import {
     MatDialogModule,
     MatInputModule,
     MatDividerModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatPaginatorModule,
+    MatDatepickerModule,
+    RouterModule
   ]
 })
 export class HomeModule { }

@@ -32,6 +32,7 @@ export class PostLoginComponent {
       this.myInfo = data;
       sessionStorage.setItem('user_id', data['user_id'])
       if (this.myInfo['first_name']) {
+        debugger
         if (this.myInfo['organizations'].length > 0) {
           sessionStorage.setItem('organization_id', this.myInfo['organizations'][0]['organization_id'])  //hardcode
           sessionStorage.setItem(
@@ -39,12 +40,19 @@ export class PostLoginComponent {
             this.myInfo['organizations'][0]['organization_name']
           );
           if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'manager') this.router.navigate(['manager/attendence/attendence']);
-          else if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'team member') this.router.navigate(['staff/attendence'])
-          else {
-            this.matdialog.open(PopUpMsgComponent, { data: { title: 'Team not assigned', content: 'Please contact admin' } })
-            this.showSpinner = false;
-            this.errorOccured = true;
-          }
+          else alert('Unknow error in redirection')
+        } else if (this.myInfo['teams'].length > 0) {
+          if (String(this.myInfo['teams'][0]['role']).toLowerCase() == 'team member') {
+            sessionStorage.setItem('organization_id', this.myInfo['teams'][0]['organization_id'])  //hardcode
+            this.router.navigate(['staff/attendence'])
+          } 
+          else alert('Unknow error in redirection')
+        }
+        else {
+          this.matdialog.open(PopUpMsgComponent, { data: { title: 'Team not assigned', content: 'Please contact admin' } })
+          this.showSpinner = false;
+          this.errorOccured = true;
+          this.router.navigate(['profile'])
         }
       } else {
         this.router.navigate(['profile'])

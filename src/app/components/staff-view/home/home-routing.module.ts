@@ -16,7 +16,17 @@ const routes: Routes = [
       { path: 'attendence', component: AttendenceComponent },
       { path: 'beats', component: BeatsComponent },
       { path: 'visit/:beat_id', component: AddVisitComponent },
-      { path: 'sales/:beat_id', component: SalesComponent}
+      { path: 'sale/:beat_id', component: SalesComponent },
+      {
+        path: 'analytics',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./../analytics/analytics-home/analytics-home.module').
+              then((m) => m.AnalyticsHomeModule)
+          }
+        ]
+      },
     ]
   }
 ];

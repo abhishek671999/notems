@@ -1,5 +1,19 @@
 <div class="main-container">
-  <h2 style="text-align: center;">View visits</h2>
+  <h2 style="text-align: center; margin-bottom: 0;">View visits</h2>
+
+  <div class="beat-info-section">
+    <h3>Beat id: {{beatInfo?.beat_id}}</h3>
+    <h3>Title: {{beatInfo?.title}}</h3>
+    <h3>Description: {{beatInfo?.description}}</h3>
+    <h3>Created at: {{beatInfo?.created_at}}</h3>
+    <button mat-button [matMenuTriggerFor]="menu" style="color: black;"><h3>Customers</h3></button>
+      <mat-menu #menu="matMenu">
+        <ng-container *ngFor="let customer of beatInfo?.customers">
+          <p style="padding-left: 1em">{{customer?.customer_name}}</p>
+        </ng-container>
+      </mat-menu>
+  </div>
+  
   <table mat-table [dataSource]="visitsSource" class="mat-elevation-z8 demo-table">
     <ng-container matColumnDef="task_id">
       <th mat-header-cell *matHeaderCellDef>Sl No.</th>

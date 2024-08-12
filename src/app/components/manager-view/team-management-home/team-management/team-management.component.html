@@ -11,7 +11,13 @@
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let element">
               <div *ngIf="element.team_name">
-                {{element.team_name}}
+                <div *ngIf="!element.is_edit">
+                  {{element.team_name}}
+                </div>
+                <mat-form-field *ngIf="element.is_edit">
+                  <mat-label>Enter team name</mat-label>
+                  <input type="text" (click)="$event.stopPropagation()" matInput [(ngModel)]="element.team_name" (blur)="submitEditTeam(element)" [disabled]="!element.is_edit">
+                </mat-form-field>
               </div>
               <mat-form-field *ngIf="!element.team_name" class="float-above">
                 <mat-label>Team name</mat-label>
@@ -25,11 +31,19 @@
             <th mat-header-cell *matHeaderCellDef>Department</th>
             <td mat-cell *matCellDef="let element">
               <div *ngIf="element.team_type">
-                {{element.team_type}}
+                <div *ngIf="!element.is_edit">
+                  {{element.team_type}}
+                </div>
+                <mat-form-field *ngIf="element.is_edit">
+                  <mat-label>Select department</mat-label>
+                  <mat-select  (click)="$event.stopPropagation()" [(value)]="element.type_id" (selectionChange)="submitEditTeam(element)">
+                    <mat-option *ngFor="let department of departmentList" [value]="department.id">{{ department.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
               <mat-form-field *ngIf="!element.team_type" class="float-above">
                 <mat-label>Department</mat-label>
-                <mat-select [(ngModel)]="selectedDepartment">
+                <mat-select (click)="$event.stopPropagation()" [(ngModel)]="selectedDepartment">
                     <mat-option *ngFor="let department of departmentList; let i=index" [value]="department.id">{{department.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -59,7 +73,7 @@
           </ng-container>
           
           <tr mat-header-row *matHeaderRowDef="teamDataSourceColumns"></tr>
-          <tr (click)="redirectToUsers(row)" style="cursor: pointer;" mat-row *matRowDef="let row; columns: teamDataSourceColumns;"></tr>
+          <tr (click)="redirectToUsers(row)" style="cursor: pointer;" class="table-row" mat-row *matRowDef="let row; columns: teamDataSourceColumns;"></tr>
 
         </table>
       </div>

@@ -42,6 +42,8 @@ export class ProfileComponent {
         })
         this.updateForm();
         this.meUtility.setMeData(this.meData);
+        if (this.meData['organizations'].length == 0 && this.meData['teams'].length == 0) alert('Please contact admin')
+
       },
       (error) => {
         console.log('Error in fetching me data');
@@ -81,7 +83,8 @@ export class ProfileComponent {
         this.dialog.open(SuccessMsgComponent, {
           data: { msg: 'Profile Updated' },
         });
-        this.router.navigate(['home/']);
+        if (this.meData['organizations'].length == 0 && this.meData['teams'].length == 0) alert('Please contact admin')
+        else this.router.navigate(['home/']);
       },
       (error) => {
         console.log('error', error);

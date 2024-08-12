@@ -36,6 +36,9 @@ import { SalesAnalyticsComponent } from '../analytics/sales-analytics/sales-anal
 import { MarketingAnalyticsComponent } from '../analytics/marketing-analytics/marketing-analytics.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditBeatComponent } from '../dialog-box/edit-beat/edit-beat.component';
+import { LeaveStatusUpdateComponent } from '../bottom-sheet/leave-status-update/leave-status-update.component';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,8 @@ import { EditBeatComponent } from '../dialog-box/edit-beat/edit-beat.component';
     TeamManagementComponent,
     AddUserToTeamComponent,
     SalesAnalyticsComponent,
-    MarketingAnalyticsComponent
+    MarketingAnalyticsComponent,
+    LeaveStatusUpdateComponent
   ],
   imports: [
     CommonModule,
@@ -82,6 +86,8 @@ import { EditBeatComponent } from '../dialog-box/edit-beat/edit-beat.component';
     MatInputModule,
     FormsModule,
     MatDivider,
+    MatBottomSheetModule,
+    MatMenuModule
   ],
 })
 export class HomeModule {}

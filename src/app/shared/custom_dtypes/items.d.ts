@@ -8,7 +8,8 @@ export type addItem = {
 export type editItem = {
     item_id: number,
     item_name: string,
-    price: number
+    price: number,
+    category_id?: number
 }
 
 export type deleteItem = {
@@ -20,6 +21,8 @@ export type item = {
     item_id: number,
     item_name: string,
     price: number,
+    category_id?: number,
+    category_name?: string,
     is_edit?: boolean,
     quantity?: number,
     line_item_id?: number

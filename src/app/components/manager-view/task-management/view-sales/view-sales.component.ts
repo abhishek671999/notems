@@ -5,6 +5,10 @@ import { HttpParams } from '@angular/common/http';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { sessionWrapper } from '../../../../shared/site-variables';
+import { MatDialog } from '@angular/material/dialog';
+import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
+import { sale } from '../../../../shared/custom_dtypes/sales';
+import { beat } from '../../../../shared/custom_dtypes/beats';
 
 @Component({
   selector: 'app-view-sales',
@@ -17,21 +21,33 @@ export class ViewSalesComponent {
     private route: ActivatedRoute,
     private taskService: TaskManagementService,
     private customerService: CustomersService,
-    private sessionWrapper: sessionWrapper
+    private sessionWrapper: sessionWrapper,
+    private matdialog: MatDialog
   ) { }
 
   private beatId: number = 0
-  public salesSource = []
+  public salesSource: sale[] = []
   public customerList: customer[] = []
   public selectedCustomer: string = ''
   public selectedDate: string = ''
-  public salesSourceColumns = ['customer', 'received_amount', 'discount', 'recorded_by', 'date', 'note']
+  public salesSourceColumns = ['sl_no', 'customer', 'received_amount', 'discount', 'recorded_by', 'date', 'note', 'more']
+  public beatInfo: beat | undefined
+
+  public totalAmount = 0
+  public discount = 0
+  public totalAmountReceived = 0
 
   ngOnInit() {
-    {
-      let httpParams = new HttpParams()
+    this.route.params.subscribe((params: Params) => {
+      this.beatId = params['beat_id']
+      this.fetchSales()
+      this.fetchBeatDetails()
+    })
+  }
+
+  fetchCustomers(){
+    let httpParams = new HttpParams()
       httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
-      // httpParams = httpParams.append('type', 2) //hardcode
       this.customerService.getCustomer(httpParams).subscribe(
         (data: any) => {
           this.customerList = data['customers']
@@ -39,25 +55,38 @@ export class ViewSalesComponent {
         },
         (error: any) => console.log(error)
       )
-    }
-    this.route.params.subscribe((params: Params) => {
-      this.beatId = params['beat_id']
-      let httpParams = new HttpParams()
-    })
   }
 
   fetchSales() {
     let body: any = {
-      customer_id: this.selectedCustomer,
       beat_id: this.beatId,
-      time_frame: 'today',
     }
     this.taskService.getSales(body).subscribe(
       (data: any) => {
         this.salesSource = data['sale_invoices']
+        this.totalAmount = data['total_amount']
+        this.discount = data['total_discount']
+        this.totalAmountReceived = data['total_amount_received']
       },
       (error: any) => console.log(error)
     )
+  }
+
+  fetchBeatDetails(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('beat_id', this.beatId)
+    this.taskService.getDailyBeats(httpParams).subscribe(
+      (data: any) => {
+        this.beatInfo = data['beats'][0]
+      },
+      (error: any) => {
+        alert('Failed to fetch beat info')
+      }
+    )
+  }
+
+  openMoreInfoWindow(row: sale){
+    this.matdialog.open(SalesMoreInfoComponent, { data: row} )
   }
 
 }

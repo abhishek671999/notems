@@ -31,16 +31,18 @@
         <td mat-cell *matCellDef="let element">{{element.reason}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="approve">
-        <th mat-header-cell *matHeaderCellDef>Approve</th>
-        <td mat-cell *matCellDef="let element"><button *ngIf="element.status.toLowerCase() != 'approved' && element.status.toLowerCase() != 'rejected'" (click)="apporveLeave(element)" mat-raised-button>Approve</button><p *ngIf="element.status.toLowerCase() == 'approved'">Approved</p></td>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element">{{element.status}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="reject">
-        <th mat-header-cell *matHeaderCellDef>Reject</th>
-        <td mat-cell *matCellDef="let element"><button *ngIf="element.status.toLowerCase() == 'pending'" (click)="rejectLeave(element)" mat-raised-button>Reject</button><p *ngIf="element.status.toLowerCase() == 'rejected'">Rejected</p></td>
+      <ng-container matColumnDef="update_status">
+        <th mat-header-cell *matHeaderCellDef>Update</th>
+        <td mat-cell *matCellDef="let element">
+          <span (click)="openLeaveStatusBox(element)" class="material-symbols-outlined">quiz</span>
+        </td>
       </ng-container>
-    
+
       <tr mat-header-row *matHeaderRowDef="leaveTableColumn"></tr>
       <tr mat-row *matRowDef="let row; columns: leaveTableColumn;"></tr>
     </table>

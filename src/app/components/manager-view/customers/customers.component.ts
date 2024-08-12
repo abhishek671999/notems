@@ -12,6 +12,7 @@ import { SuccessMsgComponent } from '../../shared/dialog-box/success-msg/success
 import { ErrorMsgComponent } from '../../shared/dialog-box/error-msg/error-msg.component';
 import { EditCustomerProspectComponent } from '../dialog-box/edit-customer-prospect/edit-customer-prospect.component';
 import { ConfirmationBoxComponent } from '../../shared/dialog-box/confirmation-box/confirmation-box.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-customers',
@@ -24,6 +25,15 @@ export class CustomersComponent {
     private sessionWrapper: sessionWrapper,
     private matDialog: MatDialog
   ) {}
+
+
+  length = 50;
+  pageSize = 20;
+  pageIndex = 0;
+  pageSizeOptions = [20, 40, 60];
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
 
   public customerDataSource = [];
   public customerTableColumns = [
@@ -39,13 +49,17 @@ export class CustomersComponent {
   ];
 
   ngOnInit() {
+    this.fetchCustomer()
+  }
+
+  fetchCustomer(){
     let httpParams = new HttpParams();
-    httpParams = httpParams.append(
-      'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
-    );
+    httpParams = httpParams.append('organization_id', String(this.sessionWrapper.getItem('organization_id')));
+    httpParams = httpParams.append('offset',  this.pageIndex * this.pageSize);
+    httpParams = httpParams.append('count', this.pageIndex * this.pageSize + this.pageSize);
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
       this.customerDataSource = data['customers'];
+      this.length = data['total_count']
     });
   }
 
@@ -59,9 +73,14 @@ export class CustomersComponent {
   }
 
   editCustomer(customer: any) {
-    this.matDialog.open(EditCustomerProspectComponent, {
+    let dialogRef = this.matDialog.open(EditCustomerProspectComponent, {
       data: { type: 1, customer: customer },
     });
+    dialogRef.afterClosed().subscribe(
+      (data: any) => {
+        this.ngOnInit()
+      }
+    )
   }
 
   deleteCustomer(customer: any) {
@@ -99,4 +118,11 @@ export class CustomersComponent {
     );
     return contactInfoStirng;
   }
+
+  handlePageEvent(e: PageEvent) {
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.fetchCustomer();
+  } 
 }

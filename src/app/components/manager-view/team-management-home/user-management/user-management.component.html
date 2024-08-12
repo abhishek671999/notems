@@ -1,5 +1,9 @@
 <div class="main-container">
-    <h2 style="text-align: center;">Users</h2>
+    <h2 style="text-align: center; margin: 0;">Users</h2>
+    <div class="subheader">
+      <h3>Team: {{teamInfo?.team_name}}</h3>
+      <h3>Department: {{teamInfo?.team_type}}</h3>
+    </div>
     <div class="team-management">
         <table mat-table [dataSource]="teamMembersDataSource" class="mat-elevation-z8 demo-table">
           <ng-container matColumnDef="sl_no">

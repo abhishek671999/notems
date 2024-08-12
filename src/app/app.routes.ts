@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/homescreen/home/home.component';
 import { PostLoginComponent } from './components/post-login/post-login.component';
 import { TestComponent } from './components/shared/test/test.component';
-import { NotfountComponent } from './components/shared/notfount/notfount.component';
 import { authGuard2 } from './guard/auth/auth.guard';
 import { ProfileComponent } from './components/shared/profile/profile.component';
+import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
     {
@@ -41,7 +40,7 @@ export const routes: Routes = [
         canActivate: [authGuard2],
         component: TestComponent
     },
-    { path: '**', component: NotfountComponent },
+    { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

@@ -24,6 +24,7 @@ export type addCustomer = {
 }
 
 export type customer = {
+    customer_name?: string,
     "customer_id": number,
     "type": string,
     "outlet_name": string,

@@ -2,17 +2,18 @@ import { Component } from '@angular/core';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { addTeam, deleteTeam } from '../../../../shared/custom_dtypes/users';
+import { addTeam, deleteTeam, editTeam } from '../../../../shared/custom_dtypes/users';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
 import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';
+import { team } from '../../../../shared/custom_dtypes/team';
 
 @Component({
   selector: 'app-team-management',
   templateUrl: './team-management.component.html',
-  styleUrl: './team-management.component.css',
+  styleUrls: ['./team-management.component.css', './../../../../app.component.css'],
 })
 export class TeamManagementComponent {
   constructor(
@@ -28,15 +29,19 @@ export class TeamManagementComponent {
   public newTeam = ''
   public selectedDepartment = ''
   public departmentList = [
-    { id: 1, name: 'Sales' },
-    {id: 2, name: 'Marketing'}
+    { id: 2, name: 'Sales' },
+    {id: 1, name: 'Marketing'}
   ]
 
   ngOnInit() {
     let httpParams = new HttpParams();
     this.teammanagementService.getMyTeams(httpParams).subscribe(
       (data: any) => {
+        data['teams'].forEach((team: any) => {
+          team.is_edit = false
+        });
         this.teamDataSource = [...data['teams'], ...[{}]]
+
       },
       (error: any) => alert('Error while get my teams')
     )
@@ -62,7 +67,7 @@ export class TeamManagementComponent {
   
   editTeam(team: any, event: Event) {
     event.stopPropagation()
-    console.log(team)
+    team.is_edit = !team.is_edit
   }
 
   deleteTeam(team: any, event: Event) {
@@ -86,9 +91,32 @@ export class TeamManagementComponent {
         }
       }
     )
-}
+  }
+  
+  submitEditTeam(team: team) {
+    debugger
+    console.log(team)
+    let body: editTeam = {
+      name: team.team_name,
+      type: team.type_id,
+      team_id: team.team_id
+    }
+    this.teammanagementService.editTeam(body).subscribe(
+      (data: any) => { 
+        team.is_edit = !team.is_edit
+        team.team_type = this.getTeamType(team.type_id)
+      },
+      (error: any) => {
+        alert('Failed to edit')
+      }
+    )
+  }
 
   redirectToUsers(team: any) {
     if (Object.keys(team).length > 0) this.router.navigate(['./manager/user-management', team.team_id])
+  }
+
+  getTeamType(id: number){
+    return this.departmentList.filter((department: any) => department.id == id)[0].name
   }
 }

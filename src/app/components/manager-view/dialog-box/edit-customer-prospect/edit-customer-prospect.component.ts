@@ -23,15 +23,15 @@ export class EditCustomerProspectComponent {
     private matDialogRef: MatDialogRef<EditCustomerProspectComponent>
   ) {
 
-    console.log('This is type: ', data.type)
+    console.log('This is type: ', data)
 
     this.editCustomerForm = this.formbuilder.group({
       outlet_name: [data.customer.outlet_name, [Validators.required]],
       contact_persons_details: this.formbuilder.array([], [Validators.required]),
       type: [data.type],
       note: [data.customer.note],
-      gst_no: [data.gst_no],
-      address: [data.address]
+      gst_no: [data.customer.gst_no],
+      address: [data.customer.address]
     })
 
     data.customer.contact_persons_details.forEach((contact: any) => {

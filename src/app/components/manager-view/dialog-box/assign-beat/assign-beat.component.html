@@ -1,5 +1,15 @@
 <h2 mat-dialog-title>Assign beats</h2>
 <div mat-dialog-content>
+    <div>
+        <mat-form-field>
+            <mat-label>Select team</mat-label>
+            <mat-select [(value)]="selectedTeam" (selectionChange)="fetchTeamMembers(); fetchBeats()">
+              @for (food of teams; track food) {
+                <mat-option [value]="food.team_id">{{food.team_name}}</mat-option>
+              }
+            </mat-select>
+        </mat-form-field>
+    </div>
         <div>
             <mat-radio-group
                 aria-labelledby="example-radio-group-label"
@@ -54,10 +64,24 @@
                     <th mat-header-cell *matHeaderCellDef>Description</th>
                     <td mat-cell *matCellDef="let element">{{element.description}}</td>
                 </ng-container>
+
+                <ng-container matColumnDef="assignee">
+                    <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field >
+                            <mat-label>Team members</mat-label>
+                            <mat-select [(value)]="element.assignee_id">
+                              @for (teamMember of teamMembers; track teamMember) {
+                            <mat-option [value]="teamMember.user_id">{{teamMember.user_identity}}</mat-option>
+                          }
+                            </mat-select>
+                          </mat-form-field>
+                    </td>
+                </ng-container>
         
                 <ng-container matColumnDef="assign">
                     <th mat-header-cell *matHeaderCellDef>Assign beat</th>
-                    <td mat-cell *matCellDef="let element"><button (click)="assignBeat(element)" mat-raised-button>Assign</button></td>
+                    <td mat-cell *matCellDef="let element"><button [disabled]="!element.assignee_id" (click)="assignBeat(element)" mat-raised-button>Assign</button></td>
                 </ng-container>
         
                 <tr mat-header-row *matHeaderRowDef="beatsSourceColumns"></tr>

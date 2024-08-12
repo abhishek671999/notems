@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TaskManagementService } from '../../../shared/services/taskmanagement/task-management.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomersService } from '../../../shared/services/customer/customers.service';
@@ -23,7 +23,8 @@ export class AddVisitComponent {
     private customerService: CustomersService,
     private formBuilder: FormBuilder,
     private sessionWrapper: sessionWrapper,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private router: Router
   ) {
     this.newTask = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
@@ -84,12 +85,16 @@ export class AddVisitComponent {
     this.taskService.addTask(body).subscribe(
       (data: any) => {
         this.matdialog.open(SuccessMsgComponent, { data: { msg: 'Task added successfully' } })
-        this.ngOnInit()
+        this.router.navigate(['..'])
       },
       (error: any) => {
         this.matdialog.open(ErrorMsgComponent, {data: {msg: 'Failed to add task'}})
       }
     )
+  }
+
+  click() {
+    this.router.navigate(['..'])
   }
 
 

@@ -7,6 +7,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { customer } from '../../../../shared/custom_dtypes/customers';
+import { teamMember } from '../../../../shared/custom_dtypes/team';
+import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 
 @Component({
   selector: 'app-marketing-analytics',
@@ -16,6 +18,7 @@ import { customer } from '../../../../shared/custom_dtypes/customers';
 export class MarketingAnalyticsComponent {
 
   constructor(
+    private teamMembersService: TeamManagementService,
     private taskService: TaskManagementService,
     private customerService: CustomersService,
     private sessionWrapper: sessionWrapper,
@@ -43,6 +46,7 @@ export class MarketingAnalyticsComponent {
   public selectedCustomer = ''
   public selectedFromDate = ''
   public selectedToDate = ''
+  public selectedRepresentative = ''
   
   length = 50;
   pageSize = 20;
@@ -63,11 +67,26 @@ export class MarketingAnalyticsComponent {
   ]
 
   public customerList: customer[] = []
+  public teamMembers: teamMember[] = [];
 
 
   ngOnInit() {
+    this.fetchTeamMembers()
     this.fetchTasksAnalytics()
     this.fetchCustomer()
+  }
+  
+  
+  fetchTeamMembers(){
+    let httpParams = new HttpParams()
+    this.teamMembersService.getUsers(httpParams).subscribe(
+      (data: any) => {
+        this.teamMembers = data['users']
+      },
+      (error: any) => {
+        alert('Failed to fetch team members')
+      }
+    )
   }
 
   fetchCustomer() {
@@ -92,6 +111,7 @@ export class MarketingAnalyticsComponent {
     }
     if (this.selectedCustomer) body.customer_id = Number(this.selectedCustomer)
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
+      if (this.selectedRepresentative) body.added_by = Number(this.selectedRepresentative)
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
         body['from_date'] = this.selectedFromDate
@@ -107,6 +127,7 @@ export class MarketingAnalyticsComponent {
         (data: any) => {
           this.tasksInvoiceDatasource = data['tasks']
           this.length = data['total_count']
+
         },
         (alert: any) => alert('Failed to fetch tasks')
       )

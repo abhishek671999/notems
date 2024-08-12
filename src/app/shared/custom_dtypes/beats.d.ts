@@ -1,3 +1,5 @@
+import { customer } from "./customers"
+
 export type beat = {
     "beat_id": number,
     "reporter": string,
@@ -6,5 +8,7 @@ export type beat = {
     "team_type": string,
     "title": string,
     "description": string,
-    "note": string
+    "note": string,
+    customers: customer[],
+    assignee_id: number | null
 }

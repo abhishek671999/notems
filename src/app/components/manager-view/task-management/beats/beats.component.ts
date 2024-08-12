@@ -71,7 +71,12 @@ export class BeatsComponent {
   }
 
   addBeat() {
-    this.matDialog.open(AddBeatComponent, { data: {team_id: this.selectedTeam} })
+    let dialogRef = this.matDialog.open(AddBeatComponent, { data: {team_id: this.selectedTeam} })
+    dialogRef.afterClosed().subscribe(
+      (data: any) => {
+        this.ngOnInit()
+      }
+    )
   }
 
   openTasks(beat: any) {

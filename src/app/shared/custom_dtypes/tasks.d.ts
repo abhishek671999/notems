@@ -49,7 +49,7 @@ export type deleteTask = {
 
 export type assignBeat = {
     "beat_id": number,
-    "assignee_id": number,
+    "assignee_id": number | null,
     "date": string,
     "type": number,
     'days'?: number[]

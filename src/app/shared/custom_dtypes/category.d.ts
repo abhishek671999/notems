@@ -17,5 +17,6 @@ export type deleteCategory = {
 export type category = {
     category_id: number,
     category_name: string,
-    items?: item[]
+    items?: item[],
+    is_edit?: boolean
 }

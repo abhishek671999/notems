@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Location</h1>
 <div mat-dialog-content>
     <iframe [src]="locationString | safe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    <p>{{locationString}}</p>
+    <a href="{{googleMapsLocationString}}" target="_blank">Open in maps</a>
 </div>

@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
-import { getTasks } from '../../../../shared/custom_dtypes/tasks';
+import { getSales, getTasks } from '../../../../shared/custom_dtypes/tasks';
 import { FormControl, FormGroup } from '@angular/forms';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
+import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
+import { team, teamMember } from '../../../../shared/custom_dtypes/team';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -16,6 +18,7 @@ import { CustomersService } from '../../../../shared/services/customer/customers
 export class SalesAnalyticsComponent {
   constructor(
     private taskService: TaskManagementService,
+    private teamMembersService: TeamManagementService,
     private sessionWrapper: sessionWrapper,
     private customerService: CustomersService
   ) { }
@@ -37,10 +40,16 @@ export class SalesAnalyticsComponent {
   public selectedCustomer = ''
   public selectedFromDate = ''
   public selectedToDate = ''
+  public selectedRepresentative = ''
 
-  public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount']
+  public totalAmount = 0
+  public discount = 0
+  public totalAmountReceived = 0
   
+  public saleInvoiceDatasource: [] = []
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount', 'recorded_by']
+  public teamMembers: teamMember[] = []
+
   length = 50;
   pageSize = 20;
   pageIndex = 0;
@@ -62,18 +71,33 @@ export class SalesAnalyticsComponent {
 
   
   ngOnInit() {
+    this.fetchCustomer()
     this.fetchSalesAnalytics()
+    this.fetchTeamMembers()
     
   }
 
+  fetchTeamMembers(){
+    let httpParams = new HttpParams()
+    this.teamMembersService.getUsers(httpParams).subscribe(
+      (data: any) => {
+        this.teamMembers = data['users']
+      },
+      (error: any) => {
+        alert('Failed to fetch team members')
+      }
+    )
+  }
+
   fetchSalesAnalytics() {
-    let body: getTasks = {
+    let body: getSales = {
       time_frame: this.selectedTimeFrame,
       offset: this.pageIndex * this.pageSize,
       count: this.pageIndex * this.pageSize + this.pageSize
     }
     if (this.selectedCustomer) body.customer_id = Number(this.selectedCustomer)
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
+    if (this.selectedRepresentative) body.recorded_by = Number(this.selectedRepresentative)
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
         body['from_date'] = this.selectedFromDate
@@ -89,6 +113,9 @@ export class SalesAnalyticsComponent {
         (data: any) => {
           this.saleInvoiceDatasource = data['sale_invoices']
           this.length = data['total_count']
+          this.totalAmount = data['total_amount']
+          this.discount = data['total_discount']
+          this.totalAmountReceived = data['total_amount_received']
         },
         (error: any) => {
           console.log(error)

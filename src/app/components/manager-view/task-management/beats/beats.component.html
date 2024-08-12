@@ -1,6 +1,4 @@
-<div class="main-container">
-      
-
+<div class="main-container">  
   
   <div class="header-section">
     <h2 style="margin: 0;">All Beats</h2>
@@ -60,7 +58,7 @@
 
 
         <tr mat-header-row *matHeaderRowDef="savedBeatsColumns"></tr>
-        <tr mat-row (click)="openTasks(row)" *matRowDef="let row; columns: savedBeatsColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: savedBeatsColumns;"></tr>
       </table>
     </div>
 

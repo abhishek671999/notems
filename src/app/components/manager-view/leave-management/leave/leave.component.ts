@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { AttendenceService } from '../../../../shared/services/attendence/attendence.service';
+import { leaveType } from '../../../../shared/custom_dtypes/attendence';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { LeaveStatusUpdateComponent } from '../../bottom-sheet/leave-status-update/leave-status-update.component';
 
 @Component({
   selector: 'app-leave',
@@ -9,16 +12,11 @@ import { AttendenceService } from '../../../../shared/services/attendence/attend
 export class LeaveComponent {
 
   constructor(
-    private attendenceService: AttendenceService
-
+    private attendenceService: AttendenceService,
+    private matBottomSheet: MatBottomSheet
   ){}
 
-  leaveState = {
-    PENDING: 0,
-    APPROVED: 1,
-    REJECTED: 2,
-    CANCELLED: 3,
-  };
+
 
   leaveTableColumn: string[] = [
     'sl_no',
@@ -27,8 +25,8 @@ export class LeaveComponent {
     'from_date',
     'to_date',
     'reason',
-    'approve',
-    'reject',
+    'status',
+    'update_status',
   ];
   leaveDataSource = [];
 
@@ -45,32 +43,16 @@ export class LeaveComponent {
   }
 
   apporveLeave(leave: any) {
-    let body = {
-      leave_id: leave.leave_id,
-      new_status: this.leaveState.APPROVED,
-    };
-    this.attendenceService.updateLeaveStatus(body).subscribe(
-      (data: any) => {
-        leave.status = 'Approved';
-      },
-      (error: any) => {
-        alert('Failed to Approve');
-      }
-    );
+
   }
 
-  rejectLeave(leave: any) {
-    let body = {
-      leave_id: leave.leave_id,
-      new_status: this.leaveState.REJECTED,
-    };
-    this.attendenceService.updateLeaveStatus(body).subscribe(
+  openLeaveStatusBox(row: any){
+    let bottomSheetBox = this.matBottomSheet.open(LeaveStatusUpdateComponent, {data: row})
+    bottomSheetBox.afterDismissed().subscribe(
       (data: any) => {
-        leave.status = 'Rejected';
-      },
-      (error: any) => {
-        alert('Failed to Reject');
+        this.ngOnInit()
       }
-    );
+    )
   }
+
 }

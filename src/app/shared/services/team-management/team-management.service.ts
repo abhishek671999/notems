@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { host } from '../../site-variables';
-import { addTeam, addUserToTeam, deleteTeam, removeUserFromTeam } from '../../custom_dtypes/users';
+import { addTeam, addUserToTeam, deleteTeam, editTeam, removeUserFromTeam } from '../../custom_dtypes/users';
 
 
 @Injectable({
@@ -12,9 +12,11 @@ export class TeamManagementService {
   private getMyTeamsEndpoint = host + 'teams/get_my_teams/'
   private addUserToTeamEndpoint = host + 'teams/add_user_to_team/'
   private removeUserFromTeamEndpoint = host + 'teams/remove_user_from_team/'
+
   private getUsersEndpoint = host + 'teams/get_users/'
   private addTeamEndpoint = host + 'teams/add_team/'
   private deleteTeamEndpoint = host + 'teams/delete_team/'
+  private editTeamEndpoint = host + 'teams/edit_team/'
 
   constructor(private httpClient: HttpClient) { }
 
@@ -41,6 +43,10 @@ export class TeamManagementService {
 
   deleteTeam(body: deleteTeam) {
     return this.httpClient.delete(this.deleteTeamEndpoint, {body})
+  }
+
+  editTeam(body: editTeam) {
+    return this.httpClient.post(this.editTeamEndpoint, body)
   }
 
 }

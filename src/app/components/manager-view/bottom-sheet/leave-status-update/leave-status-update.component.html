@@ -1,0 +1,14 @@
+<h2>Update leave status</h2>
+<div mat-dialog-content>
+    <mat-form-field >
+        <mat-label>Select team</mat-label>
+        <mat-select [(ngModel)]="selectedLeaveStatusId">
+          @for (leave of leaveStatus; track leave) {
+            <mat-option [value]="leave.id">{{leave.status}}</mat-option>
+          }
+        </mat-select>
+    </mat-form-field>
+</div>
+<mat-dialog-actions>
+    <button (click)="updateLeave()" mat-flat-button>Submit</button>
+</mat-dialog-actions>

@@ -50,6 +50,7 @@ export class AttendenceTrackerComponent {
   public attendenceDate = new Date()
 
   ngOnInit() {
+    debugger
     this.fetchAttendence()
     this.intervalId = setInterval(() => {
       this.currentTime = new Date();

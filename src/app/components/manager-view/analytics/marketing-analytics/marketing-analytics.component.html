@@ -14,6 +14,18 @@
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field class="form-field">
+        <mat-label>Select representative</mat-label>
+        <mat-select
+          [(value)]="selectedRepresentative"
+          (selectionChange)="fetchTasksAnalytics()"
+        >
+          <mat-option *ngFor="let teamMember of teamMembers" [value]="teamMember.user_id">
+            {{ teamMember.user_identity }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <mat-form-field *ngIf="selectedTimeFrame == 'custom'" id="calendarInputField" class="hidden">
         <mat-label>Enter a date range</mat-label>
         <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
@@ -59,7 +71,6 @@
         </mat-select>
       </mat-form-field>
     </div>
-
     <table mat-table [dataSource]="tasksInvoiceDatasource" class="mat-elevation-z8 demo-table">
       <ng-container matColumnDef="sl_no">
         <th mat-header-cell *matHeaderCellDef>Sl No.</th>
