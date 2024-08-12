@@ -1,25 +1,24 @@
 import { Component, Inject } from '@angular/core';
-import { addBeat } from '../../../../shared/custom_dtypes/tasks';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
+import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
+import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
-import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
-import { HttpParams } from '@angular/common/http';
-import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { team } from '../../../../shared/custom_dtypes/team';
 import { customer } from '../../../../shared/custom_dtypes/customers';
-import { CustomersService } from '../../../../shared/services/customer/customers.service';
+import { HttpParams } from '@angular/common/http';
+import { editBeat } from '../../../../shared/custom_dtypes/tasks';
+import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
+import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
 
 @Component({
-  selector: 'app-add-beat',
-  templateUrl: './add-beat.component.html',
-  styleUrl: './add-beat.component.css'
+  selector: 'app-edit-beat',
+  templateUrl: './edit-beat.component.html',
+  styleUrl: './edit-beat.component.css'
 })
-export class AddBeatComponent {
-
+export class EditBeatComponent {
   constructor(
     private tasksService: TaskManagementService,
     private teamService: TeamManagementService,
@@ -28,19 +27,20 @@ export class AddBeatComponent {
     private dateUtils: dateUtils,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
-    private matdialogRef: MatDialogRef<AddBeatComponent>,
+    private matdialogRef: MatDialogRef<EditBeatComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
-    this.newBeat = this.formBuilder.group({
-      "team_id": ['', [Validators.required]],
-      "customer_list": [, [Validators.required]],
-      "title": ['', [Validators.required]],
-      "note": ['', Validators.required],
-      "description": ['', [Validators.required]]
+    console.log(data)
+    this.editBeatForm = this.formBuilder.group({
+      "team_id": [data.team_id, [Validators.required]],
+      "customer_list": [data.customer_list, [Validators.required]],
+      "title": [data.title, [Validators.required]],
+      "note": [data.note, Validators.required],
+      "description": [data.description, [Validators.required]]
     })
   }
-  
-  public newBeat: FormGroup;
+
+  public editBeatForm: FormGroup;
   public teams: team[] = [];
   public customerList: customer[] = []
 
@@ -65,16 +65,19 @@ export class AddBeatComponent {
   }
 
   addBeatCall() {
-    let body: addBeat = {
-      team_id: this.newBeat.value.team_id,
-      customer_list: this.newBeat.value.customer_list,
-      title: this.newBeat.value.title,
-      note: this.newBeat.value.note,
-      description: this.newBeat.value.description
+    let body: editBeat = {
+      team_id: this.editBeatForm.value.team_id,
+      customer_list: this.editBeatForm.value.customer_list,
+      title: this.editBeatForm.value.title,
+      note: this.editBeatForm.value.note,
+      description: this.editBeatForm.value.description,
+      beat_id: this.data.beat_id,
+      assignee_id: 0,
+      date: ''
     }
-    this.tasksService.addBeat(body).subscribe(
+    this.tasksService.editBeat(body).subscribe(
       (data: any) => {
-        this.matDialog.open(SuccessMsgComponent, { data: { msg: 'Beat added successfully' } })
+        this.matDialog.open(SuccessMsgComponent, { data: { msg: 'Beat edited successfully' } })
         this.matdialogRef.close({result: true})
       },
       (error: any) => {

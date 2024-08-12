@@ -1,0 +1,17 @@
+.main-container{
+    width: 100%;
+    height: 78vh;
+}
+
+.beats-table{
+    margin: 1em;
+}
+
+.header-section{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    align-items: center;
+    justify-content: space-evenly;
+}

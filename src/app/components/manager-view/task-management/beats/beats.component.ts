@@ -3,7 +3,7 @@ import { TaskManagementService } from '../../../../shared/services/taskmanagemen
 import { HttpParams } from '@angular/common/http';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { dateUtils } from '../../../../shared/utils/date_utils';
-import { addBeat } from '../../../../shared/custom_dtypes/tasks';
+import { addBeat, deleteBeat } from '../../../../shared/custom_dtypes/tasks';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
@@ -12,6 +12,9 @@ import { AddBeatComponent } from '../../dialog-box/add-beat/add-beat.component';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { DataSource } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
+import { beat } from '../../../../shared/custom_dtypes/beats';
+import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';
+import { EditBeatComponent } from '../../dialog-box/edit-beat/edit-beat.component';
 
 @Component({
   selector: 'app-beats',
@@ -41,12 +44,11 @@ export class BeatsComponent {
   public selectedTeam: any;
   public teams: any;
   public savedBeats: any = [];
-  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'team_name', 'description', 'note', 'create_date']
+  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'team_name', 'description', 'note', 'create_date', 'edit', 'delete']
 
   ngOnInit() {
     {
       let httpParams = new HttpParams()
-      httpParams = httpParams.append('type', 2) // hardcode
       this.teamService.getMyTeams(httpParams).subscribe(
         (data: any) => {
          this.teams = data['teams']
@@ -74,7 +76,7 @@ export class BeatsComponent {
 
   openTasks(beat: any) {
     console.log(beat)
-    if (beat.type) {
+    if (beat.team_name.toLowerCase() == 'marketing team') {
       this.router.navigate(['./manager/task/view-visits', beat.beat_id])
     } else {
       this.router.navigate(['./manager/task/view-tasks', beat.beat_id])
@@ -82,6 +84,39 @@ export class BeatsComponent {
     
   }
 
+
+  deleteBeat(beat: beat, event: Event) {
+    event.stopPropagation()
+    let matdialogRef = this.matDialog.open(ConfirmationBoxComponent, { data: { msg: 'Are you sure want to delete this beat?' } })
+    matdialogRef.afterClosed().subscribe(
+      (data: any) => {
+        if (data?.result) {
+          let body: deleteBeat = {
+            beat_id: beat.beat_id
+          }
+          this.tasksService.deleteBeat(body).subscribe(
+            (data: any) => {
+              this.matDialog.open(SuccessMsgComponent, { data: { msg: 'Beat delete successfully' } })
+              this.ngOnInit()
+            },
+            (error: any) => {
+              this.matDialog.open(ErrorMsgComponent, {data: {msg: 'Beat delete Failed'}})
+            }
+          )
+        }
+      }
+    )
+  }
+
+  editBeat(beat: beat, event: Event) {
+    event.stopPropagation()
+    let dialogRef = this.matDialog.open(EditBeatComponent, { data: beat })
+    dialogRef.afterClosed().subscribe(
+      (data: any) => {
+        this.ngOnInit()
+      }
+    )
+  }
   
 
 }

@@ -35,6 +35,7 @@ export class ViewSalesComponent {
       this.customerService.getCustomer(httpParams).subscribe(
         (data: any) => {
           this.customerList = data['customers']
+          console.log(this.customerList)
         },
         (error: any) => console.log(error)
       )

@@ -1,22 +1,38 @@
-<div>
-    <mat-form-field>
-        <mat-label>Select team</mat-label>
-        <mat-select [(value)]="selectedTeam" (selectionChange)="fetchTeamMembers()">
-          @for (food of teams; track food) {
-            <mat-option [value]="food.team_id">{{food.team_name}}</mat-option>
-          }
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field >
-        <mat-label>Team members</mat-label>
-        <mat-select [(value)]="selectedTeamMember" (selectionChange)="fetchBeats()">
-          @for (teamMember of teamMembers; track teamMember) {
-        <mat-option [value]="teamMember.user_id">{{teamMember.user_identity}}</mat-option>
-      }
-        </mat-select>
-      </mat-form-field>
+<div class="main-container">
+  <div class="header-section">
+    <div class="filter-section">
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+          <input matInput [(ngModel)]="selectedDate" (dateChange)="fetchBeats()" [matDatepicker]="picker">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
-<div class="leave-management">
+    <mat-form-field>
+      <mat-label>Select team</mat-label>
+      <mat-select [(value)]="selectedTeam" (selectionChange)="fetchTeamMembers()">
+        @for (food of teams; track food) {
+          <mat-option [value]="food.team_id">{{food.team_name}}</mat-option>
+        }
+      </mat-select>
+  </mat-form-field>
+  <mat-form-field >
+      <mat-label>Team members</mat-label>
+      <mat-select [(value)]="selectedTeamMember" (selectionChange)="fetchBeats()">
+        @for (teamMember of teamMembers; track teamMember) {
+      <mat-option [value]="teamMember.user_id">{{teamMember.user_identity}}</mat-option>
+    }
+      </mat-select>
+    </mat-form-field>
+    </div>
+    <div>
+      <button (click)="assignBeat()" mat-flat-button>Assign beats</button>
+    </div>
+  </div>
+
+    
+  <div class="tasks-table-section">
     <table mat-table [dataSource]="savedBeats" class="mat-elevation-z8 demo-table">
         <ng-container matColumnDef="sl_no">
           <th mat-header-cell *matHeaderCellDef>Sl No.</th>
@@ -56,7 +72,5 @@
         <tr mat-row (click)="openAssignedBeats(row)" *matRowDef="let row; columns: savedBeatsColumns;"></tr>
       </table>
     </div>
-</div>
-<div>
-    <button (click)="assignBeat()" mat-raised-button [disabled]="!selectedTeamMember">Assign beats</button>
+
 </div>

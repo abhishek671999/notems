@@ -1,11 +1,14 @@
 <div class="main-container">
-  <h2 style="text-align: center;">View sales</h2>
-  <mat-form-field>
-    <mat-label>Select customer</mat-label>
-    <mat-select [(value)]="selectedCustomer" (selectionChange)="fetchSales()">
-        <mat-option *ngFor="let customer of customerList; let i=index" [value]="customer.customer_id">{{customer.mobile}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <h2 style="text-align: center; margin: 0;">View sales</h2>
+  <div class="filter-section">
+    <mat-form-field>
+      <mat-label>Select customer</mat-label>
+      <mat-select [(value)]="selectedCustomer" (selectionChange)="fetchSales()">
+          <mat-option *ngFor="let customer of customerList; let i=index" [value]="customer.customer_id">{{customer.outlet_name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <table mat-table [dataSource]="salesSource" class="mat-elevation-z8 demo-table">
   
     <ng-container matColumnDef="customer">

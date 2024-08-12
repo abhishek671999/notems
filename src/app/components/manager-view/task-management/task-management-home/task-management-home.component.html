@@ -2,7 +2,7 @@
     <input type="checkbox"
     class="toggle-menu">
     <div class="hamburger"></div>
-    <ul class="menu">
+    <ul style="margin: 0;" class="menu">
         <li *ngFor="let page of managementPages">
             <a mat-tab-link 
             [routerLink]="page.href" 

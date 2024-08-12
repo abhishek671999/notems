@@ -1,0 +1,21 @@
+.main-container{
+    width: 100%;
+    height: 78vh;
+}
+
+.filter-section{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1em
+}
+
+.header-section{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.tasks-table-section{
+    margin: 1em;
+}

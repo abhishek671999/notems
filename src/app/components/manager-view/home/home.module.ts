@@ -35,6 +35,7 @@ import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
 import { SalesAnalyticsComponent } from '../analytics/sales-analytics/sales-analytics.component';
 import { MarketingAnalyticsComponent } from '../analytics/marketing-analytics/marketing-analytics.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditBeatComponent } from '../dialog-box/edit-beat/edit-beat.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     AddCustomerComponent,
     EditCustomerProspectComponent,
     AddBeatComponent,
+    EditBeatComponent,
     ViewVisitsComponent,
     ViewSalesComponent,
     CalendarComponent,

@@ -2,6 +2,7 @@ import { item } from "./items"
 
 export type addBeat = {
     "team_id": number,
+    customer_list: number[]
     "title": string,
     "note": string,
     "description": string
@@ -9,6 +10,7 @@ export type addBeat = {
 
 export type editBeat = {   
     "beat_id": number,
+    customer_list: number[],
     "assignee_id": number,
     "date": string,
     "team_id": number,
