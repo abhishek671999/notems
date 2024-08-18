@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
-import { MarketingComponent } from '../marketing/marketing.component';
-import { SalesComponent } from '../sales/sales.component';
 import { CustomersComponent } from '../customers/customers.component';
 import { ItemsComponent } from '../../shared/items/items.component';
 import { TeamManagementComponent } from '../team-management-home/team-management/team-management.component';
@@ -16,8 +14,6 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     children: [
-      { path: 'marketing', component: MarketingComponent },
-      { path: 'sales', component: SalesComponent },
       { path: 'items', component: ItemsComponent },
       { path: 'categories', component: CategoryComponent},
       { path: 'team-management', component: TeamManagementComponent },

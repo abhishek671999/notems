@@ -32,3 +32,15 @@ export type sale = {
     "sale_invoice_id": number,
     "line_items": lineItems[]
 }
+
+export type getSales = {
+    customer_id?: number,
+    type?: number,
+    beat_id?: number,
+    time_frame?: string,
+    from_date?: string ,
+    to_date?: string,
+    recorded_by?: number,
+    offset?: number,
+    count?: number,
+}

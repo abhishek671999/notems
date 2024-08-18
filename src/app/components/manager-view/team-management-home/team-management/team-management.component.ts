@@ -94,7 +94,6 @@ export class TeamManagementComponent {
   }
   
   submitEditTeam(team: team) {
-    debugger
     console.log(team)
     let body: editTeam = {
       name: team.team_name,

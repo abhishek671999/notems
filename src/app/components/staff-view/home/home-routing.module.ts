@@ -3,9 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { AttendenceComponent } from '../attendence/attendence.component';
 import { BeatsComponent } from '../beats/beats.component';
-import { AddVisitComponent } from '../add-visit/add-visit.component';
-import { AddSaleComponent } from '../../shared/dialog-box/add-sale/add-sale.component';
-import { SalesComponent } from '../../manager-view/sales/sales.component';
+import { AddVisitComponent } from '../../shared/dialog-box/add-visit/add-visit.component';
+import { SalesComponent } from '../sales/sales.component';
+import { VisitsComponent } from '../visits/visits.component';
+import { LeaveHistoryComponent } from '../leave-history/leave-history.component';
 
 
 const routes: Routes = [
@@ -14,8 +15,9 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: 'attendence', component: AttendenceComponent },
+      { path: 'leave-history', component: LeaveHistoryComponent},
       { path: 'beats', component: BeatsComponent },
-      { path: 'visit/:beat_id', component: AddVisitComponent },
+      { path: 'visit/:beat_id', component: VisitsComponent },
       { path: 'sale/:beat_id', component: SalesComponent },
       {
         path: 'analytics',

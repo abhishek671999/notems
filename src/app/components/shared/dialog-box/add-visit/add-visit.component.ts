@@ -1,15 +1,16 @@
 import { HttpParams } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TaskManagementService } from '../../../shared/services/taskmanagement/task-management.service';
+import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomersService } from '../../../shared/services/customer/customers.service';
-import { sessionWrapper } from '../../../shared/site-variables';
-import { customer } from '../../../shared/custom_dtypes/customers';
-import { addTask, getTasks } from '../../../shared/custom_dtypes/tasks';
-import { MatDialog } from '@angular/material/dialog';
-import { SuccessMsgComponent } from '../../shared/dialog-box/success-msg/success-msg.component';
-import { ErrorMsgComponent } from '../../shared/dialog-box/error-msg/error-msg.component';
+import { CustomersService } from '../../../../shared/services/customer/customers.service';
+import { sessionWrapper } from '../../../../shared/site-variables';
+import { customer } from '../../../../shared/custom_dtypes/customers';
+import { addTask, getTasks } from '../../../../shared/custom_dtypes/tasks';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SuccessMsgComponent } from '../success-msg/success-msg.component';
+import { ErrorMsgComponent } from '../error-msg/error-msg.component';
+import { beat } from '../../../../shared/custom_dtypes/beats';
 
 @Component({
   selector: 'app-add-visit',
@@ -18,13 +19,13 @@ import { ErrorMsgComponent } from '../../shared/dialog-box/error-msg/error-msg.c
 })
 export class AddVisitComponent {
   constructor(
-    private route: ActivatedRoute,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private taskService: TaskManagementService,
     private customerService: CustomersService,
     private formBuilder: FormBuilder,
     private sessionWrapper: sessionWrapper,
     private matdialog: MatDialog,
-    private router: Router
+    private matdialogRef: MatDialogRef<AddVisitComponent>
   ) {
     this.newTask = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
@@ -33,8 +34,13 @@ export class AddVisitComponent {
       description: ['', [Validators.required]],
       status: ['', [Validators.required]]
     })
+
+    this.beatId = this.data.beatId
    }
-  private beatId = 0
+
+  private beatId: number;
+
+  public beatInfo: beat | undefined;
   public newTask: FormGroup;
   public customerList: customer[] = []
   public location: string = ''
@@ -48,28 +54,19 @@ export class AddVisitComponent {
     'Filter complaint']
 
   ngOnInit() {
+    this.fetchCustomers()
+    this.fetchBeatInfo()
+  }
+
+  fetchCustomers(){
     let httpParams = new HttpParams()
     httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
-    // httpParams = httpParams.append('type', 2) //hardcode
     this.customerService.getCustomer(httpParams).subscribe(
       (data: any) => {
         this.customerList = data['customers']
       },
       (error: any) => console.log(error)
     )
-
-    this.route.params.subscribe((params: Params) => {
-      this.beatId = params['beat_id']
-      let body: getTasks = {
-        beat_id: this.beatId
-      }
-      this.taskService.getTasks(body).subscribe(
-        (data: any) => {
-          console.log('data', data)
-        },
-        (error: any) => console.log(error)
-      )
-    })
   }
 
   addTask() {
@@ -85,7 +82,7 @@ export class AddVisitComponent {
     this.taskService.addTask(body).subscribe(
       (data: any) => {
         this.matdialog.open(SuccessMsgComponent, { data: { msg: 'Task added successfully' } })
-        this.router.navigate(['..'])
+        this.matdialogRef.close({result: true})
       },
       (error: any) => {
         this.matdialog.open(ErrorMsgComponent, {data: {msg: 'Failed to add task'}})
@@ -93,10 +90,18 @@ export class AddVisitComponent {
     )
   }
 
-  click() {
-    this.router.navigate(['..'])
+  fetchBeatInfo(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('beat_id', this.beatId)
+    this.taskService.getDailyBeats(httpParams).subscribe(
+      (data: any) => {
+        this.beatInfo = data['beats'].length > 0? data['beats'][0] : []
+      },
+      (error: any) => {
+        alert('Failed to fetch beat info')
+      }
+    )
   }
-
 
 
   fetchLocation() {
@@ -107,5 +112,6 @@ export class AddVisitComponent {
     } else {
       alert('Failed to fetch location')
      }
-    }
+  }
+
 }

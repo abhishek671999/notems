@@ -32,7 +32,6 @@ export class PostLoginComponent {
       this.myInfo = data;
       sessionStorage.setItem('user_id', data['user_id'])
       if (this.myInfo['first_name']) {
-        debugger
         if (this.myInfo['organizations'].length > 0) {
           sessionStorage.setItem('organization_id', this.myInfo['organizations'][0]['organization_id'])  //hardcode
           sessionStorage.setItem(

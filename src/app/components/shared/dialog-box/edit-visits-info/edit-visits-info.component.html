@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Edit Visit</h2>
+<div mat-dialog-content>
+    <form class="edit-task-form" [formGroup]="editVisitForm">
+        <mat-form-field>
+            <mat-label>Select customer</mat-label>
+            <mat-select formControlName="customer_id" >
+                <mat-option *ngFor="let customer of customerList; let i=index" [value]="customer.customer_id">{{customer.outlet_name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field >
+            <mat-label>Enter a title</mat-label>
+            <input matInput placeholder="Title" formControlName="title">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Select status</mat-label>
+            <mat-select formControlName="status" >
+                <mat-option *ngFor="let status of availableStatus; let i=index" [value]="i">{{status}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field >
+            <mat-label>Enter a description</mat-label>
+            <input matInput placeholder="description" formControlName="description">
+        </mat-form-field>
+        <mat-form-field >
+            <mat-label>Enter a note</mat-label>
+            <input matInput placeholder="Note" formControlName="note">
+        </mat-form-field>
+    
+        <button *ngIf="!locationCoordinates" (click)="fetchLocation()" mat-raised-button>Fetch location</button>
+        <button *ngIf="locationCoordinates" mat-raised-button >Location fetched</button>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button  mat-flat-button [disabled]="!(editVisitForm.valid && locationCoordinates)" (click)="editTask()">Edit task</button>
+</div>
+

@@ -24,13 +24,14 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { AddCategoryComponent } from '../../../components/shared/bottom-sheet/add-category/add-category.component';
 import { AddSaleComponent } from '../../../components/shared/dialog-box/add-sale/add-sale.component';
-import { SalesComponent } from '../../../components/manager-view/sales/sales.component';
 import { ViewMoreSalesInfoComponent } from '../../../components/shared/dialog-box/view-more-sales-info/view-more-sales-info.component';
 import { EditSalesInfoComponent } from '../../../components/shared/dialog-box/edit-sales-info/edit-sales-info.component';
 import { AddItemsToSaleComponent } from '../../../components/shared/dialog-box/add-items-to-sale/add-items-to-sale.component';
 import { CategoryComponent } from '../../../components/shared/category/category.component';
 import { SalesMoreInfoComponent } from '../../../components/shared/dialog-box/sales-more-info/sales-more-info.component';
 import { PageNotFoundComponent } from '../../../components/shared/page-not-found/page-not-found.component';
+import { AddVisitComponent } from '../../../components/shared/dialog-box/add-visit/add-visit.component';
+import { EditVisitsInfoComponent } from '../../../components/shared/dialog-box/edit-visits-info/edit-visits-info.component';
 
 
 @NgModule({
@@ -47,8 +48,9 @@ import { PageNotFoundComponent } from '../../../components/shared/page-not-found
     ViewCalendarComponent,
     AddCategoryComponent,
     AddSaleComponent,
-    SalesComponent,
+    AddVisitComponent,
     EditSalesInfoComponent,
+    EditVisitsInfoComponent,
     ViewMoreSalesInfoComponent,
     AddItemsToSaleComponent,
     SalesMoreInfoComponent,

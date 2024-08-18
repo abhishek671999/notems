@@ -1,9 +1,5 @@
-.new-task-form{
+.edit-task-form{
     display: flex;
     flex-direction: column;
     padding: 1em;
-}
-
-.main-container{
-    height: 75vh;
 }

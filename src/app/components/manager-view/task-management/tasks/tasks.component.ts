@@ -77,7 +77,6 @@ export class TasksComponent {
   }
 
   openAssignedBeats(beat: beat) {
-    debugger
     if (beat.team_type.toLowerCase() == 'marketing'){
       this.router.navigate(['./manager/task/view-visits', beat.beat_id])
     } else if (beat.team_type.toLowerCase() == 'sales') {
@@ -89,7 +88,6 @@ export class TasksComponent {
     let dialogRef = this.matDialog.open(ConfirmationBoxComponent, {data: {msg: 'Are you sure want to unassign this beat??'}})
     dialogRef.afterClosed().subscribe(
       (data: any) => {
-        debugger
         if(data.result){
           if(beat.assignee_id){
             let body: unassignBeat = {

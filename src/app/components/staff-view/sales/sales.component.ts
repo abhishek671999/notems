@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddSaleComponent } from '../../shared/dialog-box/add-sale/add-sale.component';
 import { ViewMoreSalesInfoComponent } from '../../shared/dialog-box/view-more-sales-info/view-more-sales-info.component';
 import { EditSalesInfoComponent } from '../../shared/dialog-box/edit-sales-info/edit-sales-info.component';
+import { HttpParams } from '@angular/common/http';
+import { beat } from '../../../shared/custom_dtypes/beats';
 
 @Component({
   selector: 'app-sales',
@@ -23,24 +25,43 @@ export class SalesComponent {
   public salesInvoiceDataSource: [] = []
   public salesInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount', 'more', 'edit']
 
+  public beatInfo: beat | undefined
+
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.beatId = Number(params['beat_id']);
-      let body = {
-        beat_id: this.beatId,
-      };
-      this.taskService.getSales(body).subscribe(
-        (data: any) => {
-          this.salesInvoiceDataSource = data['sale_invoices']
-        },
-        (error: any) => {
-          console.log(error);
-          alert('Error while fetching tasks');
-        }
-      );
+      this.fetchSales()
+      this.fetchBeatInfo()
     });
   }
 
+  fetchSales(){
+    let body = {
+      beat_id: this.beatId,
+    };
+    this.taskService.getSales(body).subscribe(
+      (data: any) => {
+        this.salesInvoiceDataSource = data['sale_invoices']
+      },
+      (error: any) => {
+        console.log(error);
+        alert('Error while fetching tasks');
+      }
+    );
+  }
+
+  fetchBeatInfo(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('beat_id', this.beatId)
+    this.taskService.getDailyBeats(httpParams).subscribe(
+      (data: any) => {
+        this.beatInfo = data['beats'].length > 0? data['beats'][0] : []
+      },
+      (error: any) => {
+        alert('Failed to fetch beat info')
+      }
+    )
+  }
 
   viewMore(element: any) {
     this.matdialog.open(ViewMoreSalesInfoComponent, { data: element })
@@ -54,7 +75,7 @@ export class SalesComponent {
   }
 
   addSales() {
-    let dialogRef = this.matdialog.open(AddSaleComponent, {data: {beatId: this.beatId}})
+    let dialogRef = this.matdialog.open(AddSaleComponent, {data: {beatId: this.beatId, customerList: this.beatInfo?.customers}})
     dialogRef.afterClosed().subscribe(
       (data: any) => this.ngOnInit()
     )

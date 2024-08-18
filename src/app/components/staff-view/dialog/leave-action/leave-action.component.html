@@ -1,11 +1,11 @@
 <h2 mat-dialog-title>Leave</h2>
-<div mat-dialog-actions>
-    <p><b>From date: </b> {{data.leave.from_date}}</p>
-    <p><b>To date: </b> {{data.leave.to_date}}</p>
-    <p><b>Status: </b> {{data.leave.status}}</p>
-    <p *ngIf="data.leave.approved_by"><b>From date: </b> {{data.leave.approved_by}}</p>
-    <p><b>Reason: </b> {{data.leave.reason}}</p>
-    <p><b>Type: </b> {{data.leave.type}}</p>
+<div mat-dialog-content>
+    <h3>From date: {{data.leave.from_date}}</h3>
+    <h3>To date: {{data.leave.to_date}}</h3>
+    <h3>Status: {{data.leave.status}}</h3>
+    <h3 *ngIf="data.leave.approved_by">From date: {{data.leave.approved_by}}</h3> 
+    <h3>Reason: {{data.leave.reason}}</h3>
+    <h3>Type: {{data.leave.type}}</h3>
 </div>
 <mat-dialog-actions>
     <button [mat-dialog-close] mat-raised-button>Close</button>

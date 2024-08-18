@@ -43,11 +43,11 @@ export class AttendenceComponent {
   public currentTime: Date;
   public attendence: any;
   public showCalendar: boolean = false;
-  public myAppliedLeavesDataSource: appliedLeaves[] = []
-  public myAppliedLeavesTableColumns = ["sl_no", "from_date", "to_date", "status", "type"]
+  
 
   private LeaveType: leaveType[] | null;
-  private intervalId: any;
+  private intervalId: any
+  private LeaveCount: {} = {}
 
 
 
@@ -62,10 +62,10 @@ export class AttendenceComponent {
       String(this.sessionWrapper.getItem('organization_id'))
     );
 
+
     this.attendenceService.getMyLeaves().subscribe((data: any) => {
       this.attendence = data['attendance'];
-      this.myAppliedLeavesDataSource = data['leaves']
-      console.log('Attendence: ', this.attendence);
+      this.LeaveCount = data['leave_count']
       this.isClockedIn = Boolean(this.attendence.punch_in);
     });
 
@@ -131,8 +131,8 @@ export class AttendenceComponent {
   }
 
   applyLeave() {
-    this.matDialog.open(ApplyLeaveComponent, {
-      data: { leaveTypes: this.LeaveType },
+    let dialogRef = this.matDialog.open(ApplyLeaveComponent, {
+      data: { leaveTypes: this.LeaveType, leaveCount: this.LeaveCount },
     });
   }
 
@@ -144,10 +144,6 @@ export class AttendenceComponent {
     this.router.navigate(['./staff/beats'])
   }
 
-  displayMoreInfo(leave: any) {
-    console.log(leave)
-    this.matDialog.open(LeaveActionComponent, { data: {leave: leave} })
-  }
 
   openCalendar() {
     this.bottomSheet.open(ViewCalendarComponent)

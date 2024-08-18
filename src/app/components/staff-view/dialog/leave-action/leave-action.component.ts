@@ -34,7 +34,7 @@ export class LeaveActionComponent {
 
   cancelLeave() {
     if (this.data.leave.status.toLowerCase() == 'approved') {
-      this.matsnackbar.open(`Can't changed approved request`)
+      this.matsnackbar.open(`Can't cancel approved request`)
     } else {
       let dialogRef = this.matDialog.open(ConfirmationBoxComponent, { data: { msg: 'Are you sure want to cancel this leave??' } })
       dialogRef.afterClosed().subscribe(
@@ -47,7 +47,7 @@ export class LeaveActionComponent {
             this.attendenceService.updateLeaveStatus(body).subscribe(
               (data: any) => {
                 this.matDialog.open(SuccessMsgComponent, { data: { msg: 'Leave cancelled succesfully' } })
-                this.matDialogRef.close()
+                this.matDialogRef.close({result: true})
               },
               (error: any) => this.matDialog.open(ErrorMsgComponent, {data: {msg: 'Failed to cancel leave'}})
             )

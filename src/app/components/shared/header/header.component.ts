@@ -58,6 +58,10 @@ export class HeaderComponent {
           name: 'Analytics',
           action: () => this.router.navigate(['./staff/analytics/sales'])
       },
+      'staff_leave_history': {
+        name: 'Leave history',
+        action: () => this.router.navigate(['./staff/leave-history'])
+      },
       'logout': {
         name: 'Logout',
         action: () => this._loginService.logOut(),
@@ -86,7 +90,7 @@ export class HeaderComponent {
     }
 
     addTeamManagerNavOptions(team: team){
-      let teamManagerNavOptions = ['profile', 'staff_task_management', 'staff_analytics','staff_attendence']
+      let teamManagerNavOptions = ['profile', 'staff_task_management', 'staff_analytics', 'staff_attendence', 'staff_leave_history']
       for(let option of teamManagerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -96,7 +100,7 @@ export class HeaderComponent {
   
 
   addStaffNavOptions(team: any){
-    let staffNavOptions = ['profile' ,'staff_task_management','staff_analytics', 'staff_attendence']
+    let staffNavOptions = ['profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'staff_leave_history']
     for(let option of staffNavOptions){
       if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
         this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -126,7 +130,6 @@ export class HeaderComponent {
           }
         }
       }else if(data['teams'].length > 0){
-        debugger
         for(let team of data['teams']){
           if(team.role.toLowerCase() == 'manager'){
             this.addTeamManagerNavOptions(team)

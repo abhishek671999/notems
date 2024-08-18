@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
-import { getSales, getTasks } from '../../../../shared/custom_dtypes/tasks';
 import { FormControl, FormGroup } from '@angular/forms';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
-import { team, teamMember } from '../../../../shared/custom_dtypes/team';
+import { teamMember } from '../../../../shared/custom_dtypes/team';
+import { getSales } from '../../../../shared/custom_dtypes/sales';
 
 @Component({
   selector: 'app-sales-analytics',

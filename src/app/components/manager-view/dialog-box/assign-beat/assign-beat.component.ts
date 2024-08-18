@@ -100,7 +100,6 @@ export class AssignBeatComponent {
   }
 
   assignBeat(beat: beat) {
-    debugger
     let body: assignBeat = {
       beat_id: beat.beat_id,
       assignee_id: beat.assignee_id,

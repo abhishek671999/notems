@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { HomeRoutingModule } from './home-routing.module';
 import { AttendenceComponent } from '../attendence/attendence.component';
 import { SharedModulesModule } from '../../../shared/services/shared-modules/shared-modules.module';
@@ -12,24 +11,21 @@ import { LeaveActionComponent } from '../dialog/leave-action/leave-action.compon
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { BeatsComponent } from '../beats/beats.component';
-import { AddSaleComponent } from '../../shared/dialog-box/add-sale/add-sale.component';
-import { AddVisitComponent } from '../add-visit/add-visit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
-import {
-  MatBottomSheet,
-  MatBottomSheetModule,
-  MatBottomSheetRef,
-} from '@angular/material/bottom-sheet';
-import { AnalyticsHomeComponent } from '../analytics/analytics-home/analytics-home.component';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { SalesAnalyticsComponent } from '../analytics/sales-analytics/sales-analytics.component';
 import { MarketingAnalyticsComponent } from '../analytics/marketing-analytics/marketing-analytics.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { RouterModule } from '@angular/router';
+import { SalesComponent } from '../sales/sales.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { VisitsComponent } from '../visits/visits.component';
+import { LeaveHistoryComponent } from '../leave-history/leave-history.component';
 
 @NgModule({
   declarations: [
@@ -37,14 +33,15 @@ import { RouterModule } from '@angular/router';
     AttendenceComponent,
     LeaveActionComponent,
     BeatsComponent,
-    AddVisitComponent,
+    SalesComponent,
+    VisitsComponent,
     SalesAnalyticsComponent,
-    MarketingAnalyticsComponent
+    MarketingAnalyticsComponent,
+    LeaveHistoryComponent
   ],
   imports: [
     CommonModule,
     HomeRoutingModule,
-    SharedModulesModule,
     MatButtonModule,
     MatTableModule,
     MatDialogModule,
@@ -52,6 +49,7 @@ import { RouterModule } from '@angular/router';
     FullCalendarModule,
     ReactiveFormsModule,
     FormsModule,
+    MatTableModule,
     MatFormFieldModule,
     MatSelectModule,
     MatDialogModule,
@@ -60,7 +58,9 @@ import { RouterModule } from '@angular/router';
     MatBottomSheetModule,
     MatPaginatorModule,
     MatDatepickerModule,
-    RouterModule
+    MatMenuModule,
+    RouterModule,
+    SharedModulesModule
   ]
 })
 export class HomeModule { }

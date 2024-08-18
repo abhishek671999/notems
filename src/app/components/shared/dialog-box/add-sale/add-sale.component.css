@@ -1,7 +1,3 @@
-.main-container{
-  height: 80vh;
-  overflow: auto;
-}
 .new-task-form{
     display: flex;
     flex-direction: column;

@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ItemsService } from '../../../../shared/services/items/items.service';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { item } from '../../../../shared/custom_dtypes/items';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 import { of, switchMap } from 'rxjs';
@@ -29,6 +29,7 @@ export class AddSaleComponent {
     private sessionWrapper: sessionWrapper,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
+    private matDialogRef: MatDialogRef<AddSaleComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
 
   ) {
@@ -38,8 +39,10 @@ export class AddSaleComponent {
       received_amount: ['', [Validators.required]],
       note: ['', [Validators.required]],
     });
+    console.log(data)
+    this.customerList = data.customerList
   }
-  public customerList: customer[] = [];
+  public customerList: customer[];
   public beatId: number = 0;
   public location: string = '';
   public itemsAdded: item[] = []
@@ -58,18 +61,6 @@ export class AddSaleComponent {
 
 
   ngOnInit() {
-    let httpParams = new HttpParams();
-    httpParams = httpParams.append(
-      'organization_id',
-      Number(this.sessionWrapper.getItem('organization_id'))
-    );
-    // httpParams = httpParams.append('type', 2) //hardcode
-    this.customerService.getCustomer(httpParams).subscribe(
-      (data: any) => {
-        this.customerList = data['customers'];
-      },
-      (error: any) => console.log(error)
-    );
   }
 
   addSales() {
@@ -104,6 +95,7 @@ export class AddSaleComponent {
           this.matDialog.open(SuccessMsgComponent, {
             data: { msg: 'Sale added successfully' },
           });
+          this.matDialogRef.close({result: true})
         },
         (error: any) => {
           this.matDialog.open(ErrorMsgComponent, {

@@ -1,5 +1,5 @@
-<h3 style="text-align: center;">Add visit</h3>
-<div class="main-container">
+<h2 mat-dialog-title>Add Visit</h2>
+<div mat-dialog-content>
     <form class="new-task-form" [formGroup]="newTask">
         <mat-form-field>
             <mat-label>Select customer</mat-label>
@@ -25,13 +25,13 @@
             <mat-label>Enter a note</mat-label>
             <input matInput placeholder="Note" formControlName="note">
         </mat-form-field>
-
+    
         <button *ngIf="!location" (click)="fetchLocation()" mat-raised-button>Fetch location</button>
         <button *ngIf="location" mat-raised-button >Location fetched</button>
     </form>
-    <br>
+</div>
+<mat-dialog-actions>
     <div style="text-align: center;">
         <button  mat-flat-button [disabled]="!(newTask.valid && location)" (click)="addTask()">Add task</button>
     </div>
-    <mat-divider></mat-divider>
-</div>
+</mat-dialog-actions>

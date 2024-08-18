@@ -95,14 +95,19 @@ export type getTasks = {
     count?: number,
 }
 
-export type getSales = {
-    customer_id?: number,
-    type?: number,
-    beat_id?: number,
-    time_frame?: string,
-    from_date?: string ,
-    to_date?: string,
-    recorded_by?: number,
-    offset?: number,
-    count?: number,
+
+
+export type task = {
+    "type_id": number,
+    "type_name": string,
+    "task_id": number,
+    "beat_id": number,
+    "customer": string,
+    "added_by": string,
+    "status": string,
+    "created_at": string,
+    "title": string,
+    "description": string,
+    "image_details": [],
+    "note": string
 }

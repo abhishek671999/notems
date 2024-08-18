@@ -1,5 +1,11 @@
 <h2 mat-dialog-title>Apply leave</h2>
 <mat-dialog-content>
+    <div class="available-leave-section">
+      <h3 style="margin: 0;">Available leaves</h3>
+      <ng-container *ngFor="let item of data.leaveCount | keyvalue">
+        <h4 style="margin: 0;">{{item.key}} : {{item.value}}</h4>
+      </ng-container>
+    </div>
     <form [formGroup]="leaveForm">
         <mat-form-field>
             <mat-label>Enter a date range</mat-label>

@@ -29,6 +29,7 @@ import { MatInputModule } from '@angular/material/input';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-apply-leave',
@@ -43,7 +44,8 @@ import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-ms
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    CommonModule
   ],
   providers: [
     provideNativeDateAdapter(),
