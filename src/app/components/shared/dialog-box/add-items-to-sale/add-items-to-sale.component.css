@@ -1,0 +1,9 @@
+.quantity-section{
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.icons{
+    cursor: pointer;
+}

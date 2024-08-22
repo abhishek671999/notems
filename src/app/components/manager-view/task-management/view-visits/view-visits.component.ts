@@ -4,6 +4,8 @@ import { TaskManagementService } from '../../../../shared/services/taskmanagemen
 import { HttpParams } from '@angular/common/http';
 import { getTasks } from '../../../../shared/custom_dtypes/tasks';
 import { beat } from '../../../../shared/custom_dtypes/beats';
+import { MatDialog } from '@angular/material/dialog';
+import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 
 @Component({
   selector: 'app-view-visits',
@@ -14,7 +16,8 @@ export class ViewVisitsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private taskService: TaskManagementService
+    private taskService: TaskManagementService,
+    private matDialog: MatDialog
   ) { }
 
   private beatId: number = 0
@@ -54,5 +57,12 @@ export class ViewVisitsComponent {
         alert('Failed to fetch beat info')
       }
     )
+  }
+
+  openLocationScreen(attendence: any) {
+    let location = attendence.split(',');
+    this.matDialog.open(MapViewComponent, {
+      data: { longitude: location[1], latitude: location[0] },
+    });
   }
 }

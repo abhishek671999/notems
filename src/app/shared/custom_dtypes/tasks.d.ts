@@ -40,7 +40,6 @@ export type editTask = {
     "title": string,
     "note": string,
     "description": string,
-    "location": string
 }
 
 export type deleteTask = {
@@ -50,7 +49,7 @@ export type deleteTask = {
 export type assignBeat = {
     "beat_id": number,
     "assignee_id": number | null,
-    "date": string,
+    "date"?: string,
     "type": number,
     'days'?: number[]
 }

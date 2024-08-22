@@ -8,10 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { beat } from '../../../shared/custom_dtypes/beats';
 import { customer } from '../../../shared/custom_dtypes/customers';
 import { HttpParams } from '@angular/common/http';
-import { addTask, getTasks, task } from '../../../shared/custom_dtypes/tasks';
-import { SuccessMsgComponent } from '../../shared/dialog-box/success-msg/success-msg.component';
-import { ErrorMsgComponent } from '../../shared/dialog-box/error-msg/error-msg.component';
-import { sale } from '../../../shared/custom_dtypes/sales';
+import { getTasks, task } from '../../../shared/custom_dtypes/tasks';
 import { EditVisitsInfoComponent } from '../../shared/dialog-box/edit-visits-info/edit-visits-info.component';
 import { AddVisitComponent } from '../../shared/dialog-box/add-visit/add-visit.component';
 

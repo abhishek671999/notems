@@ -30,21 +30,28 @@ export class PostLoginComponent {
   ngOnInit() {
     this.meAPIUtility.getMeData().subscribe((data: any) => {
       this.myInfo = data;
+      debugger
       sessionStorage.setItem('user_id', data['user_id'])
       if (this.myInfo['first_name']) {
         if (this.myInfo['organizations'].length > 0) {
           sessionStorage.setItem('organization_id', this.myInfo['organizations'][0]['organization_id'])  //hardcode
-          sessionStorage.setItem(
-            'organization_name',
-            this.myInfo['organizations'][0]['organization_name']
+          sessionStorage.setItem('organization_name', this.myInfo['organizations'][0]['organization_name']
           );
-          if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'manager') this.router.navigate(['manager/attendence/attendence']);
+          if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'manager') {
+            sessionStorage.setItem('is_org_manager', 'true')
+            this.router.navigate(['manager/attendence/attendence']);
+          }
           else alert('Unknow error in redirection')
         } else if (this.myInfo['teams'].length > 0) {
           if (String(this.myInfo['teams'][0]['role']).toLowerCase() == 'team member') {
             sessionStorage.setItem('organization_id', this.myInfo['teams'][0]['organization_id'])  //hardcode
+            sessionStorage.setItem('is_team_member', 'true')
             this.router.navigate(['staff/attendence'])
-          } 
+          } else if(String(this.myInfo['teams'][0]['role']).toLowerCase() == 'manager'){
+            sessionStorage.setItem('is_team_manager', 'true')
+            sessionStorage.setItem('team_type', this.myInfo['teams'][0]['team_type'].toLowerCase())
+            this.router.navigate(['manager/task/tasks'])            
+          }
           else alert('Unknow error in redirection')
         }
         else {

@@ -1,3 +1,9 @@
 .main-container{
     height: 85vh;
 }
+
+.nav-button-section{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}

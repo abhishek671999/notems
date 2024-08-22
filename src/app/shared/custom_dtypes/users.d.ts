@@ -1,6 +1,6 @@
 export type addUserToTeam = {
     team_id: number,
-    role: number
+    role_id: number
     user_id: number
 }
 

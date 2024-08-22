@@ -28,12 +28,12 @@
             <th mat-header-cell *matHeaderCellDef>Quantity</th>
             <td mat-cell *matCellDef="let element">
                 <div class="quantity-section">
-                    <span (click)="subtractItem(element)" class="material-symbols-outlined">
+                    <span (click)="subtractItem(element)" class="material-symbols-outlined icons">
                         do_not_disturb_on
                         </span>
                     <b>{{element.quantity}}</b>
 
-                    <span (click)="addItem(element)" class="material-symbols-outlined">
+                    <span (click)="addItem(element)" class="material-symbols-outlined icons">
                         add_circle
                         </span>
                 </div>

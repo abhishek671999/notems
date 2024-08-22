@@ -3,6 +3,8 @@ import { AttendenceService } from '../../../../shared/services/attendence/attend
 import { leaveType } from '../../../../shared/custom_dtypes/attendence';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { LeaveStatusUpdateComponent } from '../../bottom-sheet/leave-status-update/leave-status-update.component';
+import { HttpParams } from '@angular/common/http';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-leave',
@@ -15,7 +17,13 @@ export class LeaveComponent {
     private attendenceService: AttendenceService,
     private matBottomSheet: MatBottomSheet
   ){}
-
+  length = 50;
+  pageSize = 20;
+  pageIndex = 0;
+  pageSizeOptions = [5, 20, 50];
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
 
 
   leaveTableColumn: string[] = [
@@ -31,19 +39,21 @@ export class LeaveComponent {
   leaveDataSource = [];
 
   ngOnInit() {
-        // get leaves
-      this.attendenceService.getLeaves().subscribe(
-        (data: any) => {
-          this.leaveDataSource = data['leaves'];
-        },
-        (error) => {
-          this.leaveDataSource = [];
-        }
-      );
+    this.fetchLeaves()
   }
 
-  apporveLeave(leave: any) {
-
+  fetchLeaves(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('offset', this.pageIndex * this.pageSize)
+    httpParams = httpParams.append('count', this.pageIndex * this.pageSize + this.pageSize)
+    this.attendenceService.getLeaves(httpParams).subscribe(
+      (data: any) => {
+        this.leaveDataSource = data['leaves'];
+      },
+      (error) => {
+        this.leaveDataSource = [];
+      }
+    );
   }
 
   openLeaveStatusBox(row: any){
@@ -54,5 +64,12 @@ export class LeaveComponent {
       }
     )
   }
+
+  handlePageEvent(e: PageEvent) {
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.fetchLeaves();
+  } 
 
 }

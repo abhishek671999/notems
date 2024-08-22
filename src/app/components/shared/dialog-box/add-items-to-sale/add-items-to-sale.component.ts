@@ -40,7 +40,6 @@ export class AddItemsToSaleComponent {
     this.itemsService.getItems(httpParams).subscribe(
       (data: any) => {
         this.allitemsList = data['items']
-        debugger
           data['items'].forEach((item: any) => {
             this.categoryList.push({ category_id: item.category_id, category_name: item.category_name })
             this.selectedCategory = this.categoryList[0].category_id

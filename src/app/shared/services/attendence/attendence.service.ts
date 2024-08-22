@@ -24,8 +24,8 @@ export class AttendenceService {
     return this.httpClient.get(this.getMyLeavesEndpoint)
   }
 
-  getLeaves() {
-    return this.httpClient.get(this.getLeavesEndpoint)
+  getLeaves(httpParams: HttpParams) {
+    return this.httpClient.get(this.getLeavesEndpoint, {params: httpParams})
   }
 
   getLeaveTypes(httpParams: HttpParams) {

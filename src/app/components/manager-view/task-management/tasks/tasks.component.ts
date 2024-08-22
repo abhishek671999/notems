@@ -73,10 +73,18 @@ export class TasksComponent {
   }
 
   assignBeat() {
-    this.matDialog.open(AssignBeatComponent)
+    let dialogRef = this.matDialog.open(AssignBeatComponent , { width: '85vw', maxWidth: '85vw'})
+    dialogRef.afterClosed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.ngOnInit()
+        }
+      }
+    )
   }
 
   openAssignedBeats(beat: beat) {
+    debugger
     if (beat.team_type.toLowerCase() == 'marketing'){
       this.router.navigate(['./manager/task/view-visits', beat.beat_id])
     } else if (beat.team_type.toLowerCase() == 'sales') {

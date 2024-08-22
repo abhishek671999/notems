@@ -90,7 +90,7 @@ export class HeaderComponent {
     }
 
     addTeamManagerNavOptions(team: team){
-      let teamManagerNavOptions = ['profile', 'staff_task_management', 'staff_analytics', 'staff_attendence', 'staff_leave_history']
+      let teamManagerNavOptions = ['profile', 'task_management', 'staff_analytics', 'staff_attendence', 'staff_leave_history']
       for(let option of teamManagerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])

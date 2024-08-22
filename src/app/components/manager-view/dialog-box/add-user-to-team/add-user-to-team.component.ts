@@ -48,7 +48,7 @@ export class AddUserToTeamComponent {
   addUserToTeam() {
     let body: addUserToTeam = {
       user_id: this.addUserToTeamForm.value.user_id,
-      role: this.addUserToTeamForm.value.role_id,
+      role_id: this.addUserToTeamForm.value.role_id,
       team_id: Number(this.data.teamId)
     }
     this.teamManagementService.addUserToTeam(body).subscribe(

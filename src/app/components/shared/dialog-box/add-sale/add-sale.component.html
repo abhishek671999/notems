@@ -1,5 +1,5 @@
-<h3 style="text-align: center;">Add sale</h3>
-<div class="main-container">
+<h3 mat-dialog-title style="text-align: center;">Add sale</h3>
+<div mat-dialog-content class="main-container">
     <form class="new-task-form" [formGroup]="addSalesForm">
         <mat-form-field>
             <mat-label>Select customer</mat-label>
@@ -9,11 +9,13 @@
         </mat-form-field>
         <mat-form-field >
             <mat-label>Enter discount</mat-label>
-            <input matInput placeholder="Discount" formControlName="discount">
+            <input type="number" matInput placeholder="Discount" formControlName="discount">
+                <mat-error *ngIf="addSalesForm.controls['discount'].hasError('required')">Required</mat-error>
         </mat-form-field>
         <mat-form-field >
             <mat-label>Enter received amount</mat-label>
-            <input matInput placeholder="Received amount" formControlName="received_amount">
+            <input type="number" matInput placeholder="Received amount" formControlName="received_amount">
+            <mat-error *ngIf="addSalesForm.controls['received_amount'].hasError('required')">Required</mat-error>
         </mat-form-field>
         <mat-form-field >
             <mat-label>Enter a note</mat-label>
@@ -52,6 +54,9 @@
         </div>
         <div style="text-align: center;">
           <button (click)="addItems()"  mat-raised-button>Add items</button>
+        </div>
+        <div>
+          <h3>Total amount: {{addSalesForm.value.amount}}</h3>
         </div>
         <div>
             <form class="upload-form">  
@@ -96,8 +101,12 @@
           </div>     
     </form>
     <br>
-    <div style="text-align: center;">
-        <button  mat-flat-button [disabled]="!(addSalesForm.valid && itemsAdded.length > 0 && file)" (click)="addSales()">Add Sale</button>
-    </div>
-
 </div>
+<mat-dialog-actions style="text-align: center;">
+  <button mat-raised-button [mat-dialog-close]>Close</button>
+  <div>
+    <button [disabled]='!(addSalesForm.valid && itemsAdded.length > 0 && file)' (click)="addSales()" mat-flat-button>Add Sale</button>
+    <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectDiscount')">Discount should be less than amount</mat-error>
+    <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectReceivedAmount')">Received amount should be less than amount</mat-error>
+  </div>
+</mat-dialog-actions>

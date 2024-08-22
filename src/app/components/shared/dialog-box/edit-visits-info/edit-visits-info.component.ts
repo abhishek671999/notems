@@ -1,12 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { editTask } from '../../../../shared/custom_dtypes/tasks';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
+import { SuccessMsgComponent } from '../success-msg/success-msg.component';
+import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 
 @Component({
   selector: 'app-edit-visits-info',
@@ -22,6 +24,7 @@ export class EditVisitsInfoComponent {
     private formBuilder: FormBuilder,
     private matdialogRef: MatDialogRef<EditVisitsInfoComponent>,
     private sessionWrapper: sessionWrapper,
+    private matdialog: MatDialog
 
   ){
     console.log(data)
@@ -82,14 +85,14 @@ export class EditVisitsInfoComponent {
       title: this.editVisitForm.value.title,
       note: this.editVisitForm.value.note,
       description: this.editVisitForm.value.description,
-      location: this.locationCoordinates
     }
     this.taskService.editTask(body).subscribe(
       (data: any) => {
+        this.matdialog.open(SuccessMsgComponent, {data: {msg: 'Updated successfully'}})
         this.matdialogRef.close({result: true})
       },
       (error: any) => {
-        alert('Failed to edit task')
+        this.matdialog.open(ErrorMsgComponent, {data: {msg: 'Failed to update'}})
       }
     )
   }

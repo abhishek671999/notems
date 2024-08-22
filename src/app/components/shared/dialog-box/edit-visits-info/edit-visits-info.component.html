@@ -26,11 +26,9 @@
             <input matInput placeholder="Note" formControlName="note">
         </mat-form-field>
     
-        <button *ngIf="!locationCoordinates" (click)="fetchLocation()" mat-raised-button>Fetch location</button>
-        <button *ngIf="locationCoordinates" mat-raised-button >Location fetched</button>
     </form>
 </div>
 <div mat-dialog-actions>
-    <button  mat-flat-button [disabled]="!(editVisitForm.valid && locationCoordinates)" (click)="editTask()">Edit task</button>
+    <button  mat-flat-button [disabled]="editVisitForm.invalid" (click)="editTask()">Edit task</button>
 </div>
 

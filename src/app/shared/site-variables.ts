@@ -125,6 +125,14 @@ export class sessionWrapper {
     }
   }
 
+  isTeamManager(){
+    return this.getItem('is_team_manager') == 'true' ? true: false
+  }
+
+  isOrgManager(){
+    return this.getItem('is_org_manager') == 'true' ? true: false
+  }
+
 
   isCounterManagementEnabled() {
     return this.getItem('counter_management') == 'true' ? true: false

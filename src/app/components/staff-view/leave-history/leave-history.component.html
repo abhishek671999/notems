@@ -1,4 +1,8 @@
 <div class="main-container">
+    <div class="nav-button-section">
+        <button (click)="applyLeave()" mat-raised-button>Appy Leave</button>
+        <button (click)="openCalendar()" mat-raised-button>Calendar</button>
+    </div>
     <h2 style="text-align: center; margin-bottom: 0;">Leave history</h2>
     <div class="my-leaves-section">
         <table mat-table [dataSource]="myAppliedLeavesDataSource" class="mat-elevation-z8 demo-table">
