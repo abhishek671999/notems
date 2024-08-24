@@ -9,14 +9,17 @@
               }
             </mat-select>
         </mat-form-field>
+
         <mat-form-field >
             <mat-label>Select Customer</mat-label>
-            <mat-select formControlName="customer_list" multiple>
-              @for (customer of customerList; track customer) {
+            <mat-select formControlName="customer_list" multiple (openedChange)="onOpenedChange($event)">
+              <input matInput (input)="onKey($event)" placeholder="Type to search...">
+              @for (customer of visibleCustomerList; track customer) {
                 <mat-option [value]="customer.customer_id">{{customer.outlet_name}}</mat-option>
               }
             </mat-select>
         </mat-form-field>
+
         <mat-form-field>
             <mat-label>Enter Beat title</mat-label>
             <input matInput formControlName="title">

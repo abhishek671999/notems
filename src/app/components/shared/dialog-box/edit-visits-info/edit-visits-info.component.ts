@@ -35,6 +35,7 @@ export class EditVisitsInfoComponent {
       description: [data.visit.description, [Validators.required]],
       status: [data.visit.status_id, [Validators.required]]
     })
+    this.customerList = this.data.customerList
   }
 
   public editVisitForm: FormGroup;
@@ -51,9 +52,6 @@ export class EditVisitsInfoComponent {
     'Filter complaint'
   ]
 
-  ngOnInit(){
-    this.fetchCustomers()
-  }
 
   fetchLocation() {
     if (navigator.geolocation) {
@@ -64,18 +62,6 @@ export class EditVisitsInfoComponent {
       alert('Failed to fetch location')
      }
   }
-
-  fetchCustomers(){
-    let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
-    this.customerService.getCustomer(httpParams).subscribe(
-      (data: any) => {
-        this.customerList = data['customers']
-      },
-      (error: any) => console.log(error)
-    )
-  }
-
 
   editTask(){
     let body: editTask = {

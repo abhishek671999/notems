@@ -6,6 +6,9 @@ import { sessionWrapper } from '../../../../shared/site-variables';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
+import { LocalityService } from '../../../../shared/services/locality/locality.service';
+import { HttpParams } from '@angular/common/http';
+import { locality } from '../../../../shared/custom_dtypes/locality';
 
 @Component({
   selector: 'app-add-customer',
@@ -16,6 +19,7 @@ export class AddCustomerComponent {
 
   constructor(
     private customerService: CustomersService,
+    private localityService: LocalityService,
     private formbuilder: FormBuilder,
     private sessionWrapper: sessionWrapper,
     private matDialog: MatDialog,
@@ -29,9 +33,10 @@ export class AddCustomerComponent {
         'email_or_phone': ['', [Validators.required]]
       })]),
       type: ['', [Validators.required] ],
+      locality_id: ['', [Validators.required]],
       note: [''],
       gst_no: [''],
-      address: ['']
+      address: [''],
     })
   }
   public newCustomerForm: FormGroup;
@@ -40,6 +45,25 @@ export class AddCustomerComponent {
     { typeId: 2, typeName: 'B2B' },
     { typeId: 1, typeName: 'B2C' }
   ]
+
+  localityList: locality[] = []
+
+  ngOnInit(){
+    this.fetchLocalities()
+  }
+
+  fetchLocalities(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    this.localityService.getLocalities(httpParams).subscribe(
+      (data: any) => {
+        this.localityList = data['localities']
+      },
+      (error: any) => {
+        alert('Failed to fetch localities')
+      }
+    )
+  }
 
   contactPersonsFormArray(): FormArray{
     return this.newCustomerForm.get('contact_persons_details') as FormArray;
@@ -63,6 +87,7 @@ export class AddCustomerComponent {
       "type": this.data.type, // 1 refers to customer, 2 refers to prospects
       "outlet_name": this.newCustomerForm.value.outlet_name,
       "contact_persons_details": this.newCustomerForm.value.contact_persons_details,
+      "locality_id": this.newCustomerForm.value.locality_id,
       "note": this.newCustomerForm.value.note,
       "gst_no": this.newCustomerForm.value.gst_no,
       "address": this.newCustomerForm.value.address,

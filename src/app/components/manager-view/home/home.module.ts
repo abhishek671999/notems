@@ -39,6 +39,7 @@ import { EditBeatComponent } from '../dialog-box/edit-beat/edit-beat.component';
 import { LeaveStatusUpdateComponent } from '../bottom-sheet/leave-status-update/leave-status-update.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import {MatMenuModule} from '@angular/material/menu';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,9 @@ import {MatMenuModule} from '@angular/material/menu';
     FormsModule,
     MatDivider,
     MatBottomSheetModule,
-    MatMenuModule
+    MatMenuModule,
+    MatBadgeModule,
+    MatSelectModule
   ],
 })
 export class HomeModule {}

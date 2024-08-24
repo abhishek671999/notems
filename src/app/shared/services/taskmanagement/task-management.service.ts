@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { host } from '../../site-variables';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { addBeat, addTask, assignBeat, deleteBeat, deleteSaleInvoice, deleteSaleInvoiceLineItem, deleteTask, editBeat, editSaleInvoiceHeader, editTask, getTasks, unassignBeat, updateSalesInvoiceLineItem } from '../../custom_dtypes/tasks';
+import { addBeat, addTask, assignBeat, deleteBeat, deleteSaleInvoice, deleteSaleInvoiceLineItem, deleteTask, editBeat, editSaleInvoiceHeader, editSaleLineItems, editTask, getTasks, unassignBeat, updateSalesInvoiceLineItem } from '../../custom_dtypes/tasks';
 
 
 @Injectable({
@@ -24,6 +24,7 @@ export class TaskManagementService {
   private addSaleEndpoint = host + 'sales/add_sale_invoice/'
   private getSalesEndpoint = host + 'sales/get_sale_invoices/'
   private editSaleInvoiceHeaderEndpoint = host + 'sales/edit_sale_invoice_header/'
+  private editSaleInvoiceLineItemsEndpoint = host + 'sales/edit_sale_invoice_line_item/'
   private deleteSalesInvoiceEndpoint = host + 'sales/delete_sale_invoice/'
   
   private updateSaleInvoiceLineItemEndpoint = host + 'sales/update_sale_invoice_line_items/'
@@ -49,6 +50,10 @@ export class TaskManagementService {
 
   editSaleInvoiceHeader(body: editSaleInvoiceHeader) {
    return this.httpClient.post(this.editSaleInvoiceHeaderEndpoint, body) 
+  }
+
+  editSaleLineItems(body: editSaleLineItems){
+    return this.httpClient.post(this.updateSaleInvoiceLineItemEndpoint, body)
   }
 
   addSale(body: any) {

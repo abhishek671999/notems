@@ -35,7 +35,7 @@ export class TasksComponent {
   public teamMembers: any = []
   public teamMembersSource: any = []
   public savedBeats: any = [];
-  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'reportee', 'description', 'note', 'create_date', 'unassign']
+  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'reportee', 'description', 'frequency', 'create_date', 'unassign']
 
   ngOnInit() {
     this.fetchBeats()
@@ -84,7 +84,6 @@ export class TasksComponent {
   }
 
   openAssignedBeats(beat: beat) {
-    debugger
     if (beat.team_type.toLowerCase() == 'marketing'){
       this.router.navigate(['./manager/task/view-visits', beat.beat_id])
     } else if (beat.team_type.toLowerCase() == 'sales') {

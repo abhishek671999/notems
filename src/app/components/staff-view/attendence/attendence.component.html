@@ -20,5 +20,75 @@
         </div>
     </div>
     <br>
+    <div class="my-leaves-section">
+        <div class="filter-section">
+            <mat-form-field class="form-field">
+                <mat-label>Select time frame</mat-label>
+                <mat-select
+                  [(value)]="selectedTimeFrame"
+                  (selectionChange)="fetchMyAttendenceRecords()"
+                >
+                  <mat-option *ngFor="let time of timeFrames" [value]="time.actualValue">
+                    {{ time.displayValue }}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
     
+            <mat-form-field *ngIf="selectedTimeFrame == 'custom'" id="calendarInputField" class="hidden">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input
+                    matStartDate
+                    (dateChange)="fetchMyAttendenceRecords()"
+                    [(ngModel)]="selectedFromDate"
+                    placeholder="Start date"
+                    [ngModelOptions]="{standalone: true}"
+                    />
+                    <input
+                    matEndDate
+                    (dateChange)="fetchMyAttendenceRecords()"
+                    [(ngModel)]="selectedToDate"
+                    placeholder="End date"
+                    [ngModelOptions]="{standalone: true}"
+                    />
+                </mat-date-range-input>
+                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+
+          <h3 style="text-align: center; margin: 0;">Attendence history</h3>
+
+        <table mat-table [dataSource]="attendenceRecordsDataSource" class="mat-elevation-z8 demo-table">
+            <ng-container matColumnDef="sl_no">
+                <th mat-header-cell *matHeaderCellDef>Sl No.</th>
+                <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
+            </ng-container>
+            
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>From</th>
+                <td mat-cell *matCellDef="let element">{{element.date}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="punch_in">
+                <th mat-header-cell *matHeaderCellDef>Punch In</th>
+                <td mat-cell *matCellDef="let element" (click)="openLocationScreen(element.punch_in_location)">
+                    {{element.punch_in}}<span class="material-symbols-outlined">location_on</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="punch_out">
+                <th mat-header-cell *matHeaderCellDef>Punch out</th>
+                <td mat-cell *matCellDef="let element" (click)="openLocationScreen(element.punch_in_location)">
+                    {{element.punch_out}}<span class="material-symbols-outlined">location_on</span></td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="attendenceRecordsTableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: attendenceRecordsTableColumns;"></tr>
+        </table>
+    </div>
 </div>

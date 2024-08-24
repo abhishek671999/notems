@@ -6,6 +6,9 @@ import { editCustomer } from '../../../../shared/custom_dtypes/customers';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
+import { locality } from '../../../../shared/custom_dtypes/locality';
+import { HttpParams } from '@angular/common/http';
+import { LocalityService } from '../../../../shared/services/locality/locality.service';
 
 @Component({
   selector: 'app-edit-customer-prospect',
@@ -20,7 +23,8 @@ export class EditCustomerProspectComponent {
     private formbuilder: FormBuilder,
     private sessionWrapper: sessionWrapper,
     private matDialog: MatDialog,
-    private matDialogRef: MatDialogRef<EditCustomerProspectComponent>
+    private matDialogRef: MatDialogRef<EditCustomerProspectComponent>,
+    private localityService: LocalityService
   ) {
 
     console.log('This is type: ', data)
@@ -31,7 +35,8 @@ export class EditCustomerProspectComponent {
       type: [data.type],
       note: [data.customer.note],
       gst_no: [data.customer.gst_no],
-      address: [data.customer.address]
+      address: [data.customer.address],
+      locality_id: [data.customer.locality_id]
     })
 
     data.customer.contact_persons_details.forEach((contact: any) => {
@@ -40,7 +45,7 @@ export class EditCustomerProspectComponent {
    }
 
   public editCustomerForm: FormGroup;
-
+  localityList: locality[] = []
 
   public clientType = [
     { typeId: 2, typeName: 'B2B' },
@@ -50,7 +55,20 @@ export class EditCustomerProspectComponent {
 
 
   ngOnInit() {
-    console.log('data', this.data)
+    this.fetchLocalities()
+  }
+
+  fetchLocalities(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    this.localityService.getLocalities(httpParams).subscribe(
+      (data: any) => {
+        this.localityList = data['localities']
+      },
+      (error: any) => {
+        alert('Failed to fetch localities')
+      }
+    )
   }
 
   editCustomer() {
@@ -61,6 +79,7 @@ export class EditCustomerProspectComponent {
       "type": this.editCustomerForm.value.type,
       "note": this.editCustomerForm.value.note,
       "gst_no": this.editCustomerForm.value.gst_no,
+      "locality_id": this.editCustomerForm.value.locality_id,
       "address": this.editCustomerForm.value.address,
       "organization_id": Number(this.sessionWrapper.getItem('organization_id'))
     }

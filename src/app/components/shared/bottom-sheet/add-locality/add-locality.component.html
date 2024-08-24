@@ -1,0 +1,12 @@
+<div>
+    <h2 style="text-align: center;">Add Locality</h2>
+    <form style="text-align: center;" [formGroup]="newLocalityForm">
+        <mat-form-field>
+            <mat-label>Enter locality name</mat-label>
+            <input matInput formControlName="locality_name">
+        </mat-form-field>
+    </form>
+    <div style="text-align: center;">
+        <button (click)="addLocality()" [disabled]="newLocalityForm.invalid" mat-raised-button>Submit</button>
+    </div>
+</div>

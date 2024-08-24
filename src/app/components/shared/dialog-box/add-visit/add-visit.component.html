@@ -4,7 +4,8 @@
         <mat-form-field>
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id" >
-                <mat-option *ngFor="let customer of customerList; let i=index" [value]="customer.customer_id">{{customer.outlet_name}}</mat-option>
+                <input matInput (input)="onKey($event)" placeholder="Type to search...">
+                <mat-option *ngFor="let customer of visibleCustomerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field >
@@ -32,6 +33,6 @@
 </div>
 <mat-dialog-actions>
     <div style="text-align: center;">
-        <button  mat-flat-button [disabled]="!(newTask.valid && location)" (click)="addTask()">Add task</button>
+        <button  mat-flat-button [disabled]="!(newTask.valid && location)" (click)="addTask()">Add Visit</button>
     </div>
 </mat-dialog-actions>

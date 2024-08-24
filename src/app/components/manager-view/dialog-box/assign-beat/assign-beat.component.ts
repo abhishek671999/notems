@@ -121,7 +121,7 @@ export class AssignBeatComponent {
   }
 
   assignBeatValidation(){
-    return (this.selectedType == 1 && this.selectedDays.length > 0) || (this.selectedType == 3 && this.selectedDate)
+    return (this.selectedType == 1 && this.selectedDays.length > 0) || (this.selectedType == 3 && this.selectedDate) || this.selectedType == 2
   }
 
 

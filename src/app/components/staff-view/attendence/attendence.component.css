@@ -31,6 +31,12 @@
     padding: 0.5em;
 }
 
+.filter-section{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
 .mdc-data-table__cell {
     padding: 0;
     text-align: center;

@@ -27,6 +27,7 @@ export class AddVisitComponent {
     private matdialog: MatDialog,
     private matdialogRef: MatDialogRef<AddVisitComponent>
   ) {
+    console.log(this.data.customerList)
     this.newTask = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
       title: ['', [Validators.required]],
@@ -34,12 +35,13 @@ export class AddVisitComponent {
       description: ['', [Validators.required]],
       status: ['', [Validators.required]]
     })
-
+    this.customerList = this.data.customerList
+    this.visibleCustomerList = this.customerList
     this.beatId = this.data.beatId
    }
 
   private beatId: number;
-
+  public visibleCustomerList: customer[] = []
   public beatInfo: beat | undefined;
   public newTask: FormGroup;
   public customerList: customer[] = []
@@ -53,21 +55,6 @@ export class AddVisitComponent {
     'Product complaint', 
     'Filter complaint']
 
-  ngOnInit() {
-    this.fetchCustomers()
-    this.fetchBeatInfo()
-  }
-
-  fetchCustomers(){
-    let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
-    this.customerService.getCustomer(httpParams).subscribe(
-      (data: any) => {
-        this.customerList = data['customers']
-      },
-      (error: any) => console.log(error)
-    )
-  }
 
   addTask() {
     let body: addTask = {
@@ -90,20 +77,6 @@ export class AddVisitComponent {
     )
   }
 
-  fetchBeatInfo(){
-    let httpParams = new HttpParams()
-    httpParams = httpParams.append('beat_id', this.beatId)
-    this.taskService.getDailyBeats(httpParams).subscribe(
-      (data: any) => {
-        this.beatInfo = data['beats'].length > 0? data['beats'][0] : []
-      },
-      (error: any) => {
-        alert('Failed to fetch beat info')
-      }
-    )
-  }
-
-
   fetchLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -112,6 +85,18 @@ export class AddVisitComponent {
     } else {
       alert('Failed to fetch location')
      }
+  }
+
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
   }
 
 }

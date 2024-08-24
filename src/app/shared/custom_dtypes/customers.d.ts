@@ -10,6 +10,7 @@ export type editCustomer = {
     note: string,
     gst_no: string,
     address: string,
+    locality_id: number,
     organization_id: number
 }
 
@@ -17,6 +18,7 @@ export type addCustomer = {
     type: number,
     outlet_name: string,
     contact_persons_details: string,
+    locality_id: number,
     note: string,
     gst_no: string,
     address: string,

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { ItemsService } from '../../../../shared/services/items/items.service';
@@ -11,8 +11,12 @@ import { item } from '../../../../shared/custom_dtypes/items';
 import { HttpParams } from '@angular/common/http';
 import { AddItemsToSaleComponent } from '../add-items-to-sale/add-items-to-sale.component';
 import { ConfirmationBoxComponent } from '../confirmation-box/confirmation-box.component';
-import { deleteSaleInvoiceLineItem, updateSalesInvoiceLineItem } from '../../../../shared/custom_dtypes/tasks';
+import { deleteSaleInvoiceLineItem, editSaleInvoiceHeader, editSaleLineItems, updateSalesInvoiceLineItem } from '../../../../shared/custom_dtypes/tasks';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
+import { addSalesDiscountValidation } from '../../../../shared/custom_validations/sales';
+import { lineItems, sale } from '../../../../shared/custom_dtypes/sales';
+import { of, switchMap } from 'rxjs';
+import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 
 @Component({
   selector: 'app-edit-sales-info',
@@ -28,25 +32,30 @@ export class EditSalesInfoComponent {
     private sessionWrapper: sessionWrapper,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
+    private matDialogRef: MatDialogRef<EditSalesInfoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(data)
+    this.saleData = data.sale
+    this.customerList = data.customerList
     this.editSalesForm = this.formBuilder.group({
-      customer_id: [data.customer_id, [Validators.required]],
-      discount: [data.discount, [Validators.required]],
-      received_amount: [data.received_amount, [Validators.required]],
-      note: [data.note, [Validators.required]],
+      customer_id: [this.saleData.customer_id, [Validators.required]],
+      discount: [this.saleData.discount, [Validators.required]],
+      received_amount: [this.saleData.received_amount, [Validators.required]],
+      note: [this.saleData.note, [Validators.required]],
+    },{
+      validators: [addSalesDiscountValidation(), addSalesDiscountValidation()]
     });
-    this.itemsAdded = data.line_items
+    this.itemsAdded = data.sale.line_items
   }
   
-  public customerList: customer[] = [];
+  public saleData: sale;
+  public customerList: customer[];
   public beatId: number = 0;
   public location: string = '';
   public itemListsource: item[] = [];
   public itemListColumns = ['sl_no', 'item_name', 'item_price', 'quantity', 'delete'];
 
-  public itemsAdded: any[];
+  public itemsAdded: item[] = [];
 
   public file: File | null = null;
   outputBoxVisible = false;
@@ -59,36 +68,26 @@ export class EditSalesInfoComponent {
   public editSalesForm: FormGroup;
 
   ngOnInit() {
+    this.fetchItems()
+  }
+
+  fetchItems(){
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
       Number(this.sessionWrapper.getItem('organization_id'))
     );
-    this.customerService.getCustomer(httpParams).subscribe(
+    this.itemsService.getItems(httpParams).subscribe(
       (data: any) => {
-        this.customerList = data['customers'];
+        this.itemListsource = data['items'];
       },
-      (error: any) => console.log(error)
+      (error: any) => {
+        console.log(error);
+      }
     );
-    {
-      let httpParams = new HttpParams();
-      httpParams = httpParams.append(
-        'organization_id',
-        Number(this.sessionWrapper.getItem('organization_id'))
-      );
-      this.itemsService.getItems(httpParams).subscribe(
-        (data: any) => {
-          data['items'].forEach((item: item) => {
-            item['quantity'] = 0;
-          });
-          this.itemListsource = data['items'];
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    }
   }
+
+
 
   areItemsAdded() {
     return (
@@ -98,11 +97,13 @@ export class EditSalesInfoComponent {
 
 
   handleDragOver(event: DragEvent) {
+    debugger
     event.preventDefault();
     event.stopPropagation();
   }
 
   handleDrop(event: DragEvent) {
+    debugger
     event.preventDefault();
     if (event.dataTransfer) {
       const file: File = event.dataTransfer.files[0];
@@ -111,18 +112,58 @@ export class EditSalesInfoComponent {
   }
 
   onFileSelected(event: any) {
-    this.outputBoxVisible = false;
+    debugger
+    this.outputBoxVisible = true;
     this.progress = `0%`;
     this.uploadResult = '';
     this.fileName = '';
     this.fileSize = '';
     this.uploadStatus = undefined;
     this.file = event.dataTransfer?.files[0] || event.target?.files[0];
+    if(this.file){
+      this.fileName = this.file.name;
+      this.fileSize = `${(this.file.size / 1024).toFixed(2)} KB`;
+    }
   }
 
 
   editSales() {
-    
+    let body: editSaleInvoiceHeader = {
+      sale_invoice_id: this.saleData.sale_invoice_id,
+      customer_id: this.editSalesForm.value.customer_id,
+      discount: this.editSalesForm.value.discount,
+      received_amount: this.editSalesForm.value.received_amount,
+      note: this.editSalesForm.value.note,
+      beat_id: this.saleData.beat_id
+    }
+    this.taskService.editSaleInvoiceHeader(body).pipe(
+      switchMap((response: any) => {
+        if (this.file && response['updated']) {
+          this.fileName = this.file.name;
+          this.fileSize = `${(this.file.size / 1024).toFixed(2)} KB`;
+          this.outputBoxVisible = true;
+          const formData = new FormData();
+          formData.append('file', this.file);
+          formData.append('sale_invoice_id', String(this.saleData.sale_invoice_id));
+          return this.imageService.uploadImage(formData);
+        } else {
+          return of(null);
+        }
+      })
+    ).subscribe(
+          (data: any) => {
+            this.matDialog.open(SuccessMsgComponent, {
+              data: { msg: 'Sale added successfully' },
+            });
+            this.matDialogRef.close({result: true})
+          },
+          (error: any) => {
+            this.matDialog.open(ErrorMsgComponent, {
+              data: { msg: 'Failed to add sale' },
+            });
+          }
+        );
+    // this.taskService.editSaleLineItems(body2)
   }
 
   editItems() {

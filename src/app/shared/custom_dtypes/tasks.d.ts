@@ -69,6 +69,12 @@ export type editSaleInvoiceHeader = {
     "beat_id": number,
 }
 
+export type editSaleLineItems = {
+    "line_item_id": number,
+    "item_id": number,
+    "price": number
+}
+
 export type updateSalesInvoiceLineItem = {
     "sale_invoice_id": number,
     "item_details": item[]

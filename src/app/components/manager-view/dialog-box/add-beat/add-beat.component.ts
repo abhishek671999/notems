@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { addBeat } from '../../../../shared/custom_dtypes/tasks';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { sessionWrapper } from '../../../../shared/site-variables';
@@ -12,6 +12,7 @@ import { TeamManagementService } from '../../../../shared/services/team-manageme
 import { team } from '../../../../shared/custom_dtypes/team';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-add-beat',
@@ -40,9 +41,11 @@ export class AddBeatComponent {
     })
   }
   
+  @ViewChild(MatSelect) matSelect: MatSelect | undefined;
   public newBeat: FormGroup;
   public teams: team[] = [];
   public customerList: customer[] = []
+  public visibleCustomerList: customer[] = []
 
   ngOnInit() {
     let httpParams = new HttpParams()
@@ -54,14 +57,30 @@ export class AddBeatComponent {
       (error: any) => console.log(error)
     )
 
-    {
-      let httpParams = new HttpParams()
-      httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
-      this.customerService.getCustomer(httpParams).subscribe(
-        (data: any) => this.customerList = data['customers'],
-        (error: any) => alert('Failed to get customer list')
-      )
-    }
+    this.fetchCustomer()
+  }
+
+  fetchCustomer(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    this.customerService.getCustomer(httpParams).subscribe(
+      (data: any) => {
+        this.customerList = data['customers']
+        this.visibleCustomerList = this.customerList
+      },
+      (error: any) => alert('Failed to get customer list')
+    )
+  }
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.outlet_name?.toLowerCase().startsWith(filter));
   }
 
   addBeatCall() {
@@ -82,4 +101,12 @@ export class AddBeatComponent {
       }
     )
   }
+
+  onOpenedChange(opened: boolean) {
+    // Keep the dropdown open when the search input is focused or changed
+    if (opened && this.matSelect?.panelOpen) {
+      setTimeout(() => this.matSelect?.open(), 0);
+    }
+  }
+
 }

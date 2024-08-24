@@ -16,7 +16,6 @@ export class AnalyticsHomeComponent {
   ){}
 
   ngOnInit(){
-    debugger
     if(this.sessionWrapper.isTeamManager()){
       if(this.sessionWrapper.getItem('team_type') == 'sales'){
         this.managementPages.push( {name: 'Sales Analytics' , href: `sales`})

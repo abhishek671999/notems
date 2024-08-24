@@ -1,6 +1,7 @@
 .main-container{
     width: 100%;
-    height: 85vh;
+    min-height: 85vh;
+    max-height: fit-content;
 }
 
 .team-management{

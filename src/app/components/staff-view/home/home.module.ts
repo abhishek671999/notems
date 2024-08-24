@@ -26,6 +26,7 @@ import { SalesComponent } from '../sales/sales.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { VisitsComponent } from '../visits/visits.component';
 import { LeaveHistoryComponent } from '../leave-history/leave-history.component';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { LeaveHistoryComponent } from '../leave-history/leave-history.component'
     MatDatepickerModule,
     MatMenuModule,
     RouterModule,
-    SharedModulesModule
+    SharedModulesModule,
+    MatBadgeModule
   ]
 })
 export class HomeModule { }

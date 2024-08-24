@@ -1,22 +1,22 @@
 <div class="main-container">
-    <h2 style="text-align: center;">Categories</h2>
+    <h2 style="text-align: center;">Locality</h2>
     <div style="text-align: center;">
-      <button (click)="addCategory()" mat-flat-button>Add new Category</button>
+      <button (click)="addLocality()" mat-flat-button>Add new locality</button>
     </div>
-    <table mat-table [dataSource]="categoryDataSource" class="mat-elevation-z8 table-section">
+    <table mat-table [dataSource]="localityDataSource" class="mat-elevation-z8 table-section">
         <ng-container matColumnDef="sl_no">
           <th mat-header-cell *matHeaderCellDef> Sl No </th>
           <td mat-cell *matCellDef="let element; let i=index"> {{i + 1}} </td>
         </ng-container>
       
-        <ng-container matColumnDef="category_name">
+        <ng-container matColumnDef="locality_name">
           <th mat-header-cell *matHeaderCellDef> Name </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="!element.is_edit">
-              {{element.category_name}}
+              {{element.locality_name}}
             </div>
             <mat-form-field *ngIf="element.is_edit">
-              <input type="text" matInput [(ngModel)]="element.category_name" (blur)="editSubmit(element)" [disabled]="!element.is_edit">
+              <input type="text" matInput [(ngModel)]="element.locality_name" (blur)="editSubmit(element)" [disabled]="!element.is_edit">
             </mat-form-field>
           </td>
         </ng-container>
@@ -29,10 +29,10 @@
     
         <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef> Delete </th>
-            <td mat-cell *matCellDef="let element"> <span (click)="deleteCategory(element)" class="material-symbols-outlined">delete</span> </td>
+            <td mat-cell *matCellDef="let element"> <span (click)="deleteLocality(element)" class="material-symbols-outlined">delete</span> </td>
           </ng-container>
       
-        <tr mat-header-row *matHeaderRowDef="categoryDataTableColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: categoryDataTableColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="localityDataTableColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: localityDataTableColumns;"></tr>
     </table>
 </div>

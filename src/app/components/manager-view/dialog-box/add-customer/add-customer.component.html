@@ -27,6 +27,14 @@
                     <mat-radio-button [value]="type.typeId">{{type.typeName}}</mat-radio-button>
                 }
             </mat-radio-group>
+            <mat-form-field >
+                <mat-label>Select Locality</mat-label>
+                <mat-select formControlName="locality_id">
+                    @for (locality of localityList; track locality) {
+                    <mat-option [value]="locality.locality_id">{{locality.locality_name}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
             <mat-form-field>
                 <mat-label>Enter GST number</mat-label>
                 <input matInput formControlName="gst_no">

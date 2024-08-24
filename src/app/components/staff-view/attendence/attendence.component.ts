@@ -13,6 +13,9 @@ import { appliedLeaves } from '../../../shared/custom_dtypes/leave';
 import { LeaveActionComponent } from '../dialog/leave-action/leave-action.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ViewCalendarComponent } from '../../shared/bottom-sheet/view-calendar/view-calendar.component';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DataSource } from '@angular/cdk/collections';
+import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.component';
 
 @Component({
   selector: 'app-attendence',
@@ -38,20 +41,37 @@ export class AttendenceComponent {
     events: [],
   };
 
+  timeFrames = [
+    { displayValue: 'Today', actualValue: 'today' },
+    { displayValue: 'Yesterday', actualValue: 'yesterday' },
+    { displayValue: 'This week', actualValue: 'this_week' },
+    { displayValue: 'This month', actualValue: 'this_month' },
+    { displayValue: 'Last month', actualValue: 'last_month' },
+    { displayValue: 'Last 3 months', actualValue: 'last_3_months' },
+    { displayValue: 'Last 6 months', actualValue: 'last_6_months' },
+    { displayValue: 'This year', actualValue: 'this_year' },
+    { displayValue: 'Calendar', actualValue: 'custom' },
+  ];
+  public selectedTimeFrame = this.timeFrames[0].actualValue
+  public selectedFromDate: Date | undefined
+  public selectedToDate: Date | undefined
+
   public isClockedIn: boolean = false;
   public isClockedOut: boolean = false;
   public currentTime: Date;
   public attendence: any;
   public showCalendar: boolean = false;
   
+  public attendenceRecordsDataSource: [] = []
+  public attendenceRecordsTableColumns: string[] = ['sl_no', 'date', 'punch_in', 'punch_out']
 
   private LeaveType: leaveType[] | null;
   private intervalId: any
   private LeaveCount: {} = {}
 
-
-
   ngOnInit() {
+    this.fetchMyAttendenceRecords()
+
     this.intervalId = setInterval(() => {
       this.currentTime = new Date();
     }, 1000);
@@ -147,5 +167,31 @@ export class AttendenceComponent {
 
   openCalendar() {
     this.bottomSheet.open(ViewCalendarComponent)
+  }
+
+  fetchMyAttendenceRecords(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('time_frame', this.selectedTimeFrame)
+    if(this.selectedTimeFrame == 'custom') {
+      httpParams = httpParams.append('start_date', String(this.dateUtils.getStandardizedDateFormate(this.selectedFromDate)))
+      httpParams = httpParams.append('end_date', String(this.dateUtils.getStandardizedDateFormate(this.selectedToDate)) )
+    }
+    if((this.selectedTimeFrame != 'custom') || (this.selectedTimeFrame == 'custom' && this.selectedFromDate && this.selectedToDate)){
+      this.attendenceService.getMyAttendence(httpParams).subscribe(
+        (data: any) => {
+          this.attendenceRecordsDataSource = data['attendance_list']
+        },
+        (error: any) => {
+          alert('Failed to fetch attendnece')
+        }
+      )
+    }
+  }
+
+  openLocationScreen(attendence: any) {
+    let location = attendence.split(',');
+    this.matDialog.open(MapViewComponent, {
+      data: { longitude: location[1], latitude: location[0] },
+    });
   }
 }

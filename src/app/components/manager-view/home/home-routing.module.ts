@@ -8,6 +8,7 @@ import { CalendarComponent } from '../calendar/calendar.component';
 import { UserManagementComponent } from '../team-management-home/user-management/user-management.component';
 import { ProspectsComponent } from '../clients/prospects/prospects.component';
 import { CategoryComponent } from '../../shared/category/category.component';
+import { LocalityComponent } from '../../shared/locality/locality.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: 'items', component: ItemsComponent },
       { path: 'categories', component: CategoryComponent},
+      { path: 'localities', component: LocalityComponent},
       { path: 'team-management', component: TeamManagementComponent },
       { path: 'user-management/:team_id', component: UserManagementComponent },
       { path: 'calendar', component: CalendarComponent },

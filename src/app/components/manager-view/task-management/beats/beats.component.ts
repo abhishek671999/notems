@@ -15,6 +15,9 @@ import { Router } from '@angular/router';
 import { beat } from '../../../../shared/custom_dtypes/beats';
 import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';
 import { EditBeatComponent } from '../../dialog-box/edit-beat/edit-beat.component';
+import { CustomersService } from '../../../../shared/services/customer/customers.service';
+import { customer } from '../../../../shared/custom_dtypes/customers';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-beats',
@@ -26,6 +29,7 @@ export class BeatsComponent {
   constructor(
     private tasksService: TaskManagementService,
     private teamService: TeamManagementService,
+    private customerService: CustomersService,
     private sessionWrapper: sessionWrapper,
     private dateUtils: dateUtils,
     private formBuilder: FormBuilder,
@@ -40,11 +44,20 @@ export class BeatsComponent {
     })
   }
 
+  length = 50;
+  pageSize = 20;
+  pageIndex = 0;
+  pageSizeOptions = [5, 20, 50];
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+
   public newBeat: FormGroup;
   public selectedTeam: any;
   public teams: any;
   public savedBeats: any = [];
-  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'team_name', 'description', 'note', 'create_date', 'edit', 'delete']
+  public customerList: customer[] = []
+  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'team_name', 'description', 'customers', 'create_date', 'edit', 'delete']
 
   ngOnInit() {
     {
@@ -59,6 +72,17 @@ export class BeatsComponent {
     }
     {
       let httpParams = new HttpParams()
+      httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+      this.customerService.getCustomer(httpParams).subscribe(
+        (data: any) => this.customerList = data['customers'],
+        (error: any) => alert('Failed to get customer list')
+      )
+    }
+    this.fetchBeats()
+  }
+
+  fetchBeats(){
+    let httpParams = new HttpParams()
       if(this.selectedTeam) httpParams = httpParams.append('team_id', this.selectedTeam)
       this.tasksService.getBeats(httpParams).subscribe(
         (data: any) => {
@@ -66,8 +90,6 @@ export class BeatsComponent {
         },
         (error: any) => alert(error)
       )
-    }
-
   }
 
   addBeat() {
@@ -86,7 +108,6 @@ export class BeatsComponent {
     } else {
       this.router.navigate(['./manager/task/view-tasks', beat.beat_id])
     }
-    
   }
 
 
@@ -115,13 +136,32 @@ export class BeatsComponent {
 
   editBeat(beat: beat, event: Event) {
     event.stopPropagation()
-    let dialogRef = this.matDialog.open(EditBeatComponent, { data: beat })
+    let dialogRef = this.matDialog.open(EditBeatComponent, { data: {beat: beat, customerList: this.customerList} })
     dialogRef.afterClosed().subscribe(
       (data: any) => {
-        this.ngOnInit()
+        if(data?.result) this.ngOnInit()
       }
     )
   }
+
+  getCustomerName(beat: any){
+    let customerName = ''
+    beat.customer_list.forEach(
+      (customer_id: number, index: number) => 
+        {
+          let filteredCustomer = this.customerList.filter((customer: customer) => customer.customer_id == customer_id)
+          customerName += (filteredCustomer.length > 0)? `${index+1}. ${filteredCustomer[0].outlet_name} <br>` : ''
+        }
+    )
+    return customerName
+  }
   
+
+  handlePageEvent(e: PageEvent) {
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.fetchBeats();
+  } 
 
 }

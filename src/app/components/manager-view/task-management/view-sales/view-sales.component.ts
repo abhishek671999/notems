@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
 import { sale } from '../../../../shared/custom_dtypes/sales';
 import { beat } from '../../../../shared/custom_dtypes/beats';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-view-sales',
@@ -32,6 +33,14 @@ export class ViewSalesComponent {
   public selectedDate: string = ''
   public salesSourceColumns = ['sl_no', 'customer', 'received_amount', 'discount', 'recorded_by', 'date', 'note', 'more']
   public beatInfo: beat | undefined
+
+  length = 50;
+  pageSize = 20;
+  pageIndex = 0;
+  pageSizeOptions = [5, 20, 50];
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
 
   public totalAmount = 0
   public discount = 0
@@ -60,6 +69,8 @@ export class ViewSalesComponent {
   fetchSales() {
     let body: any = {
       beat_id: this.beatId,
+      offset: this.pageIndex * this.pageSize,
+      count: this.pageIndex * this.pageSize + this.pageSize
     }
     this.taskService.getSales(body).subscribe(
       (data: any) => {
@@ -67,6 +78,7 @@ export class ViewSalesComponent {
         this.totalAmount = data['total_amount']
         this.discount = data['total_discount']
         this.totalAmountReceived = data['total_amount_received']
+        this.length = data['total_count']
       },
       (error: any) => console.log(error)
     )
@@ -88,5 +100,12 @@ export class ViewSalesComponent {
   openMoreInfoWindow(row: sale){
     this.matdialog.open(SalesMoreInfoComponent, { data: row} )
   }
+
+  handlePageEvent(e: PageEvent) {
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.fetchSales();
+  } 
 
 }

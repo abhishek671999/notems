@@ -32,6 +32,8 @@ import { SalesMoreInfoComponent } from '../../../components/shared/dialog-box/sa
 import { PageNotFoundComponent } from '../../../components/shared/page-not-found/page-not-found.component';
 import { AddVisitComponent } from '../../../components/shared/dialog-box/add-visit/add-visit.component';
 import { EditVisitsInfoComponent } from '../../../components/shared/dialog-box/edit-visits-info/edit-visits-info.component';
+import { AddLocalityComponent } from '../../../components/shared/bottom-sheet/add-locality/add-locality.component';
+import { LocalityComponent } from '../../../components/shared/locality/locality.component';
 
 
 @NgModule({
@@ -43,10 +45,12 @@ import { EditVisitsInfoComponent } from '../../../components/shared/dialog-box/e
     PopUpMsgComponent,
     ItemsComponent,
     CategoryComponent,
+    LocalityComponent,
     ConfirmationBoxComponent,
     AddItemComponent,
     ViewCalendarComponent,
     AddCategoryComponent,
+    AddLocalityComponent,
     AddSaleComponent,
     AddVisitComponent,
     EditSalesInfoComponent,

@@ -1,6 +1,7 @@
 .main-container{
     width: 100%;
-    height: 78vh;
+    min-height: 78vh;
+    max-height: fit-content;
 }
 
 .beat-info-section{

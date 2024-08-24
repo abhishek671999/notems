@@ -6,6 +6,7 @@ import { getTasks } from '../../../../shared/custom_dtypes/tasks';
 import { beat } from '../../../../shared/custom_dtypes/beats';
 import { MatDialog } from '@angular/material/dialog';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-view-visits',
@@ -22,9 +23,17 @@ export class ViewVisitsComponent {
 
   private beatId: number = 0
 
+  length = 50;
+  pageSize = 20;
+  pageIndex = 0;
+  pageSizeOptions = [5, 20, 50];
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+
   public beatInfo: beat | undefined
   public visitsSource = []
-  public visitsSourceColumns = ['task_id', 'title', 'customer', 'status', 'description', 'note', 'added_by', 'created_at']
+  public visitsSourceColumns = ['task_id', 'title', 'customer', 'status', 'description', 'note', 'added_by', 'created_at', 'location']
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
@@ -36,7 +45,9 @@ export class ViewVisitsComponent {
 
   fetchTasks(){
     let body: getTasks = {
-      beat_id: this.beatId
+      beat_id: this.beatId,
+      offset: this.pageIndex * this.pageSize,
+      count: this.pageIndex * this.pageSize + this.pageSize
     }
     this.taskService.getTasks(body).subscribe(
       (data: any) => {
@@ -65,4 +76,11 @@ export class ViewVisitsComponent {
       data: { longitude: location[1], latitude: location[0] },
     });
   }
+
+  handlePageEvent(e: PageEvent) {
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.fetchTasks();
+  } 
 }

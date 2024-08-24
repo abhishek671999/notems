@@ -30,7 +30,6 @@ export class PostLoginComponent {
   ngOnInit() {
     this.meAPIUtility.getMeData().subscribe((data: any) => {
       this.myInfo = data;
-      debugger
       sessionStorage.setItem('user_id', data['user_id'])
       if (this.myInfo['first_name']) {
         if (this.myInfo['organizations'].length > 0) {
@@ -48,6 +47,7 @@ export class PostLoginComponent {
             sessionStorage.setItem('is_team_member', 'true')
             this.router.navigate(['staff/attendence'])
           } else if(String(this.myInfo['teams'][0]['role']).toLowerCase() == 'manager'){
+            sessionStorage.setItem('organization_id', this.myInfo['teams'][0]['organization_id'])  //hardcode
             sessionStorage.setItem('is_team_manager', 'true')
             sessionStorage.setItem('team_type', this.myInfo['teams'][0]['team_type'].toLowerCase())
             this.router.navigate(['manager/task/tasks'])            

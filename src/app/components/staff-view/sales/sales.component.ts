@@ -7,6 +7,7 @@ import { ViewMoreSalesInfoComponent } from '../../shared/dialog-box/view-more-sa
 import { EditSalesInfoComponent } from '../../shared/dialog-box/edit-sales-info/edit-sales-info.component';
 import { HttpParams } from '@angular/common/http';
 import { beat } from '../../../shared/custom_dtypes/beats';
+import { sale } from '../../../shared/custom_dtypes/sales';
 
 @Component({
   selector: 'app-sales',
@@ -67,8 +68,8 @@ export class SalesComponent {
     this.matdialog.open(ViewMoreSalesInfoComponent, { data: element })
   }
 
-  editSales(element: any) {
-    let dialogRef = this.matdialog.open(EditSalesInfoComponent, { data: element })
+  editSales(element: sale) {
+    let dialogRef = this.matdialog.open(EditSalesInfoComponent, { data: {sale: element, customerList: this.beatInfo?.customers} })
     dialogRef.afterClosed().subscribe(
       (data: any) => this.ngOnInit()
     )

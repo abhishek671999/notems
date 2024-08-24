@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
@@ -12,6 +12,7 @@ import { HttpParams } from '@angular/common/http';
 import { editBeat } from '../../../../shared/custom_dtypes/tasks';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-edit-beat',
@@ -31,18 +32,23 @@ export class EditBeatComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     console.log(data)
+    this.customerList = data.customerList
+    this.customerList = data.customerList.sort(this.sortCustomerList(data.beat.customer_list))
+    this.visibleCustomerList = this.customerList
     this.editBeatForm = this.formBuilder.group({
-      "team_id": [data.team_id, [Validators.required]],
-      "customer_list": [data.customer_list, [Validators.required]],
-      "title": [data.title, [Validators.required]],
-      "note": [data.note, Validators.required],
-      "description": [data.description, [Validators.required]]
+      "team_id": [data.beat.team_id, [Validators.required]],
+      "customer_list": [data.beat.customer_list, [Validators.required]],
+      "title": [data.beat.title, [Validators.required]],
+      "note": [data.beat.note, Validators.required],
+      "description": [data.beat.description, [Validators.required]]
     })
-  }
 
+  }
+  @ViewChild(MatSelect) matSelect: MatSelect | undefined;
   public editBeatForm: FormGroup;
   public teams: team[] = [];
   public customerList: customer[] = []
+  public visibleCustomerList: customer[]
 
   ngOnInit() {
     let httpParams = new HttpParams()
@@ -53,25 +59,16 @@ export class EditBeatComponent {
       ,
       (error: any) => console.log(error)
     )
-
-    {
-      let httpParams = new HttpParams()
-      httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
-      this.customerService.getCustomer(httpParams).subscribe(
-        (data: any) => this.customerList = data['customers'],
-        (error: any) => alert('Failed to get customer list')
-      )
-    }
   }
 
-  addBeatCall() {
+  editBeatCall() {
     let body: editBeat = {
       team_id: this.editBeatForm.value.team_id,
       customer_list: this.editBeatForm.value.customer_list,
       title: this.editBeatForm.value.title,
       note: this.editBeatForm.value.note,
       description: this.editBeatForm.value.description,
-      beat_id: this.data.beat_id,
+      beat_id: this.data.beat.beat_id,
       assignee_id: 0,
       date: ''
     }
@@ -84,5 +81,31 @@ export class EditBeatComponent {
         this.matDialog.open(ErrorMsgComponent, { data: { msg: 'Failed to add beat'}})
       }
     )
+  }
+
+  sortCustomerList(customerList: number[]){
+    return function (customer1: customer, customer2: customer) {
+      if((customerList.includes(customer1.customer_id)) && (customerList.includes(customer2.customer_id)) ) return 0
+      else if(customerList.includes(customer2.customer_id)) return 1
+      else return -1
+    }
+  }
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.outlet_name?.toLowerCase().startsWith(filter));
+  }
+
+  onOpenedChange(opened: boolean) {
+    // Keep the dropdown open when the search input is focused or changed
+    if (opened && this.matSelect?.panelOpen) {
+      setTimeout(() => this.matSelect?.open(), 0);
+    }
   }
 }

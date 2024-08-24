@@ -53,10 +53,6 @@ export class SalesAnalyticsComponent {
   showPageSizeOptions = true;
   showFirstLastButtons = true;
 
-  range = new FormGroup({
-    start: new FormControl<Date | null>(null),
-    end: new FormControl<Date | null>(null),
-  });
 
   public clientType = [
     { typeId: 2, typeName: 'B2B' },

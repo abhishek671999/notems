@@ -52,7 +52,7 @@
 
         <ng-container matColumnDef="reportee">
           <th mat-header-cell *matHeaderCellDef>Reportee</th>
-          <td mat-cell *matCellDef="let element">{{element.reporter}}</td>
+          <td mat-cell *matCellDef="let element">{{element.assignee_name}}</td>
         </ng-container>
       
         <ng-container matColumnDef="team_name">
@@ -65,9 +65,9 @@
             <td mat-cell *matCellDef="let element">{{element.description}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="note">
-          <th mat-header-cell *matHeaderCellDef>Note</th>
-          <td mat-cell *matCellDef="let element">{{element.note}}</td>
+        <ng-container matColumnDef="frequency">
+          <th mat-header-cell *matHeaderCellDef>Frequency</th>
+          <td mat-cell *matCellDef="let element">{{element.frequency}}</td>
         </ng-container>
 
         <ng-container matColumnDef="create_date">

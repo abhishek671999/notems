@@ -49,14 +49,17 @@ export class AddSaleComponent {
     }
   );
     this.customerList = data.customerList
+    this.visibleCustomerList = this.customerList
   }
+
+  public visibleCustomerList: customer[] = []
   public customerList: customer[];
   public beatId: number = 0;
   public location: string = '';
   public itemsAdded: item[] = []
   public itemListColumns = ['sl_no', 'item_name', 'item_price', 'quantity'];
   
-
+  public files: File[] = []
   public file: File | null = null;
   outputBoxVisible = false;
   progress = `0%`;
@@ -157,14 +160,27 @@ export class AddSaleComponent {
     this.outputBoxVisible = true;
     this.progress = `0%`;
     this.uploadResult = '';
-      this.fileName = '';
-      this.fileSize = '';
+    this.fileName = '';
+    this.fileSize = '';
     this.uploadStatus = undefined;
+    debugger
     this.file = event.dataTransfer?.files[0] || event.target?.files[0];
     if(this.file){
       this.fileName = this.file.name;
       this.fileSize = `${(this.file.size / 1024).toFixed(2)} KB`;
     }
     
+  }
+
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
   }
 }

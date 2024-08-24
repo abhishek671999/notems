@@ -1,16 +1,16 @@
 <div class="main-container">
   <h2 style="text-align: center; margin: 0;">View sales</h2>
   <div class="beat-info-section">
-    <h3>Beat id: {{beatInfo?.beat_id}}</h3>
-    <h3>Title: {{beatInfo?.title}}</h3>
-    <h3>Description: {{beatInfo?.description}}</h3>
-    <h3>Created at: {{beatInfo?.created_at}}</h3>
-    <button mat-button [matMenuTriggerFor]="menu" style="color: black;"><h3>Customers</h3></button>
+    <h4>Beat id: {{beatInfo?.beat_id}}</h4>
+    <h4>Title: {{beatInfo?.title}}</h4>
+    <h4>Description: {{beatInfo?.description}}</h4>
+    <h4>Created at: {{beatInfo?.created_at}}</h4>
+    <button mat-button matBadge="{{beatInfo?.customers?.length}}" matBadgeSize="large" [matMenuTriggerFor]="menu" style="color: black; width: max-content;" ><h3 style="text-decoration: underline;">Customers↓</h3></button>
       <mat-menu #menu="matMenu">
         <ng-container *ngFor="let customer of beatInfo?.customers">
           <p style="padding-left: 1em">{{customer?.customer_name}}</p>
         </ng-container>
-      </mat-menu>
+    </mat-menu>
   </div>
   <div class="sub-header-section">
     <h3>Total amount: {{totalAmount}}</h3>
@@ -68,4 +68,17 @@
       <tr mat-row *matRowDef="let row; columns: salesSourceColumns;"></tr>
     </table>
   </div>
+
+  <mat-paginator #paginator
+    class="demo-paginator"
+    (page)="handlePageEvent($event)"
+    [length]="length"
+    [pageSize]="pageSize"
+    [showFirstLastButtons]="showFirstLastButtons"
+    [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+    [hidePageSize]="hidePageSize"
+    [pageIndex]="pageIndex"
+    aria-label="Select page">
+  </mat-paginator>
+
 </div>

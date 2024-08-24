@@ -1,5 +1,6 @@
 .main-container{
-    height: 80vh;
+    min-height: 80vh;
+    max-height: fit-content;
 }
 
 .filter-section{

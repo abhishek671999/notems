@@ -11,6 +11,7 @@ import { HttpParams } from '@angular/common/http';
 import { getTasks, task } from '../../../shared/custom_dtypes/tasks';
 import { EditVisitsInfoComponent } from '../../shared/dialog-box/edit-visits-info/edit-visits-info.component';
 import { AddVisitComponent } from '../../shared/dialog-box/add-visit/add-visit.component';
+import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.component';
 
 @Component({
   selector: 'app-visits',
@@ -52,7 +53,7 @@ export class VisitsComponent {
     'Filter complaint']
 
   public visitsDataSource: task[] = []
-  public visitsTableColumns: string[] = ['sl_no', 'type_name', 'title', 'customer', 'status', 'added_by', 'description', 'note', 'edit']
+  public visitsTableColumns: string[] = ['sl_no', 'type_name', 'title', 'customer', 'status', 'added_by', 'description', 'location', 'edit']
 
   public salesInvoiceTableColumns: string[] = []
 
@@ -62,7 +63,6 @@ export class VisitsComponent {
       this.beatId = params['beat_id']
       this.fetchBeatInfo()
       this.fetchTasks()
-
     })
   }
 
@@ -78,7 +78,7 @@ export class VisitsComponent {
   }
 
   addTask() {
-    let matdialogRef = this.matdialog.open(AddVisitComponent, {data: {beatId: this.beatId}})
+    let matdialogRef = this.matdialog.open(AddVisitComponent, {data: {beatId: this.beatId, customerList: this.beatInfo?.customers}})
     matdialogRef.afterClosed().subscribe(
       (data: any) => {
         if(data?.result) this.ngOnInit()
@@ -111,12 +111,8 @@ export class VisitsComponent {
     )
   }
 
-  click() {
-    this.router.navigate(['..'])
-  }
-
   editVisits(visit: task){
-    let matdialogRef = this.matdialog.open(EditVisitsInfoComponent, {data: {visit: visit}})
+    let matdialogRef = this.matdialog.open(EditVisitsInfoComponent, {data: {visit: visit, customerList: this.beatInfo?.customers}})
     matdialogRef.afterClosed().subscribe(
       (data: any) => {
         if(data?.result){
@@ -125,4 +121,12 @@ export class VisitsComponent {
       }
     )
   }
+
+  openLocationScreen(attendence: any) {
+    let location = attendence.split(',');
+    this.matdialog.open(MapViewComponent, {
+      data: { longitude: location[1], latitude: location[0] },
+    });
+  }
+
 }
