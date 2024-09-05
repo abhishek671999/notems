@@ -84,23 +84,24 @@ export class ItemsComponent {
   }
 
   submitEditItem(item: item) {
-    console.log(item)
-    let body: editItem = {
-      item_id: item.item_id,
-      item_name: item.item_name,
-      price: item.price,
-      category_id: item.category_id
-    }
-    console.log(body)
-    this.itemService.editItems(body).subscribe(
-      (data: any) => {
-        item.is_edit = !item.is_edit
-        item.category_name = this.categoryList.filter((category: any) => category.category_id == item.category_id)[0]['category_name']
-      },
-      (error: any) => {
-        alert('Failed to update item. Please retry')
+      console.log(item)
+      let body: editItem = {
+        item_id: item.item_id,
+        item_name: item.item_name,
+        price: item.price,
+        category_id: item.category_id
       }
-    )
+      console.log(body)
+      this.itemService.editItems(body).subscribe(
+        (data: any) => {
+          item.is_edit = false
+          item.category_name = this.categoryList.filter((category: any) => category.category_id == item.category_id)[0]['category_name']
+        },
+        (error: any) => {
+          alert('Failed to update item. Please retry')
+        }
+      )
+    
   }
 
   deleteItem(item: item) {

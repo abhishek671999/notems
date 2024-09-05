@@ -16,7 +16,7 @@
               {{element.category_name}}
             </div>
             <mat-form-field *ngIf="element.is_edit">
-              <input type="text" matInput [(ngModel)]="element.category_name" (blur)="editSubmit(element)" [disabled]="!element.is_edit">
+              <input type="text" matInput [(ngModel)]="element.category_name" (keydown.enter)="editSubmit(element)" (blur)="editSubmit(element)" [disabled]="!element.is_edit">
             </mat-form-field>
           </td>
         </ng-container>

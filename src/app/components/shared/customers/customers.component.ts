@@ -4,18 +4,21 @@ import { HttpParams } from '@angular/common/http';
 import { sessionWrapper } from '../../../shared/site-variables';
 import {
   addCustomer,
+  customer,
   deleteCustomer,
 } from '../../../shared/custom_dtypes/customers';
 import { MatDialog } from '@angular/material/dialog';
-import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
-import { SuccessMsgComponent } from '../../shared/dialog-box/success-msg/success-msg.component';
-import { ErrorMsgComponent } from '../../shared/dialog-box/error-msg/error-msg.component';
-import { EditCustomerProspectComponent } from '../dialog-box/edit-customer-prospect/edit-customer-prospect.component';
-import { ConfirmationBoxComponent } from '../../shared/dialog-box/confirmation-box/confirmation-box.component';
+import { AddCustomerComponent } from '../../manager-view/dialog-box/add-customer/add-customer.component';
+import { SuccessMsgComponent } from '../dialog-box/success-msg/success-msg.component';
+import { ErrorMsgComponent } from '../dialog-box/error-msg/error-msg.component';
+import { EditCustomerProspectComponent } from '../../manager-view/dialog-box/edit-customer-prospect/edit-customer-prospect.component';
+import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { locality } from '../../../shared/custom_dtypes/locality';
 import { LocalityService } from '../../../shared/services/locality/locality.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { PayLumpsumComponent } from '../bottom-sheet/pay-lumpsum/pay-lumpsum.component';
 
 @Component({
   selector: 'app-customers',
@@ -28,7 +31,8 @@ export class CustomersComponent {
     private localityService: LocalityService,
     private sessionWrapper: sessionWrapper,
     private matDialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private matsheet: MatBottomSheet
   ) {}
 
 
@@ -49,10 +53,11 @@ export class CustomersComponent {
     'outlet_name',
     'type_name',
     'contact_persons_details',
+    'pending_amount',
+    'pay_pending_amount',
     'address',
     'locality',
     'gst_no',
-    'note',
     'edit',
     'delete',
   ];
@@ -151,5 +156,16 @@ export class CustomersComponent {
 
   redirectToLocalities() {
     this.router.navigate(['./manager/localities'])
+  }
+
+  openPaylumpsumSheet(customer: customer){
+    let matsheetRef = this.matsheet.open(PayLumpsumComponent, {data: customer})
+    matsheetRef.afterDismissed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.ngOnInit()
+        }
+      }
+    )
   }
 }

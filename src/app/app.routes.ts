@@ -36,6 +36,11 @@ export const routes: Routes = [
         loadChildren: () => import('./components/staff-view/home/home.module').then(m => m.HomeModule)
     },
     {
+        path: 'general',
+        canActivate: [authGuard2],
+        loadChildren: () => import('./components/shared/shared-modules/shared-modules.module').then(m => m.SharedModulesModule)
+    },
+    {
         path: 'test',
         canActivate: [authGuard2],
         component: TestComponent

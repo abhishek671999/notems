@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { host } from '../../site-variables';
-import { addCustomer, deleteCustomer, editCustomer } from '../../custom_dtypes/customers';
+import { addCustomer, deleteCustomer, editCustomer, payCustomerPendingAmount } from '../../custom_dtypes/customers';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,8 @@ export class CustomersService {
   private getCustomerEndpoint = host + 'customers/get_customers/'
   private editCustomerEndpoint = host + 'customers/edit_customer/'
   private deleteCustomerEndpoint = host + 'customers/delete_customer/'
+  private paylumpsumEndpoint = host + 'customers/record_customer_payment/'
+  
 
   constructor(private httpClient: HttpClient) { }
 
@@ -29,5 +31,9 @@ export class CustomersService {
 
   deleteCustomer(body: deleteCustomer) {
     return this.httpClient.delete(this.deleteCustomerEndpoint, {body: body})
+  }
+
+  paylumpsumAmount(body: payCustomerPendingAmount){
+    return this.httpClient.post(this.paylumpsumEndpoint, body)
   }
 }

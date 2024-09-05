@@ -16,7 +16,7 @@
                 </div>
                 <mat-form-field *ngIf="element.is_edit">
                   <mat-label>Enter team name</mat-label>
-                  <input type="text" (click)="$event.stopPropagation()" matInput [(ngModel)]="element.team_name" (blur)="submitEditTeam(element)" [disabled]="!element.is_edit">
+                  <input type="text" (click)="$event.stopPropagation()" matInput [(ngModel)]="element.team_name" (keydown.enter)="submitEditTeam(element)" (blur)="submitEditTeam(element)" [disabled]="!element.is_edit">
                 </mat-form-field>
               </div>
               <mat-form-field *ngIf="!element.team_name" class="float-above">

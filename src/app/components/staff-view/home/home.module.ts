@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import { AttendenceComponent } from '../attendence/attendence.component';
-import { SharedModulesModule } from '../../../shared/services/shared-modules/shared-modules.module';
+import { SharedModulesModule } from '../../shared/shared-modules/shared-modules.module';
 import { HomeComponent } from './home.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FullCalendarModule } from '@fullcalendar/angular';

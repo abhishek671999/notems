@@ -20,7 +20,7 @@
             {{element.item_name}}
           </div>
           <mat-form-field *ngIf="element.is_edit">
-            <input type="text" matInput [(ngModel)]="element.item_name" (blur)="submitEditItem(element)" [disabled]="!element.is_edit">
+            <input type="text" matInput [(ngModel)]="element.item_name" (keydown.enter)="submitEditItem(element)" (blur)="submitEditItem(element)" [disabled]="!element.is_edit">
           </mat-form-field>
         </td>
       </ng-container>
@@ -32,7 +32,7 @@
             {{element.price}}
           </div>
           <mat-form-field *ngIf="element.is_edit">
-            <input type="number" matInput [(ngModel)]="element.price" (blur)="submitEditItem(element)" [disabled]="!element.is_edit">
+            <input type="number" matInput [(ngModel)]="element.price" (keydown.enter)="submitEditItem(element)" (blur)="submitEditItem(element)" [disabled]="!element.is_edit">
           </mat-form-field>
         </td>
       </ng-container>

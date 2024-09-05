@@ -30,9 +30,9 @@ export class HeaderComponent {
         name: 'Attendence',
         action: () => this.router.navigate(['./manager/attendence/leave'])
       },
-      'customer_manager': {
+      'customer': {
         name: 'Customer',
-        action : () => this.router.navigate(['./manager/customers'])
+        action : () => this.router.navigate(['./general/customers'])
       },
       'items_manager': {
         name: 'Items',
@@ -81,7 +81,7 @@ export class HeaderComponent {
     addManagerNavOptions(organaization: any){
       this.location = organaization.organization_name
       let managerNavOptions: Array<string>
-      managerNavOptions = ['profile', 'calendar', 'analytics','task_management', 'team_management', 'attendence', 'customer_manager', 'items_manager']
+      managerNavOptions = ['profile', 'calendar', 'analytics','task_management', 'team_management', 'attendence', 'customer', 'items_manager']
       for(let option of managerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -90,7 +90,7 @@ export class HeaderComponent {
     }
 
     addTeamManagerNavOptions(team: team){
-      let teamManagerNavOptions = ['profile', 'task_management', 'staff_analytics', 'staff_attendence', 'staff_leave_history']
+      let teamManagerNavOptions = ['profile', 'task_management', 'staff_analytics', 'staff_attendence', 'customer' ,'staff_leave_history']
       for(let option of teamManagerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -100,7 +100,7 @@ export class HeaderComponent {
   
 
   addStaffNavOptions(team: any){
-    let staffNavOptions = ['profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'staff_leave_history']
+    let staffNavOptions = ['profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'customer', 'staff_leave_history']
     for(let option of staffNavOptions){
       if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
         this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])

@@ -78,7 +78,10 @@ export class VisitsComponent {
   }
 
   addTask() {
-    let matdialogRef = this.matdialog.open(AddVisitComponent, {data: {beatId: this.beatId, customerList: this.beatInfo?.customers}})
+    let matdialogRef = this.matdialog.open(AddVisitComponent, {
+      height: 'auto', width: '90%',
+      data: {beatId: this.beatId, customerList: this.beatInfo?.customers}
+    })
     matdialogRef.afterClosed().subscribe(
       (data: any) => {
         if(data?.result) this.ngOnInit()

@@ -27,6 +27,7 @@ export type addCustomer = {
 
 export type customer = {
     customer_name?: string,
+    pending_amount: number,
     "customer_id": number,
     "type": string,
     "outlet_name": string,
@@ -38,4 +39,9 @@ export type customer = {
     "organization_id": number,
     "created_at": string,
     "created_by": string
+}
+
+export type payCustomerPendingAmount = {
+    "customer_id": number,
+    "paid_amount" : number
 }

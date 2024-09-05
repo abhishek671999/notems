@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
-import { SharedModulesModule } from '../../../shared/services/shared-modules/shared-modules.module';
+import { SharedModulesModule } from '../../shared/shared-modules/shared-modules.module';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,7 @@ import { AttendenceTrackerComponent } from '../leave-management/attendence-track
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
-import { CustomersComponent } from '../customers/customers.component';
+import { CustomersComponent } from '../../shared/customers/customers.component';
 import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';

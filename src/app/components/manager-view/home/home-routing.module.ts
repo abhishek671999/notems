@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
-import { CustomersComponent } from '../customers/customers.component';
+import { CustomersComponent } from '../../shared/customers/customers.component';
 import { ItemsComponent } from '../../shared/items/items.component';
 import { TeamManagementComponent } from '../team-management-home/team-management/team-management.component';
 import { CalendarComponent } from '../calendar/calendar.component';

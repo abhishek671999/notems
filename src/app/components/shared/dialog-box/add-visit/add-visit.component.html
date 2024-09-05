@@ -4,25 +4,33 @@
         <mat-form-field>
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id" >
-                <input matInput (input)="onKey($event)" placeholder="Type to search...">
+                <mat-form-field>
+                    <input matInput (input)="onKey($event)" placeholder="Type to search...">
+                    <mat-icon matPrefix class="edit-icon">search</mat-icon>
+                </mat-form-field>
+
                 <mat-option *ngFor="let customer of visibleCustomerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field >
+
+        <mat-form-field>
             <mat-label>Enter a title</mat-label>
             <input matInput placeholder="Title" formControlName="title">
         </mat-form-field>
+
         <mat-form-field>
             <mat-label>Select status</mat-label>
             <mat-select formControlName="status" >
                 <mat-option *ngFor="let status of availableStatus; let i=index" [value]="i">{{status}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field >
+
+        <mat-form-field>
             <mat-label>Enter a description</mat-label>
             <input matInput placeholder="description" formControlName="description">
         </mat-form-field>
-        <mat-form-field >
+
+        <mat-form-field>
             <mat-label>Enter a note</mat-label>
             <input matInput placeholder="Note" formControlName="note">
         </mat-form-field>
