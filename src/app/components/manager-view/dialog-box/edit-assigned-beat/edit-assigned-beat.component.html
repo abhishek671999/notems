@@ -81,7 +81,7 @@
         
                 <ng-container matColumnDef="assign">
                     <th mat-header-cell *matHeaderCellDef>Assign beat</th>
-                    <td mat-cell *matCellDef="let element"><button [disabled]="!(element.assignee_id && assignBeatValidation())" (click)="assignBeat(element)" mat-raised-button>Assign</button></td>
+                    <td mat-cell *matCellDef="let element"><button [disabled]="!(element.assignee_id && assignBeatValidation())" (click)="editBeat(element)" mat-raised-button>Assign</button></td>
                 </ng-container>
         
                 <tr mat-header-row *matHeaderRowDef="beatsSourceColumns"></tr>
@@ -89,7 +89,6 @@
             </table>
         </div>
 </div>
-
 <mat-dialog-actions>
     <button mat-raised-button (click)="closeDialog()">Done</button>
 </mat-dialog-actions>

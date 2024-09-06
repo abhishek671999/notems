@@ -12,3 +12,15 @@ export type beat = {
     customers: customer[],
     assignee_id: number | null
 }
+
+assgineeBeats = {
+    "beat_assignee_id": number,
+    "beat_id": number,
+    "beat_title": string,
+    "assignee_id": number,
+    "assignee_name": string,
+    "type": number,
+    "date":  string,
+    "days": any,
+    "frequency": string
+}

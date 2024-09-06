@@ -37,7 +37,7 @@ export class ItemsComponent {
   public newItem: FormGroup;
   public itemSource: any[] = []
   public categoryList: any[] = []
-  public itemsTableColumns = ['sl_no', 'name', 'category', 'price', 'edit', 'delete']
+  public itemsTableColumns = ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'delete']
   
   ngOnInit() {
     let httpParams = new HttpParams()
@@ -89,7 +89,8 @@ export class ItemsComponent {
         item_id: item.item_id,
         item_name: item.item_name,
         price: item.price,
-        category_id: item.category_id
+        category_id: item.category_id,
+        stock: item.stock
       }
       console.log(body)
       this.itemService.editItems(body).subscribe(

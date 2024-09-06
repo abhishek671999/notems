@@ -121,6 +121,19 @@ export class sessionWrapper {
     }
   }
 
+  setTeamSessionVariables(team: any){
+    sessionStorage.setItem('organization_id', team['organization_id'])
+    if(String(team['role']).toLowerCase() == 'team member') sessionStorage.setItem('is_team_member', 'true')
+    if(String(team['role']).toLowerCase() == 'manager') sessionStorage.setItem('is_team_manager', 'true')
+    if(team['team_type']) sessionStorage.setItem('team_type', team['team_type'].toLowerCase())
+  }
+
+  setOrgSessionVariables(org: any){
+    sessionStorage.setItem('organization_id', org['organization_id'])
+    sessionStorage.setItem('organization_name', org['organization_name'])
+    if (String(org['role']).toLowerCase() == 'manager') sessionStorage.setItem('is_org_manager', 'true')
+  }
+
   isTeamManager(){
     return this.getItem('is_team_manager') == 'true' ? true: false
   }

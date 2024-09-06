@@ -36,6 +36,18 @@
           </mat-form-field>
         </td>
       </ng-container>
+
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef> Stock </th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="!element.is_edit">
+            {{element.stock}}
+          </div>
+          <mat-form-field *ngIf="element.is_edit">
+            <input type="number" matInput [(ngModel)]="element.stock" (keydown.enter)="submitEditItem(element)" (blur)="submitEditItem(element)" [disabled]="!element.is_edit">
+          </mat-form-field>
+        </td>
+      </ng-container>
   
       <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef> Category </th>

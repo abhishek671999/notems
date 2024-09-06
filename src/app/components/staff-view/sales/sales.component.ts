@@ -7,7 +7,8 @@ import { ViewMoreSalesInfoComponent } from '../../shared/dialog-box/view-more-sa
 import { EditSalesInfoComponent } from '../../shared/dialog-box/edit-sales-info/edit-sales-info.component';
 import { HttpParams } from '@angular/common/http';
 import { beat } from '../../../shared/custom_dtypes/beats';
-import { sale } from '../../../shared/custom_dtypes/sales';
+import { getSales, sale } from '../../../shared/custom_dtypes/sales';
+import { dateUtils } from '../../../shared/utils/date_utils';
 
 @Component({
   selector: 'app-sales',
@@ -19,9 +20,11 @@ export class SalesComponent {
   constructor(
     private route: ActivatedRoute,
     private taskService: TaskManagementService,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private dateUtils: dateUtils
   ) { }
 
+  public selectedDate: string = ''
   public beatId: number = 0
   public salesInvoiceDataSource: [] = []
   public salesInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount', 'more', 'edit']
@@ -37,9 +40,10 @@ export class SalesComponent {
   }
 
   fetchSales(){
-    let body = {
+    let body: getSales = {
       beat_id: this.beatId,
     };
+    if(this.selectedDate) body['date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedDate))
     this.taskService.getSales(body).subscribe(
       (data: any) => {
         this.salesInvoiceDataSource = data['sale_invoices']

@@ -13,6 +13,8 @@ import { team } from '../../../../shared/custom_dtypes/team';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { MatSelect } from '@angular/material/select';
+import { LocalityService } from '../../../../shared/services/locality/locality.service';
+import { locality } from '../../../../shared/custom_dtypes/locality';
 
 @Component({
   selector: 'app-add-beat',
@@ -25,6 +27,7 @@ export class AddBeatComponent {
     private tasksService: TaskManagementService,
     private teamService: TeamManagementService,
     private customerService: CustomersService,
+    private localityService: LocalityService,
     private sessionWrapper: sessionWrapper,
     private dateUtils: dateUtils,
     private formBuilder: FormBuilder,
@@ -37,7 +40,8 @@ export class AddBeatComponent {
       "customer_list": [, [Validators.required]],
       "title": ['', [Validators.required]],
       "note": ['', Validators.required],
-      "description": ['', [Validators.required]]
+      "description": ['', [Validators.required]],
+      "locality_id": ['', [Validators.required]]
     })
   }
   
@@ -45,6 +49,7 @@ export class AddBeatComponent {
   public newBeat: FormGroup;
   public teams: team[] = [];
   public customerList: customer[] = []
+  public localityList: locality[] = []
   public visibleCustomerList: customer[] = []
 
   ngOnInit() {
@@ -58,6 +63,20 @@ export class AddBeatComponent {
     )
 
     this.fetchCustomer()
+    this.fetchLocalities()
+  }
+
+  fetchLocalities(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    this.localityService.getLocalities(httpParams).subscribe(
+      (data: any) => {
+        this.localityList = data['localities']
+      },
+      (error: any) => {
+        alert('Failed to fetch localities')
+      }
+    )
   }
 
   fetchCustomer(){
@@ -86,7 +105,7 @@ export class AddBeatComponent {
   addBeatCall() {
     let body: addBeat = {
       team_id: this.newBeat.value.team_id,
-      customer_list: this.newBeat.value.customer_list,
+      locality_id: this.newBeat.value.locality_id,
       title: this.newBeat.value.title,
       note: this.newBeat.value.note,
       description: this.newBeat.value.description

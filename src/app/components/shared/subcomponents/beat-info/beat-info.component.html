@@ -1,0 +1,13 @@
+
+<div class="beat-info-section">
+    <h4>Beat id: {{beatInfo?.beat_id}}</h4>
+    <h4>Title: {{beatInfo?.title}}</h4>
+    <h4>Description: {{beatInfo?.description}}</h4>
+    <h4>Created at: {{beatInfo?.created_at}}</h4>
+    <button mat-button matBadge="{{beatInfo?.customers?.length}}" matBadgeSize="large" [matMenuTriggerFor]="menu" style="color: black; width: max-content;" ><h3 style="text-decoration: underline;">Customers↓</h3></button>
+        <mat-menu #menu="matMenu">
+        <ng-container *ngFor="let customer of beatInfo?.customers">
+            <p style="padding-left: 1em">{{customer?.customer_name}}</p>
+        </ng-container>
+    </mat-menu>
+</div>

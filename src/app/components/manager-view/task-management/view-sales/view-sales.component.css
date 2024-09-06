@@ -9,6 +9,12 @@
     overflow: auto;
 }
 
+.header-section{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
 .filter-section{
     text-align: center;
 }

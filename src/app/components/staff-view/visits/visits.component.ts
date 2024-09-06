@@ -12,6 +12,7 @@ import { getTasks, task } from '../../../shared/custom_dtypes/tasks';
 import { EditVisitsInfoComponent } from '../../shared/dialog-box/edit-visits-info/edit-visits-info.component';
 import { AddVisitComponent } from '../../shared/dialog-box/add-visit/add-visit.component';
 import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.component';
+import { dateUtils } from '../../../shared/utils/date_utils';
 
 @Component({
   selector: 'app-visits',
@@ -26,7 +27,8 @@ export class VisitsComponent {
     private formBuilder: FormBuilder,
     private sessionWrapper: sessionWrapper,
     private matdialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private dateUtils: dateUtils
   ) {
     this.newTask = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
@@ -37,7 +39,7 @@ export class VisitsComponent {
     })
    }
 
-  private beatId = 0
+  public beatId = 0
 
   public beatInfo: beat | undefined;
   public newTask: FormGroup;
@@ -52,13 +54,13 @@ export class VisitsComponent {
     'Product complaint', 
     'Filter complaint']
 
+  public selectedDate: string = ''
   public visitsDataSource: task[] = []
   public visitsTableColumns: string[] = ['sl_no', 'type_name', 'title', 'customer', 'status', 'added_by', 'description', 'location', 'edit']
 
   public salesInvoiceTableColumns: string[] = []
 
   ngOnInit() {
-
     this.route.params.subscribe((params: Params) => {
       this.beatId = params['beat_id']
       this.fetchBeatInfo()
@@ -106,6 +108,7 @@ export class VisitsComponent {
     let body: getTasks = {
       beat_id: this.beatId
     }
+    if(this.selectedDate) body['date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedDate))
     this.taskService.getTasks(body).subscribe(
       (data: any) => {
         this.visitsDataSource = data['tasks']

@@ -37,6 +37,9 @@ import { LocalityComponent } from '../locality/locality.component';
 import { SharedModulesRoutingModule } from './shared-modules-routing.module';
 import { HomeComponent } from '../home/home.component';
 import { PayLumpsumComponent } from '../bottom-sheet/pay-lumpsum/pay-lumpsum.component';
+import { BeatInfoComponent } from '../subcomponents/beat-info/beat-info.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -64,7 +67,8 @@ import { PayLumpsumComponent } from '../bottom-sheet/pay-lumpsum/pay-lumpsum.com
     SalesMoreInfoComponent,
     PageNotFoundComponent,
     SafePipe,
-    HomeComponent
+    HomeComponent,
+    BeatInfoComponent
   ],
   imports: [
     CommonModule, 
@@ -80,8 +84,10 @@ import { PayLumpsumComponent } from '../bottom-sheet/pay-lumpsum/pay-lumpsum.com
     MatDividerModule,
     MatOptionModule,
     MatSelectModule,
-    SharedModulesRoutingModule
+    SharedModulesRoutingModule,
+    MatBadgeModule,
+    MatMenuModule
   ],
-  exports: [HeaderComponent, FooterComponent]
+  exports: [HeaderComponent, FooterComponent, BeatInfoComponent]
 })
 export class SharedModulesModule { }

@@ -50,6 +50,10 @@ export class HeaderComponent {
         name: 'Beats',
         action: () => this.router.navigate(['./staff/beats'])
       },
+      'manager_self_tasks_management': {
+        name: 'Beats',
+        action: () => this.router.navigate(['./manager/beats'])
+      },
       'staff_attendence': {
         name: 'Attendence',
         action: () => this.router.navigate(['./staff/attendence'])
@@ -90,7 +94,7 @@ export class HeaderComponent {
     }
 
     addTeamManagerNavOptions(team: team){
-      let teamManagerNavOptions = ['profile', 'task_management', 'staff_analytics', 'staff_attendence', 'customer' ,'staff_leave_history']
+      let teamManagerNavOptions = ['profile', 'task_management', 'staff_analytics', 'staff_attendence', 'manager_self_tasks_management', 'customer' ,'staff_leave_history']
       for(let option of teamManagerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])

@@ -10,11 +10,13 @@ import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-in
 import { sale } from '../../../../shared/custom_dtypes/sales';
 import { beat } from '../../../../shared/custom_dtypes/beats';
 import { PageEvent } from '@angular/material/paginator';
+import { SharedModulesModule } from '../../../shared/shared-modules/shared-modules.module';
+import { dateUtils } from '../../../../shared/utils/date_utils';
 
 @Component({
   selector: 'app-view-sales',
   templateUrl: './view-sales.component.html',
-  styleUrl: './view-sales.component.css'
+  styleUrl: './view-sales.component.css',
 })
 export class ViewSalesComponent {
 
@@ -23,14 +25,15 @@ export class ViewSalesComponent {
     private taskService: TaskManagementService,
     private customerService: CustomersService,
     private sessionWrapper: sessionWrapper,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private dateUtils: dateUtils
   ) { }
 
-  private beatId: number = 0
+  public beatId: number = 0;
   public salesSource: sale[] = []
   public customerList: customer[] = []
   public selectedCustomer: string = ''
-  public selectedDate: string = ''
+  public selectedDate = new Date()
   public salesSourceColumns = ['sl_no', 'customer', 'received_amount', 'discount', 'recorded_by', 'date', 'note', 'more']
   public beatInfo: beat | undefined
 
@@ -50,7 +53,6 @@ export class ViewSalesComponent {
     this.route.params.subscribe((params: Params) => {
       this.beatId = params['beat_id']
       this.fetchSales()
-      this.fetchBeatDetails()
     })
   }
 
@@ -72,6 +74,7 @@ export class ViewSalesComponent {
       offset: this.pageIndex * this.pageSize,
       count: this.pageIndex * this.pageSize + this.pageSize
     }
+    if(this.selectedDate) body['date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedDate))
     this.taskService.getSales(body).subscribe(
       (data: any) => {
         this.salesSource = data['sale_invoices']
@@ -81,19 +84,6 @@ export class ViewSalesComponent {
         this.length = data['total_count']
       },
       (error: any) => console.log(error)
-    )
-  }
-
-  fetchBeatDetails(){
-    let httpParams = new HttpParams()
-    httpParams = httpParams.append('beat_id', this.beatId)
-    this.taskService.getDailyBeats(httpParams).subscribe(
-      (data: any) => {
-        this.beatInfo = data['beats'][0]
-      },
-      (error: any) => {
-        alert('Failed to fetch beat info')
-      }
     )
   }
 

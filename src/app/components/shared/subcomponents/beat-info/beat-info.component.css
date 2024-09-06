@@ -1,0 +1,9 @@
+.beat-info-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.beat-info-section h4{
+    margin: 0;
+}

@@ -13,6 +13,8 @@ import { editBeat } from '../../../../shared/custom_dtypes/tasks';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
 import { MatSelect } from '@angular/material/select';
+import { locality } from '../../../../shared/custom_dtypes/locality';
+import { LocalityService } from '../../../../shared/services/locality/locality.service';
 
 @Component({
   selector: 'app-edit-beat',
@@ -24,6 +26,7 @@ export class EditBeatComponent {
     private tasksService: TaskManagementService,
     private teamService: TeamManagementService,
     private customerService: CustomersService,
+    private localityService: LocalityService,
     private sessionWrapper: sessionWrapper,
     private dateUtils: dateUtils,
     private formBuilder: FormBuilder,
@@ -37,7 +40,7 @@ export class EditBeatComponent {
     this.visibleCustomerList = this.customerList
     this.editBeatForm = this.formBuilder.group({
       "team_id": [data.beat.team_id, [Validators.required]],
-      "customer_list": [data.beat.customer_list, [Validators.required]],
+      "locality_id": [data.beat.locality_id, [Validators.required]],
       "title": [data.beat.title, [Validators.required]],
       "note": [data.beat.note, Validators.required],
       "description": [data.beat.description, [Validators.required]]
@@ -48,6 +51,7 @@ export class EditBeatComponent {
   public editBeatForm: FormGroup;
   public teams: team[] = [];
   public customerList: customer[] = []
+  public localityList: locality[] = []
   public visibleCustomerList: customer[]
 
   ngOnInit() {
@@ -59,12 +63,26 @@ export class EditBeatComponent {
       ,
       (error: any) => console.log(error)
     )
+    this.fetchLocalities()
+  }
+
+  fetchLocalities(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    this.localityService.getLocalities(httpParams).subscribe(
+      (data: any) => {
+        this.localityList = data['localities']
+      },
+      (error: any) => {
+        alert('Failed to fetch localities')
+      }
+    )
   }
 
   editBeatCall() {
     let body: editBeat = {
       team_id: this.editBeatForm.value.team_id,
-      customer_list: this.editBeatForm.value.customer_list,
+      locality_id: this.editBeatForm.value.locality_id,
       title: this.editBeatForm.value.title,
       note: this.editBeatForm.value.note,
       description: this.editBeatForm.value.description,

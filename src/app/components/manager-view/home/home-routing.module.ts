@@ -9,6 +9,7 @@ import { UserManagementComponent } from '../team-management-home/user-management
 import { ProspectsComponent } from '../clients/prospects/prospects.component';
 import { CategoryComponent } from '../../shared/category/category.component';
 import { LocalityComponent } from '../../shared/locality/locality.component';
+import { BeatsComponent } from '../../staff-view/beats/beats.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,7 @@ const routes: Routes = [
       { path: 'user-management/:team_id', component: UserManagementComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'customers', component: CustomersComponent },
-      { path: 'prospects', component: ProspectsComponent },
+      { path: 'beats', component: BeatsComponent},
       {
         path: 'analytics',
         children: [

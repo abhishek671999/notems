@@ -57,7 +57,7 @@ export class BeatsComponent {
   public teams: any;
   public savedBeats: any = [];
   public customerList: customer[] = []
-  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'team_name', 'description', 'customers', 'create_date', 'edit', 'delete']
+  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'team_name', 'team_type', 'description', 'locality_name', 'create_date', 'edit', 'delete']
 
   ngOnInit() {
     {
@@ -101,16 +101,6 @@ export class BeatsComponent {
     )
   }
 
-  openTasks(beat: any) {
-    console.log(beat)
-    if (beat.team_name.toLowerCase() == 'marketing team') {
-      this.router.navigate(['./manager/task/view-visits', beat.beat_id])
-    } else {
-      this.router.navigate(['./manager/task/view-tasks', beat.beat_id])
-    }
-  }
-
-
   deleteBeat(beat: beat, event: Event) {
     event.stopPropagation()
     let matdialogRef = this.matDialog.open(ConfirmationBoxComponent, { data: { msg: 'Are you sure want to delete this beat?' } })
@@ -145,6 +135,18 @@ export class BeatsComponent {
   }
 
   getCustomerName(beat: any){
+    let customerName = ''
+    beat.customer_list.forEach(
+      (customer_id: number, index: number) => 
+        {
+          let filteredCustomer = this.customerList.filter((customer: customer) => customer.customer_id == customer_id)
+          customerName += (filteredCustomer.length > 0)? `${index+1}. ${filteredCustomer[0].outlet_name} <br>` : ''
+        }
+    )
+    return customerName
+  }
+
+  getLocalityName(beat: any){
     let customerName = ''
     beat.customer_list.forEach(
       (customer_id: number, index: number) => 

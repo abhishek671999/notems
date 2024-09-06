@@ -14,6 +14,7 @@ export class TaskManagementService {
   private deleteBeatEndpoint = host + 'tasks/delete_beat/'
   private getAllBeatsEndpoint = host + 'tasks/get_all_beats/'
   private getDailyBeatsEndpoint = host + 'tasks/get_daily_beats/'
+  private getAssigneeBeatsEndpoint = host + 'tasks/get_beat_assignees/'
 
 
   private addTaskEndpoint = host + 'tasks/add_task/'
@@ -32,9 +33,14 @@ export class TaskManagementService {
 
 
   private assignBeatEndpoint = host + 'tasks/assign_beat/'
+  private editAssignedBeatEndpoint = host + 'tasks/edit_beat_assignment/'
   private unassignBeatEndpoint = host + 'tasks/unassign_beat/'
 
   constructor(private httpClient: HttpClient) { }
+
+  getAssigneeBeats(httpParams: HttpParams){
+    return this.httpClient.get(this.getAssigneeBeatsEndpoint, {params: httpParams})
+  }
 
   deleteSaleInvoiceLineItem(body: deleteSaleInvoiceLineItem) {
     return this.httpClient.delete(this.deleteSalesInvoiceLineItemEndpoint, {body: body})
@@ -102,6 +108,10 @@ export class TaskManagementService {
   
   assignBeat(body: assignBeat) {
     return this.httpClient.post(this.assignBeatEndpoint, body)
+  }
+
+  editAssignBeat(body: assignBeat) {
+    return this.httpClient.post(this.editAssignedBeatEndpoint, body)
   }
 
   unassignBeat(body: unassignBeat) {

@@ -7,6 +7,7 @@ import { beat } from '../../../../shared/custom_dtypes/beats';
 import { MatDialog } from '@angular/material/dialog';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { PageEvent } from '@angular/material/paginator';
+import { dateUtils } from '../../../../shared/utils/date_utils';
 
 @Component({
   selector: 'app-view-visits',
@@ -18,13 +19,14 @@ export class ViewVisitsComponent {
   constructor(
     private route: ActivatedRoute,
     private taskService: TaskManagementService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private dateUtils: dateUtils
   ) { }
 
-  private beatId: number = 0
+  public beatId: number = 0
 
   length = 50;
-  pageSize = 20;
+  pageSize = 30;
   pageIndex = 0;
   pageSizeOptions = [5, 20, 50];
   hidePageSize = false;
@@ -34,6 +36,8 @@ export class ViewVisitsComponent {
   public beatInfo: beat | undefined
   public visitsSource = []
   public visitsSourceColumns = ['task_id', 'title', 'customer', 'status', 'description', 'note', 'added_by', 'created_at', 'location']
+
+  public selectedDate = new Date()
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
@@ -49,6 +53,7 @@ export class ViewVisitsComponent {
       offset: this.pageIndex * this.pageSize,
       count: this.pageIndex * this.pageSize + this.pageSize
     }
+    if(this.selectedDate) body['date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedDate))
     this.taskService.getTasks(body).subscribe(
       (data: any) => {
         console.log('data', data)

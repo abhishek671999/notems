@@ -1,27 +1,17 @@
 <h3 mat-dialog-title style="text-align: center;">Add sale</h3>
 <div mat-dialog-content class="main-container">
     <form class="new-task-form" [formGroup]="addSalesForm">
+
         <mat-form-field>
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id" >
-                <mat-option *ngFor="let customer of visibleCustomerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
+              <mat-form-field>
+                <input matInput (input)="onKey($event)" placeholder="Type to search...">
+              </mat-form-field>
+              <mat-option *ngFor="let customer of visibleCustomerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field >
-            <mat-label>Enter discount</mat-label>
-            <input type="number" matInput placeholder="Discount" formControlName="discount">
-            <input matInput (input)="onKey($event)" placeholder="Type to search...">
-                <mat-error *ngIf="addSalesForm.controls['discount'].hasError('required')">Required</mat-error>
-        </mat-form-field>
-        <mat-form-field >
-            <mat-label>Enter received amount</mat-label>
-            <input type="number" matInput placeholder="Received amount" formControlName="received_amount">
-            <mat-error *ngIf="addSalesForm.controls['received_amount'].hasError('required')">Required</mat-error>
-        </mat-form-field>
-        <mat-form-field >
-            <mat-label>Enter a note</mat-label>
-            <input matInput placeholder="Note" formControlName="note">
-        </mat-form-field>
+
         <div *ngIf="itemsAdded.length > 0">
           <table mat-table [dataSource]="itemsAdded">
             <ng-container matColumnDef="sl_no">
@@ -30,7 +20,7 @@
               </ng-container>
             
               <ng-container matColumnDef="item_name">
-                <th mat-header-cell *matHeaderCellDzef>Name</th>
+                <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let element">{{element.item_name}}</td>
               </ng-container>
               
@@ -53,12 +43,33 @@
             <tr mat-row *matRowDef="let row; columns: itemListColumns;"></tr>
         </table>
         </div>
+
         <div style="text-align: center;">
           <button (click)="addItems()"  mat-raised-button>Add items</button>
         </div>
+        
         <div>
           <h3>Total amount: {{addSalesForm.value.amount}}</h3>
         </div>
+
+        <mat-form-field >
+            <mat-label>Enter discount</mat-label>
+            <input type="number" matInput placeholder="Discount" formControlName="discount">
+
+                <mat-error *ngIf="addSalesForm.controls['discount'].hasError('required')">Required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field >
+            <mat-label>Enter received amount</mat-label>
+            <input type="number" matInput placeholder="Received amount" formControlName="received_amount">
+            <mat-error *ngIf="addSalesForm.controls['received_amount'].hasError('required')">Required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field >
+            <mat-label>Enter a note</mat-label>
+            <input matInput placeholder="Note" formControlName="note">
+        </mat-form-field>
+
         <div>
             <form class="upload-form">  
               <label
@@ -106,7 +117,7 @@
 <mat-dialog-actions style="text-align: center;">
   <button mat-raised-button [mat-dialog-close]>Close</button>
   <div>
-    <button [disabled]='!(addSalesForm.valid && itemsAdded.length > 0 && file)' (click)="addSales()" mat-flat-button>Add Sale</button>
+    <button [disabled]='!(addSalesForm.valid && itemsAdded.length > 0 )' (click)="addSales()" mat-flat-button>Add Sale</button>
     <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectDiscount')">Discount should be less than amount</mat-error>
     <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectReceivedAmount')">Received amount should be less than amount</mat-error>
   </div>

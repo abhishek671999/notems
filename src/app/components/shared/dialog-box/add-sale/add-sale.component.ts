@@ -42,7 +42,7 @@ export class AddSaleComponent {
       customer_id: ['', [Validators.required]],
       discount: ['', [Validators.required]],
       received_amount: ['', [Validators.required]],
-      note: ['', [Validators.required]],
+      note: ['', ],
       amount: [0,]
     },{
       validators: [addSalesDiscountValidation(), addSalesReceievedAmountValidation()]
@@ -77,7 +77,6 @@ export class AddSaleComponent {
 
 
   addSales() {
-    if(this.addSalesForm.valid && this.itemsAdded.length > 0 && this.file){
       let body: any = {
         customer_id: this.addSalesForm.value.customer_id,
         discount: this.addSalesForm.value.discount,
@@ -117,9 +116,6 @@ export class AddSaleComponent {
             });
           }
         );
-    }else{
-      this.matsnackBar.open('Invalid entry')
-    }
 
   }
 
@@ -128,6 +124,7 @@ export class AddSaleComponent {
     let dialogRef = this.matDialog.open(AddItemsToSaleComponent, {data: this.itemsAdded})
     dialogRef.afterClosed().subscribe(
       (data: any) => {
+        console.log('data receivd:', data)
         if (data?.length > 0) {
           this.itemsAdded = data
           let totalAmount = 0
@@ -138,8 +135,11 @@ export class AddSaleComponent {
             amount: totalAmount
           })
         }
+        console.log(this.addSalesForm.value.amount, this.addSalesForm.value.discount)
       },
+      
     )
+
   }
 
 

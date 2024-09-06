@@ -2,7 +2,7 @@ import { item } from "./items"
 
 export type addBeat = {
     "team_id": number,
-    customer_list: number[]
+    locality_id: number,
     "title": string,
     "note": string,
     "description": string
@@ -10,7 +10,7 @@ export type addBeat = {
 
 export type editBeat = {   
     "beat_id": number,
-    customer_list: number[],
+    locality_id: number,
     "assignee_id": number,
     "date": string,
     "team_id": number,
@@ -49,6 +49,25 @@ export type deleteTask = {
 export type assignBeat = {
     "beat_id": number,
     "assignee_id": number | null,
+    "date"?: string,
+    "type": number,
+    'days'?: number[]
+}
+
+export type editAssignedBeat = {
+    "beat_id": number,
+    beat_assignee_id: number,       
+    "assignee_id": number | null,
+    "date"?: string,
+    "type": number,
+    'days'?: number[]
+}
+
+export type viewAssignedBeat = {
+    "beat_id": number,
+    beat_assignee_id: number,       
+    "assignee_id": number,
+    "team_id": number
     "date"?: string,
     "type": number,
     'days'?: number[]
@@ -98,6 +117,7 @@ export type getTasks = {
     added_by?: number,
     offset?: number,
     count?: number,
+    date?: string | null
 }
 
 

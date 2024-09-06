@@ -41,7 +41,8 @@ export class EditSalesInfoComponent {
       customer_id: [this.saleData.customer_id, [Validators.required]],
       discount: [this.saleData.discount, [Validators.required]],
       received_amount: [this.saleData.received_amount, [Validators.required]],
-      note: [this.saleData.note, [Validators.required]],
+      note: [this.saleData.note,],
+      amount: [this.saleData.total_amount]
     },{
       validators: [addSalesDiscountValidation(), addSalesDiscountValidation()]
     });
@@ -87,8 +88,6 @@ export class EditSalesInfoComponent {
     );
   }
 
-
-
   areItemsAdded() {
     return (
       this.itemListsource.filter((item: any) => item.quantity > 0).length > 0
@@ -97,13 +96,11 @@ export class EditSalesInfoComponent {
 
 
   handleDragOver(event: DragEvent) {
-    debugger
     event.preventDefault();
     event.stopPropagation();
   }
 
   handleDrop(event: DragEvent) {
-    debugger
     event.preventDefault();
     if (event.dataTransfer) {
       const file: File = event.dataTransfer.files[0];
@@ -112,7 +109,6 @@ export class EditSalesInfoComponent {
   }
 
   onFileSelected(event: any) {
-    debugger
     this.outputBoxVisible = true;
     this.progress = `0%`;
     this.uploadResult = '';
@@ -153,13 +149,13 @@ export class EditSalesInfoComponent {
     ).subscribe(
           (data: any) => {
             this.matDialog.open(SuccessMsgComponent, {
-              data: { msg: 'Sale added successfully' },
+              data: { msg: 'Sale edited successfully' },
             });
             this.matDialogRef.close({result: true})
           },
           (error: any) => {
             this.matDialog.open(ErrorMsgComponent, {
-              data: { msg: 'Failed to add sale' },
+              data: { msg: 'Failed to edit sale' },
             });
           }
         );
@@ -171,12 +167,23 @@ export class EditSalesInfoComponent {
     dialogRef.afterClosed().subscribe(
       (editData: any) => {
         if (editData?.length > 0) {
+          console.log('Edit data received: ', editData)
+          debugger
+          let totalAmount = 0
           let body: updateSalesInvoiceLineItem = {
-            sale_invoice_id: Number(this.data.sale_invoice_id),
+            sale_invoice_id: Number(this.data.sale.sale_invoice_id),
             item_details: editData
           }
           this.taskService.updateSaleInvoiceLineItem(body).subscribe(
-            (data: any) => { this.itemsAdded = editData },
+            (data: any) => { 
+              this.itemsAdded = editData
+              this.itemsAdded.forEach((item: item) => {
+                totalAmount = item.price * (item.quantity? item.quantity: 0)
+              })
+              this.editSalesForm.patchValue({
+                amount: totalAmount
+              })
+             },
             (error: any) => { this.matDialog.open(ErrorMsgComponent, {data: {msg: 'Failed to add line item'}})}
           )
         }

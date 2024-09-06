@@ -19,7 +19,7 @@ export class PayLumpsumComponent {
   ){
     this.payLumpSumForm = this.formbuilder.group({
       customer_id: [data.customer_id, [Validators.required]],
-      paid_amount: [data.pending_amount, [Validators.required, Validators.max(data.pending_amount)]]
+      paid_amount: [0, [Validators.required, Validators.max(data.pending_amount)]]
     })
   }
 

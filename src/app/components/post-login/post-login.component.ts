@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConnectcomponentsService } from '../../shared/services/connectcomponents.service';
-import { meAPIUtility } from '../../shared/site-variables';
+import { meAPIUtility, sessionWrapper } from '../../shared/site-variables';
 import { LoginService } from '../../shared/services/register/login.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,8 @@ export class PostLoginComponent {
     private cc: ConnectcomponentsService, 
     public meAPIUtility: meAPIUtility,
     public loginService: LoginService,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private sessionWrapper: sessionWrapper
   ) { }
   showSpinner = true
   errorOccured = false
@@ -33,23 +34,16 @@ export class PostLoginComponent {
       sessionStorage.setItem('user_id', data['user_id'])
       if (this.myInfo['first_name']) {
         if (this.myInfo['organizations'].length > 0) {
-          sessionStorage.setItem('organization_id', this.myInfo['organizations'][0]['organization_id'])  //hardcode
-          sessionStorage.setItem('organization_name', this.myInfo['organizations'][0]['organization_name']
-          );
+          this.sessionWrapper.setOrgSessionVariables(this.myInfo['organizations'][0])
           if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'manager') {
-            sessionStorage.setItem('is_org_manager', 'true')
             this.router.navigate(['manager/attendence/attendence']);
           }
           else alert('Unknow error in redirection')
         } else if (this.myInfo['teams'].length > 0) {
+          this.sessionWrapper.setTeamSessionVariables(this.myInfo['teams'][0])
           if (String(this.myInfo['teams'][0]['role']).toLowerCase() == 'team member') {
-            sessionStorage.setItem('organization_id', this.myInfo['teams'][0]['organization_id'])  //hardcode
-            sessionStorage.setItem('is_team_member', 'true')
             this.router.navigate(['staff/attendence'])
           } else if(String(this.myInfo['teams'][0]['role']).toLowerCase() == 'manager'){
-            sessionStorage.setItem('organization_id', this.myInfo['teams'][0]['organization_id'])  //hardcode
-            sessionStorage.setItem('is_team_manager', 'true')
-            sessionStorage.setItem('team_type', this.myInfo['teams'][0]['team_type'].toLowerCase())
             this.router.navigate(['manager/task/tasks'])            
           }
           else alert('Unknow error in redirection')
@@ -62,11 +56,10 @@ export class PostLoginComponent {
         }
       } else {
         this.router.navigate(['profile'])
-      }
-      
+      }  
       this.showSpinner = false;
     },
-      error => {
+      (error: any) => {
       alert('Me api load failed')
     });
       

@@ -43,4 +43,5 @@ export type getSales = {
     recorded_by?: number,
     offset?: number,
     count?: number,
+    date?: string | null
 }

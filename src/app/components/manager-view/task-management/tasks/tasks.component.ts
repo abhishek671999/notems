@@ -35,7 +35,7 @@ export class TasksComponent {
   public teamMembers: any = []
   public teamMembersSource: any = []
   public savedBeats: any = [];
-  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'reportee', 'description', 'frequency', 'create_date', 'unassign']
+  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'reportee', 'manager', 'description', 'frequency', 'create_date']
 
   ngOnInit() {
     this.fetchBeats()
@@ -87,9 +87,10 @@ export class TasksComponent {
     if (beat.team_type.toLowerCase() == 'marketing'){
       this.router.navigate(['./manager/task/view-visits', beat.beat_id])
     } else if (beat.team_type.toLowerCase() == 'sales') {
-      this.router.navigate(['./manager/task/view-tasks', beat.beat_id])
+      this.router.navigate(['./manager/task/view-sales', beat.beat_id])
     }
   }
+  
 
   unassignBeat(beat: beat){
     let dialogRef = this.matDialog.open(ConfirmationBoxComponent, {data: {msg: 'Are you sure want to unassign this beat??'}})

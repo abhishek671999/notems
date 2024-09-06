@@ -5,6 +5,7 @@ import { TasksComponent } from '../tasks/tasks.component';
 import { BeatsComponent } from '../beats/beats.component';
 import { ViewVisitsComponent } from '../view-visits/view-visits.component';
 import { ViewSalesComponent } from '../view-sales/view-sales.component';
+import { AssignBeatsComponent } from '../assign-beats/assign-beats.component';
 
 const routes: Routes = [
   {
@@ -13,8 +14,9 @@ const routes: Routes = [
     children: [
       { path: 'tasks', component: TasksComponent },
       { path: 'beats', component: BeatsComponent },
+      { path: 'assign-beats', component: AssignBeatsComponent},
       { path: 'view-visits/:beat_id', component: ViewVisitsComponent },
-      { path: 'view-tasks/:beat_id', component: ViewSalesComponent}
+      { path: 'view-sales/:beat_id', component: ViewSalesComponent}
     ]
   }
 ];

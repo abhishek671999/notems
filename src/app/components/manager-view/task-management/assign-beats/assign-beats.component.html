@@ -1,0 +1,47 @@
+<div class="main-container">
+    <h2 mat-dialog-title>Assign beats</h2>
+    <div>
+        <button (click)="assignBeatDialog()" mat-flat-button>Assign beats</button>
+      </div>
+  
+<div mat-dialog-content>
+        <div>
+            <table mat-table [dataSource]="assigneebeatsSource" class="mat-elevation-z8 demo-table">
+                <ng-container matColumnDef="sl_no">
+                    <th mat-header-cell *matHeaderCellDef>Sl No.</th>
+                    <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
+                </ng-container>
+        
+                <ng-container matColumnDef="beat_title">
+                    <th mat-header-cell *matHeaderCellDef>Title</th>
+                    <td mat-cell *matCellDef="let element">{{element.beat_title}}</td>
+                </ng-container>
+        
+                <ng-container matColumnDef="assignee_name">
+                    <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                    <td mat-cell *matCellDef="let element">{{element.assignee_name}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="frequency">
+                    <th mat-header-cell *matHeaderCellDef>Frequency</th>
+                    <td mat-cell *matCellDef="let element">{{element.frequency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell *matHeaderCellDef>Edit</th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="material-symbols-outlined" (click)="openEditAssignedBeatDialog(element)" >edit</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="unassign">
+                    <th mat-header-cell *matHeaderCellDef>Unassign beat</th>
+                    <td mat-cell *matCellDef="let element"><button (click)="unassignBeat(element)" mat-raised-button>Unassign</button></td>
+                </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="beatsColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: beatsColumns;"></tr>
+            </table>
+        </div>
+</div>
+</div>

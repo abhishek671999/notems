@@ -8,8 +8,8 @@ export function addSalesDiscountValidation(): ValidatorFn {
       const amount = form.get('amount')?.value
 
       if (receivedAmount && discount && amount) {
-          console.log(receivedAmount, discount, amount)
-          return discount < amount - receivedAmount ? null : {incorrectDiscount:true};
+          console.log('received amoumt', receivedAmount, 'discount', discount, 'amount', amount)
+          return discount <= (amount - receivedAmount) ? null : {incorrectDiscount:true};
       }
 
       return null;

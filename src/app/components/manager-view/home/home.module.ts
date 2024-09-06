@@ -21,8 +21,6 @@ import { BeatsComponent } from '../task-management/beats/beats.component';
 import { TasksComponent } from '../task-management/tasks/tasks.component';
 import { AddBeatComponent } from '../dialog-box/add-beat/add-beat.component';
 import { MatSelectModule } from '@angular/material/select';
-import { ViewVisitsComponent } from '../task-management/view-visits/view-visits.component';
-import { ViewSalesComponent } from '../task-management/view-sales/view-sales.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDivider } from '@angular/material/divider';
 import { CalendarComponent } from '../calendar/calendar.component';
@@ -40,6 +38,10 @@ import { LeaveStatusUpdateComponent } from '../bottom-sheet/leave-status-update/
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
+import { AssignBeatsComponent } from '../task-management/assign-beats/assign-beats.component';
+import { AssignBeatComponent } from '../dialog-box/assign-beat/assign-beat.component';
+import { EditAssignedBeatComponent } from '../dialog-box/edit-assigned-beat/edit-assigned-beat.component';
+import { TaskManagementHomeModule } from '../task-management/task-management-home/task-management-home.module';
 
 @NgModule({
   declarations: [
@@ -48,13 +50,12 @@ import { MatBadgeModule } from '@angular/material/badge';
     CustomersComponent,
     ProspectsComponent,
     BeatsComponent,
+    AssignBeatsComponent,
     TasksComponent,
     AddCustomerComponent,
     EditCustomerProspectComponent,
     AddBeatComponent,
     EditBeatComponent,
-    ViewVisitsComponent,
-    ViewSalesComponent,
     CalendarComponent,
     HolidayComponent,
     LeaveComponent,
@@ -63,7 +64,9 @@ import { MatBadgeModule } from '@angular/material/badge';
     AddUserToTeamComponent,
     SalesAnalyticsComponent,
     MarketingAnalyticsComponent,
-    LeaveStatusUpdateComponent
+    LeaveStatusUpdateComponent,
+    AssignBeatComponent,
+    EditAssignedBeatComponent
   ],
   imports: [
     CommonModule,
@@ -90,7 +93,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatBottomSheetModule,
     MatMenuModule,
     MatBadgeModule,
-    MatSelectModule
+    MatSelectModule,
+    TaskManagementHomeModule
   ],
 })
 export class HomeModule {}

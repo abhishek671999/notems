@@ -31,7 +31,9 @@
                     <span (click)="subtractItem(element)" class="material-symbols-outlined icons">
                         do_not_disturb_on
                         </span>
-                    <b>{{element.quantity}}</b>
+                    <b>
+                        <input type="number" style="width: 50px;" [(ngModel)]="element.quantity">
+                    </b>
 
                     <span (click)="addItem(element)" class="material-symbols-outlined icons">
                         add_circle

@@ -1,17 +1,24 @@
 <div class="main-container">
   <h2 style="text-align: center; margin: 0;">View sales</h2>
-  <div class="beat-info-section">
-    <h4>Beat id: {{beatInfo?.beat_id}}</h4>
-    <h4>Title: {{beatInfo?.title}}</h4>
-    <h4>Description: {{beatInfo?.description}}</h4>
-    <h4>Created at: {{beatInfo?.created_at}}</h4>
-    <button mat-button matBadge="{{beatInfo?.customers?.length}}" matBadgeSize="large" [matMenuTriggerFor]="menu" style="color: black; width: max-content;" ><h3 style="text-decoration: underline;">Customers↓</h3></button>
-      <mat-menu #menu="matMenu">
-        <ng-container *ngFor="let customer of beatInfo?.customers">
-          <p style="padding-left: 1em">{{customer?.customer_name}}</p>
-        </ng-container>
-    </mat-menu>
+
+  <div class="header-section">
+    <app-beat-info [beatId]="beatId"></app-beat-info>
+    <div class="filter-section">
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [(ngModel)]="selectedDate" [matDatepicker]="datepicker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancel</button>
+            <button mat-raised-button matDatepickerApply (click)="fetchSales()">Apply</button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
   </div>
+
   <div class="sub-header-section">
     <h3>Total amount: {{totalAmount}}</h3>
     <h3>Total amount received: {{totalAmountReceived}}</h3>
@@ -68,17 +75,5 @@
       <tr mat-row *matRowDef="let row; columns: salesSourceColumns;"></tr>
     </table>
   </div>
-
-  <mat-paginator #paginator
-    class="demo-paginator"
-    (page)="handlePageEvent($event)"
-    [length]="length"
-    [pageSize]="pageSize"
-    [showFirstLastButtons]="showFirstLastButtons"
-    [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
-    [hidePageSize]="hidePageSize"
-    [pageIndex]="pageIndex"
-    aria-label="Select page">
-  </mat-paginator>
 
 </div>

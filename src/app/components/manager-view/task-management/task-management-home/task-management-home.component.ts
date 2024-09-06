@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class TaskManagementHomeComponent {
   managementPages = [
     {name: 'Board' , href: `tasks`},
-    {name: 'Beats', href: "beats"} ,
+    {name: 'Beats', href: "beats"},
+    {name: 'Assign beats', href: 'assign-beats'}
   ]
 }

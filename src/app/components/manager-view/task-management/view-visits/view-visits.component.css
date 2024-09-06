@@ -4,6 +4,12 @@
     max-height: fit-content;
 }
 
+.header-section{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
 .beat-info-section{
     display: flex;
     justify-content: center;

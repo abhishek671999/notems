@@ -59,12 +59,13 @@ export class CustomersComponent {
     'locality',
     'gst_no',
     'edit',
-    'delete',
   ];
+
 
   ngOnInit() {
     this.fetchLocality()
     this.fetchCustomers()
+    if(this.sessionWrapper.isOrgManager() || this.sessionWrapper.isTeamManager()) this.customerTableColumns.push('delete');
   }
 
   fetchLocality(){

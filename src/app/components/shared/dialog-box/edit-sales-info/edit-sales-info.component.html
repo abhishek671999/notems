@@ -7,18 +7,7 @@
                 <mat-option *ngFor="let customer of customerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field >
-            <mat-label>Enter discount</mat-label>
-            <input matInput placeholder="Discount" formControlName="discount">
-        </mat-form-field>
-        <mat-form-field >
-            <mat-label>Enter received amount</mat-label>
-            <input matInput placeholder="Received amount" formControlName="received_amount">
-        </mat-form-field>
-        <mat-form-field >
-            <mat-label>Enter a note</mat-label>
-            <input matInput placeholder="Note" formControlName="note">
-        </mat-form-field>
+
         <div *ngIf="itemsAdded.length > 0">
           <table mat-table [dataSource]="itemsAdded">
             <ng-container matColumnDef="sl_no">
@@ -59,6 +48,25 @@
         <div style="text-align: center;">
           <button (click)="editItems()"  mat-raised-button>Edit items</button>
         </div>
+        <div>
+          <h3>Total amount: {{editSalesForm.value.amount}}</h3>
+        </div>
+
+        <mat-form-field >
+            <mat-label>Enter discount</mat-label>
+            <input matInput placeholder="Discount" formControlName="discount">
+        </mat-form-field>
+
+        <mat-form-field >
+            <mat-label>Enter received amount</mat-label>
+            <input matInput placeholder="Received amount" formControlName="received_amount">
+        </mat-form-field>
+
+        <mat-form-field >
+            <mat-label>Enter a note</mat-label>
+            <input matInput placeholder="Note" formControlName="note">
+        </mat-form-field>
+
         <div class="image-thumbnail" *ngFor="let image of saleData.image_details">
           <img src="{{image.image_url}}" alt="" width="100px" height="100px">
         </div>

@@ -69,7 +69,7 @@ export class ProspectsComponent {
       },
       (error: any) => {
         this.matDialog.open(ErrorMsgComponent, {
-          data: { msg: error.error.error },
+          data: { msg: error.error.description },
         });
       }
     );
