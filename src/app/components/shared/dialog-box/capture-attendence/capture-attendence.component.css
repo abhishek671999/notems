@@ -1,16 +1,3 @@
-.new-task-form{
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-}
-
-
-.quantity-section{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1em;
-}
 
 .upload-form {
     display: flex;
@@ -147,13 +134,3 @@
     background-color: #0c7ce5;
   }
   
-
-  .discount-field{
-    display: flex;
-    gap: 1em;
-  }
-
-  .discount-section p{
-    text-align: center;
-    margin: 0;
-  }

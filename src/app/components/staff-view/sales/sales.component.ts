@@ -24,7 +24,7 @@ export class SalesComponent {
     private dateUtils: dateUtils
   ) { }
 
-  public selectedDate: string = ''
+  public selectedDate = new Date()
   public beatId: number = 0
   public salesInvoiceDataSource: [] = []
   public salesInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount', 'more', 'edit']

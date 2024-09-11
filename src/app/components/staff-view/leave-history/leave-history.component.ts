@@ -31,6 +31,7 @@ export class LeaveHistoryComponent {
   
   ngOnInit(){
     this.fetchMyLeaves()
+    this.fetchLeaveTypes()
   }
 
   fetchMyLeaves(){

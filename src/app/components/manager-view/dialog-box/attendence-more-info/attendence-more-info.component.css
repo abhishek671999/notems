@@ -1,0 +1,8 @@
+p{
+    margin: 0;
+}
+
+.image img{
+    width: 90%;
+    height: fit-content;
+}

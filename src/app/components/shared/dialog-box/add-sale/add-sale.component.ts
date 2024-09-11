@@ -14,7 +14,7 @@ import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 import { of, switchMap } from 'rxjs';
 import { ImagesService } from '../../../../shared/services/images/images.service';
 import { AddItemsToSaleComponent } from '../add-items-to-sale/add-items-to-sale.component';
-import { addSalesDiscountValidation, addSalesReceievedAmountValidation } from '../../../../shared/custom_validations/sales';
+import { addSalesDiscountValidation, addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -40,12 +40,12 @@ export class AddSaleComponent {
   ) {
     this.addSalesForm = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
-      discount: ['', [Validators.required]],
+      selling_price: ['', [Validators.required]],
       received_amount: ['', [Validators.required]],
       note: ['', ],
       amount: [0,]
     },{
-      validators: [addSalesDiscountValidation(), addSalesReceievedAmountValidation()]
+      validators: [addSalesReceievedAmountValidation(), salesSellingPriceValidation()]
     }
   );
     this.customerList = data.customerList
@@ -74,12 +74,24 @@ export class AddSaleComponent {
   ngOnInit() {
   }
 
+  getDiscountAmount(){
+    return this.addSalesForm.value.selling_price > 0 ? `₹ ${String(this.addSalesForm.value.amount - this.addSalesForm.value.selling_price)} | `: ''
+  }
 
+  getDiscountAmountPercentage(){
+    if(this.addSalesForm.value.selling_price && this.addSalesForm.value.amount){
+      let discountPercentage = (((this.addSalesForm.value.amount - this.addSalesForm.value.selling_price)/ this.addSalesForm.value.amount)) * 100
+      return `(${discountPercentage.toFixed(2)} %)`
+    } 
+    else {
+      return ''
+    } 
+  }
 
   addSales() {
       let body: any = {
         customer_id: this.addSalesForm.value.customer_id,
-        discount: this.addSalesForm.value.discount,
+        discount: this.addSalesForm.value.amount - this.addSalesForm.value.selling_price,
         received_amount: this.addSalesForm.value.received_amount,
         note: this.addSalesForm.value.note,
         beat_id: this.data.beatId,

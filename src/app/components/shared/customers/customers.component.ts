@@ -33,7 +33,9 @@ export class CustomersComponent {
     private matDialog: MatDialog,
     private router: Router,
     private matsheet: MatBottomSheet
-  ) {}
+  ) {
+    if(this.sessionWrapper.isOrgManager() || this.sessionWrapper.isTeamManager()) this.customerTableColumns.push('delete');
+  }
 
 
   length = 50;
@@ -65,7 +67,7 @@ export class CustomersComponent {
   ngOnInit() {
     this.fetchLocality()
     this.fetchCustomers()
-    if(this.sessionWrapper.isOrgManager() || this.sessionWrapper.isTeamManager()) this.customerTableColumns.push('delete');
+   
   }
 
   fetchLocality(){
@@ -108,7 +110,8 @@ export class CustomersComponent {
     });
     dialogRef.afterClosed().subscribe(
       (data: any) => {
-        this.ngOnInit()
+        if(data?.result) this.ngOnInit()
+        
       }
     )
   }

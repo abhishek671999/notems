@@ -35,7 +35,7 @@ export class TasksComponent {
   public teamMembers: any = []
   public teamMembersSource: any = []
   public savedBeats: any = [];
-  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'reportee', 'manager', 'description', 'frequency', 'create_date']
+  public savedBeatsColumns = ['sl_no', 'reporter', 'reportee', 'manager', 'description', 'frequency', 'create_date']
 
   ngOnInit() {
     this.fetchBeats()

@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Attendence info</h2>
+<div mat-dialog-content>
+    <p>User: {{data.user}}</p>
+    <p>Date: {{data.date}}</p>
+    <p>Start km: {{data.starting_km}}</p>
+    <p>End km: {{data.ending_km}}</p>
+    <div class="image">
+        <img src="{{data.starting_km_image}}" alt="Start km">
+    </div>
+    <div class="image">
+        <img src="{{data.ending_km_image}}" alt="End km">
+    </div>
+</div>
+<mat-dialog-actions>
+    <button [mat-dialog-close] mat-flat-button>Close</button>
+</mat-dialog-actions>

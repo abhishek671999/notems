@@ -25,9 +25,22 @@ export function addSalesReceievedAmountValidation(): ValidatorFn {
 
       if (receivedAmount && amount) {
   
-          return amount > receivedAmount ? null : {incorrectReceivedAmount:true};
+          return amount >= receivedAmount ? null : {incorrectReceivedAmount:true};
       }
 
       return null;
+  }
+}
+
+export function salesSellingPriceValidation(): ValidatorFn {
+  return (form: AbstractControl) : ValidationErrors | null => {
+
+    const sellingPrice = form.get('selling_price')?.value;
+    const amount = form.get('amount')?.value;
+
+    if(sellingPrice && amount){
+      return sellingPrice <= amount ? null : {incorrectSellingAmount: true}
+    }
+    return null
   }
 }

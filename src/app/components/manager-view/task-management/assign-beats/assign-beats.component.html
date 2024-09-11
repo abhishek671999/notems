@@ -12,9 +12,10 @@
                     <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
                 </ng-container>
         
-                <ng-container matColumnDef="beat_title">
-                    <th mat-header-cell *matHeaderCellDef>Title</th>
-                    <td mat-cell *matCellDef="let element">{{element.beat_title}}</td>
+
+                <ng-container matColumnDef="team_type">
+                    <th mat-header-cell *matHeaderCellDef>Team type</th>
+                    <td mat-cell *matCellDef="let element">{{element.team_type}}</td>
                 </ng-container>
         
                 <ng-container matColumnDef="assignee_name">

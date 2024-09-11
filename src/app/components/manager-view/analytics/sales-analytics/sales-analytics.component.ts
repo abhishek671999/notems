@@ -8,7 +8,9 @@ import { sessionWrapper } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
-import { getSales } from '../../../../shared/custom_dtypes/sales';
+import { getSales, sale } from '../../../../shared/custom_dtypes/sales';
+import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -20,7 +22,8 @@ export class SalesAnalyticsComponent {
     private taskService: TaskManagementService,
     private teamMembersService: TeamManagementService,
     private sessionWrapper: sessionWrapper,
-    private customerService: CustomersService
+    private customerService: CustomersService,
+    private matdialog: MatDialog
   ) { }
 
   timeFrames = [
@@ -47,7 +50,7 @@ export class SalesAnalyticsComponent {
   public totalAmountReceived = 0
   
   public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount', 'recorded_by']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount', 'recorded_by', 'more']
   public teamMembers: teamMember[] = []
 
   length = 50;
@@ -132,6 +135,11 @@ export class SalesAnalyticsComponent {
       this.customerList = data['customers'];
     });
   }
+
+  openMoreInfoWindow(row: sale){
+    this.matdialog.open(SalesMoreInfoComponent, { data: row} )
+  }
+
 
   handlePageEvent(e: PageEvent) {
     this.length = e.length;

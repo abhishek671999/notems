@@ -23,7 +23,7 @@ export class MarketingAnalyticsComponent {
   ) { }
   
   public tasksInvoiceDatasource: [] = []
-  public tasksInvoiceTableColumns: string[] = ['sl_no', 'customer', 'added_by', 'title', 'status', 'description']
+  public tasksInvoiceTableColumns: string[] = ['sl_no', 'customer', 'added_by', 'status', 'description']
 
 
   timeFrames = [

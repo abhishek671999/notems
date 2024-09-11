@@ -16,6 +16,7 @@ import { ViewCalendarComponent } from '../../shared/bottom-sheet/view-calendar/v
 import { FormControl, FormGroup } from '@angular/forms';
 import { DataSource } from '@angular/cdk/collections';
 import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.component';
+import { CaptureAttendenceComponent } from '../../shared/dialog-box/capture-attendence/capture-attendence.component';
 
 @Component({
   selector: 'app-attendence',
@@ -107,47 +108,29 @@ export class AttendenceComponent {
   }
 
   clockOut() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        let body = {
-          punch_out_location: `${position.coords.latitude},${position.coords.longitude}`,
-        };
-        this.attendenceService.punchOut(body).subscribe(
-          (data: any) => {
-            this.attendence.punch_out = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
-          },
-          (error: any) => {
-            alert('Error while clocking out');
-          }
-        );
-      });
-    } else {
-      alert(
-        `Browser doesn't support location service. Please use other browser`
-      );
-    }
+    let captureAttendenceRef = this.matDialog.open(CaptureAttendenceComponent, {
+      disableClose: true, data: {clockOut: true}
+    })
+    captureAttendenceRef.afterClosed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.attendence.punch_out = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
+        }
+      }
+    )
   }
 
   clockIn() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        let body = {
-          punch_in_location: `${position.coords.latitude},${position.coords.longitude}`,
-        };
-        this.attendenceService.punchIn(body).subscribe(
-          () => {
-            this.attendence.punch_in = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
-          },
-          () => {
-            alert('Error while clocking in');
-          }
-        );
-      });
-    } else {
-      alert(
-        `Browser doesn't support location service. Please use other browser`
-      );
-    }
+    let captureAttendenceRef = this.matDialog.open(CaptureAttendenceComponent, {
+      disableClose: true, data: {clockIn: true}
+    })
+    captureAttendenceRef.afterClosed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.attendence.punch_in = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
+        }
+      }
+    )
   }
 
   applyLeave() {

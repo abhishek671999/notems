@@ -35,9 +35,6 @@ export class AssignBeatsComponent {
   public selectedTeam: any;
   public selectedTeamMember: any;
 
-  public beatsSource: any = []
-  public beatsSourceColumns = ['sl_no', 'title', 'reporter', 'assignee' ,'assign']
-
   public availableType = [
     { typeId: 3, typeName: 'Single day' },
     { typeId: 2, typeName: 'Weekly' },
@@ -52,7 +49,7 @@ export class AssignBeatsComponent {
 
   public assigneeBeats: any
   public assigneebeatsSource: assignBeat[] = []
-  public beatsColumns = ['sl_no', 'beat_title', 'assignee_name', 'frequency', 'edit' ,'unassign']
+  public beatsColumns = ['sl_no', 'team_type', 'assignee_name', 'frequency', 'edit' ,'unassign']
 
   ngOnInit() {
     this.fetchBeatAssignees()
@@ -71,19 +68,6 @@ export class AssignBeatsComponent {
     )
   }
 
-  fetchBeats(){
-    let httpParams = new HttpParams()
-    httpParams = httpParams.append('team_id', this.selectedTeam)
-    this.taskManagementService.getBeats(httpParams).subscribe(
-      (data: any) => {
-        data['beats'].forEach((beat: beat) => {
-          beat.assignee_id = null
-        });
-        this.beatsSource = data['beats']
-      },
-      (error: any) => alert('Failed to fetch beats')
-    )
-  }
 
   fetchTeamMembers() {
     let body: any = {

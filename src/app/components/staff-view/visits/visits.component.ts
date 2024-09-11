@@ -32,7 +32,6 @@ export class VisitsComponent {
   ) {
     this.newTask = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
-      title: ['', [Validators.required]],
       note: ['', [Validators.required]],
       description: ['', [Validators.required]],
       status: ['', [Validators.required]]
@@ -54,9 +53,9 @@ export class VisitsComponent {
     'Product complaint', 
     'Filter complaint']
 
-  public selectedDate: string = ''
+  public selectedDate = new Date()
   public visitsDataSource: task[] = []
-  public visitsTableColumns: string[] = ['sl_no', 'type_name', 'title', 'customer', 'status', 'added_by', 'description', 'location', 'edit']
+  public visitsTableColumns: string[] = ['sl_no', 'type_name', 'customer', 'status', 'added_by', 'description', 'location', 'edit']
 
   public salesInvoiceTableColumns: string[] = []
 

@@ -16,3 +16,11 @@
 .action-section{
     place-self: left;
 }
+
+
+@media screen and (max-width: 450px) {
+    table th,td{
+        padding: 2px;
+        font-size: x-small;
+    }
+}

@@ -84,7 +84,8 @@
             <ng-container matColumnDef="punch_out">
                 <th mat-header-cell *matHeaderCellDef>Punch out</th>
                 <td mat-cell *matCellDef="let element" (click)="openLocationScreen(element.punch_in_location)">
-                    {{element.punch_out}}<span class="material-symbols-outlined">location_on</span></td>
+                    {{element.punch_out}}<span class="material-symbols-outlined">location_on</span>
+                </td>
             </ng-container>
             
             <tr mat-header-row *matHeaderRowDef="attendenceRecordsTableColumns"></tr>

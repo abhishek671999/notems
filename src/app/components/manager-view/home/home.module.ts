@@ -42,6 +42,7 @@ import { AssignBeatsComponent } from '../task-management/assign-beats/assign-bea
 import { AssignBeatComponent } from '../dialog-box/assign-beat/assign-beat.component';
 import { EditAssignedBeatComponent } from '../dialog-box/edit-assigned-beat/edit-assigned-beat.component';
 import { TaskManagementHomeModule } from '../task-management/task-management-home/task-management-home.module';
+import { AttendenceMoreInfoComponent } from '../dialog-box/attendence-more-info/attendence-more-info.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { TaskManagementHomeModule } from '../task-management/task-management-hom
     MarketingAnalyticsComponent,
     LeaveStatusUpdateComponent,
     AssignBeatComponent,
+    AttendenceMoreInfoComponent,
     EditAssignedBeatComponent
   ],
   imports: [

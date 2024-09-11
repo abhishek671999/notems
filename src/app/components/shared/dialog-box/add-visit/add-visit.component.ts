@@ -30,7 +30,6 @@ export class AddVisitComponent {
     console.log(this.data.customerList)
     this.newTask = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
-      title: ['', [Validators.required]],
       note: ['', [Validators.required]],
       description: ['', [Validators.required]],
       status: ['', [Validators.required]]
@@ -60,7 +59,6 @@ export class AddVisitComponent {
     let body: addTask = {
       "customer_id": this.newTask.value.customer_id,
       "beat_id": this.beatId,
-      "title": this.newTask.value.title,
       "note": this.newTask.value.note,
       "description": this.newTask.value.description,
       "location": this.location,

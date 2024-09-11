@@ -86,7 +86,7 @@ export class EditCustomerProspectComponent {
     this.customerService.editCustomer(body).subscribe(
       (data: any) => {
         this.matDialog.open(SuccessMsgComponent, { data: { msg:  `${this.getTypeString()} edited successfully` } })
-        this.matDialogRef.close()
+        this.matDialogRef.close({result: true})
       },
       (error: any) => {
         this.matDialog.open(ErrorMsgComponent, {data: {msg: error.error.error}})

@@ -26,7 +26,7 @@
   </div>
 
   <div class="salestable">
-    <table mat-table [dataSource]="salesSource" class="mat-elevation-z8">
+    <table mat-table [dataSource]="salesSource">
 
       <ng-container matColumnDef="sl_no">
         <th mat-header-cell *matHeaderCellDef>SL no</th>
@@ -71,7 +71,7 @@
         </td>
       </ng-container>
   
-      <tr mat-header-row *matHeaderRowDef="salesSourceColumns; sticky: true"></tr>
+      <tr mat-header-row *matHeaderRowDef="salesSourceColumns;  "></tr>
       <tr mat-row *matRowDef="let row; columns: salesSourceColumns;"></tr>
     </table>
   </div>

@@ -35,7 +35,7 @@ export class ViewVisitsComponent {
 
   public beatInfo: beat | undefined
   public visitsSource = []
-  public visitsSourceColumns = ['task_id', 'title', 'customer', 'status', 'description', 'note', 'added_by', 'created_at', 'location']
+  public visitsSourceColumns = ['task_id', 'customer', 'status', 'description', 'note', 'added_by', 'created_at', 'location']
 
   public selectedDate = new Date()
 

@@ -30,7 +30,6 @@ export class EditVisitsInfoComponent {
     console.log(data)
     this.editVisitForm = this.formBuilder.group({
       customer_id: [data.visit.customer_id, [Validators.required]],
-      title: [data.visit.title, [Validators.required]],
       note: [data.visit.note, [Validators.required]],
       description: [data.visit.description, [Validators.required]],
       status: [data.visit.status_id, [Validators.required]]
@@ -68,9 +67,9 @@ export class EditVisitsInfoComponent {
       task_id: this.data.visit.task_id,
       customer_id: this.editVisitForm.value.customer_id,
       beat_id: this.data.visit.beat_id,
-      title: this.editVisitForm.value.title,
       note: this.editVisitForm.value.note,
       description: this.editVisitForm.value.description,
+      status: this.editVisitForm.value.status
     }
     this.taskService.editTask(body).subscribe(
       (data: any) => {

@@ -11,6 +11,7 @@ import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { MatDialog } from '@angular/material/dialog';
+import { sale } from '../../../../shared/custom_dtypes/sales';
 
 @Component({
   selector: 'app-marketing-analytics',
@@ -28,7 +29,7 @@ export class MarketingAnalyticsComponent {
   ) { }
   
   public tasksInvoiceDatasource: [] = []
-  public tasksInvoiceTableColumns: string[] = ['sl_no', 'customer', 'added_by', 'created_at', 'title', 'status', 'location', 'description', 'note']
+  public tasksInvoiceTableColumns: string[] = ['sl_no', 'customer', 'added_by', 'created_at', 'status', 'location', 'description', 'note']
 
 
   timeFrames = [

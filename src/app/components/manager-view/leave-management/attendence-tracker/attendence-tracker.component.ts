@@ -7,6 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { MatDialog } from '@angular/material/dialog';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { dateUtils } from '../../../../shared/utils/date_utils';
+import { AttendenceMoreInfoComponent } from '../../dialog-box/attendence-more-info/attendence-more-info.component';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class AttendenceTrackerComponent {
     'user',
     'punch_in',
     'punch_out',
+    'more'
   ];
 
   attendenceDataSource = [];
@@ -94,6 +96,11 @@ export class AttendenceTrackerComponent {
 
   ngOnDestroy() {
     clearInterval(this.intervalId);
+  }
+
+  openAttendenceMoreInfo(attendance: any){
+    this.matDialog.open(AttendenceMoreInfoComponent, {data: attendance})
+    
   }
 
 

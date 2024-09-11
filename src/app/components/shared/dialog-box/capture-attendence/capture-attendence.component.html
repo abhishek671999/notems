@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>Capture attendence</h2>
+<div mat-dialog-content>
+    <form [formGroup]="attendenceForm">
+      <div>
+        <button *ngIf="!location" (click)="fetchLocation()" mat-raised-button>Fetch location</button>
+        <button *ngIf="location" mat-raised-button >Location fetched</button>
+      </div>
+        <mat-form-field *ngIf="data.clockIn">
+            <mat-label>Enter starting kms</mat-label>
+            <input type="number"  matInput formControlName="starting_km">
+        </mat-form-field>
+        <mat-form-field *ngIf="data.clockOut">
+            <mat-label>Enter ending kms</mat-label>
+            <input type="number"  matInput formControlName="ending_km">
+        </mat-form-field>
+        <div>
+            <form class="upload-form">  
+              <label
+                for="file"
+                (dragover)="handleDragOver($event)"
+                (drop)="handleDrop($event)"
+              >
+                <i class="ph ph-upload"></i>
+                <span>
+                  Click here to upload item image
+                </span>
+              </label>
+            
+              <input
+                id="file"
+                type="file"
+                name="file"
+                (change)="onFileSelected($event)"
+                accept="image/*"
+                capture
+              />
+            
+              <div class="result" [style.display]="outputBoxVisible ? 'flex' : 'none'">
+                <i class="ph ph-file"></i>
+                <div class="file-details">
+                  <span class="file-name">{{ fileName }}</span>
+                  <ng-container *ngIf="uploadStatus === 200 || uploadStatus === undefined">
+                    <span class="file-size">{{ fileSize }}</span>
+                  </ng-container>
+                </div>
+            
+                <div class="upload-result" [style.display]="uploadStatus ? 'flex' : 'none'">
+                  <span>{{ uploadResult }}</span>
+                  <ng-container *ngIf="uploadStatus === 200; else error">
+                    <i class="ph ph-check-circle"></i>
+                  </ng-container>
+                  <ng-template #error>
+                    <i class="ph ph-x-circle"></i>
+                  </ng-template>
+                </div>
+              </div>
+            </form>
+        </div>     
+
+    </form>
+
+</div>
+<div mat-dialog-actions>
+    <button [mat-dialog-close] mat-raised-button>Close</button>
+    <div>
+      <button mat-flat-button (click)="clockIn()" *ngIf="data.clockIn" [disabled]="!location">Web login</button>
+      <button mat-flat-button (click)="clockOut()" *ngIf="data.clockOut">Web logout</button>
+      <mat-error *ngIf="!location">Location required</mat-error>
+    </div>
+    
+</div>

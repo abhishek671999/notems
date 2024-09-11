@@ -40,6 +40,7 @@ import { PayLumpsumComponent } from '../bottom-sheet/pay-lumpsum/pay-lumpsum.com
 import { BeatInfoComponent } from '../subcomponents/beat-info/beat-info.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
+import { CaptureAttendenceComponent } from '../dialog-box/capture-attendence/capture-attendence.component';
 
 
 @NgModule({
@@ -68,7 +69,8 @@ import { MatMenuModule } from '@angular/material/menu';
     PageNotFoundComponent,
     SafePipe,
     HomeComponent,
-    BeatInfoComponent
+    BeatInfoComponent,
+    CaptureAttendenceComponent
   ],
   imports: [
     CommonModule, 
@@ -86,7 +88,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSelectModule,
     SharedModulesRoutingModule,
     MatBadgeModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule
   ],
   exports: [HeaderComponent, FooterComponent, BeatInfoComponent]
 })

@@ -14,7 +14,7 @@ export type editBeat = {
     "assignee_id": number,
     "date": string,
     "team_id": number,
-    "title": string,
+    "title"?: string,
     "note": string,
     "description": string
 }
@@ -26,7 +26,7 @@ export type deleteBeat = {
 export type addTask = {
     "customer_id": number,
     "beat_id": number,
-    "title": string,
+    "title"?: string,
     "note": string,
     "description": string,
     "location": string,
@@ -37,9 +37,10 @@ export type editTask = {
     "task_id": number,
     "customer_id": number,
     "beat_id": number,
-    "title": string,
+    "title"?: string,
     "note": string,
     "description": string,
+    status: number
 }
 
 export type deleteTask = {
