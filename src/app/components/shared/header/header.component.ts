@@ -153,4 +153,9 @@ export class HeaderComponent {
     checkbox.checked = false
     this.dropdownList[index].action();
   }
+
+  closeNav(){
+    let checkbox = document.getElementById('hamburger-checkbox') as HTMLInputElement;
+    checkbox.checked = false
+  }
 }

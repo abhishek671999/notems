@@ -7,9 +7,9 @@
     
   <div class="beats-table">
       <table mat-table [dataSource]="savedBeats" class="mat-elevation-z8 demo-table">
-        <ng-container matColumnDef="sl_no">
-          <th mat-header-cell *matHeaderCellDef>Sl No.</th>
-          <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
+        <ng-container matColumnDef="beat_id">
+          <th mat-header-cell *matHeaderCellDef>Beat id</th>
+          <td mat-cell *matCellDef="let element; let i=index">{{element.beat_id}}</td>
         </ng-container>
     
         <ng-container matColumnDef="title">

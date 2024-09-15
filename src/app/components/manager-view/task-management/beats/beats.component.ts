@@ -57,7 +57,7 @@ export class BeatsComponent {
   public teams: any;
   public savedBeats: any = [];
   public customerList: customer[] = []
-  public savedBeatsColumns = ['sl_no', 'title', 'reporter', 'team_name', 'team_type', 'description', 'locality_name', 'create_date', 'edit', 'delete']
+  public savedBeatsColumns = ['beat_id', 'title', 'reporter', 'team_name', 'team_type', 'description', 'locality_name', 'create_date', 'edit', 'delete']
 
   ngOnInit() {
     {

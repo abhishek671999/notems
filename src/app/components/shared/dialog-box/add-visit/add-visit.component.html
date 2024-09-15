@@ -37,6 +37,6 @@
 </div>
 <mat-dialog-actions>
     <div style="text-align: center;">
-        <button  mat-flat-button [disabled]="!(newTask.valid && location)" (click)="addTask()">Add Visit</button>
+        <button  mat-flat-button [disabled]="!(newTask.valid && location)" (click)="addTask()" #addTaskButton>Add Visit</button>
     </div>
 </mat-dialog-actions>

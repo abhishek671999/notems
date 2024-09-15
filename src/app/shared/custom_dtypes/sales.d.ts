@@ -28,8 +28,8 @@ export type sale = {
     "note": string,
     "beat_id": number,
     "organization_id": number,
-    "sale_invoice_number": string,
-    "sale_invoice_id": number,
+    "invoice_number": string,
+    "invoice_id": number,
     "line_items": lineItems[]
 }
 

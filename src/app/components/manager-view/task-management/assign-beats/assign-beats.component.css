@@ -3,3 +3,9 @@
     min-height: 87vh;
     max-height: max-content;
 }
+
+.header-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

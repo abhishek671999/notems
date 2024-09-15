@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -18,6 +18,9 @@ import { beat } from '../../../../shared/custom_dtypes/beats';
   styleUrl: './add-visit.component.css'
 })
 export class AddVisitComponent {
+
+  @ViewChild('addTaskButton') editTaskButton: any
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private taskService: TaskManagementService,
@@ -56,6 +59,7 @@ export class AddVisitComponent {
 
 
   addTask() {
+    this.editTaskButton._elementRef.nativeElement.disabled = true
     let body: addTask = {
       "customer_id": this.newTask.value.customer_id,
       "beat_id": this.beatId,
@@ -70,7 +74,8 @@ export class AddVisitComponent {
         this.matdialogRef.close({result: true})
       },
       (error: any) => {
-        this.matdialog.open(ErrorMsgComponent, {data: {msg: 'Failed to add task'}})
+        this.matdialog.open(ErrorMsgComponent, {data: {msg: 'Failed to add task'} } );
+        this.editTaskButton._elementRef.nativeElement.disabled = false
       }
     )
   }

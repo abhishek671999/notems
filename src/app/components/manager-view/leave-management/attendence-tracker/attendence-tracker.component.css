@@ -11,3 +11,8 @@
     justify-content: center;
     gap: 1em;
 }
+
+.table-container{
+    width: 100%;
+    overflow-x: auto;
+}

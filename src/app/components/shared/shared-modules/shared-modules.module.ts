@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { MatIcon } from '@angular/material/icon';
@@ -41,6 +41,8 @@ import { BeatInfoComponent } from '../subcomponents/beat-info/beat-info.componen
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
 import { CaptureAttendenceComponent } from '../dialog-box/capture-attendence/capture-attendence.component';
+import { ViewImageComponent } from '../dialog-box/view-image/view-image.component';
+import { ClickOutsideDirective } from '../../../shared/utils/clickOutside';
 
 
 @NgModule({
@@ -70,7 +72,9 @@ import { CaptureAttendenceComponent } from '../dialog-box/capture-attendence/cap
     SafePipe,
     HomeComponent,
     BeatInfoComponent,
-    CaptureAttendenceComponent
+    CaptureAttendenceComponent,
+    ViewImageComponent,
+    ClickOutsideDirective
   ],
   imports: [
     CommonModule, 
@@ -89,7 +93,8 @@ import { CaptureAttendenceComponent } from '../dialog-box/capture-attendence/cap
     SharedModulesRoutingModule,
     MatBadgeModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    NgOptimizedImage
   ],
   exports: [HeaderComponent, FooterComponent, BeatInfoComponent]
 })

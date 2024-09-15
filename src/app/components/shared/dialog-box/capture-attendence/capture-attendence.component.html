@@ -63,8 +63,8 @@
 <div mat-dialog-actions>
     <button [mat-dialog-close] mat-raised-button>Close</button>
     <div>
-      <button mat-flat-button (click)="clockIn()" *ngIf="data.clockIn" [disabled]="!location">Web login</button>
-      <button mat-flat-button (click)="clockOut()" *ngIf="data.clockOut">Web logout</button>
+      <button mat-flat-button #clockInButton (click)="clockIn()" *ngIf="data.clockIn" [disabled]="!location">Web login</button>
+      <button mat-flat-button #clockOutButton (click)="clockOut()" *ngIf="data.clockOut" [disabled]="!location">Web logout</button>
       <mat-error *ngIf="!location">Location required</mat-error>
     </div>
     

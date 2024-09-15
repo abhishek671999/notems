@@ -10,7 +10,8 @@ export type beat = {
     "description": string,
     "note": string,
     customers: customer[],
-    assignee_id: number | null
+    assignee_id: number | null,
+    "locality_name": string 
 }
 
 assgineeBeats = {

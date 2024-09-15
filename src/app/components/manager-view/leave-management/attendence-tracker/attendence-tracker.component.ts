@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { AttendenceMoreInfoComponent } from '../../dialog-box/attendence-more-info/attendence-more-info.component';
+import { ViewImageComponent } from '../../../shared/dialog-box/view-image/view-image.component';
 
 
 @Component({
@@ -41,7 +42,9 @@ export class AttendenceTrackerComponent {
     'user',
     'punch_in',
     'punch_out',
-    'more'
+    'starting_km',
+    'ending_km',
+    'total_km'
   ];
 
   attendenceDataSource = [];
@@ -98,9 +101,8 @@ export class AttendenceTrackerComponent {
     clearInterval(this.intervalId);
   }
 
-  openAttendenceMoreInfo(attendance: any){
-    this.matDialog.open(AttendenceMoreInfoComponent, {data: attendance})
-    
+  openImage(title: string, url: string){
+    this.matDialog.open(ViewImageComponent, {data: {title: title, url: url}})
   }
 
 

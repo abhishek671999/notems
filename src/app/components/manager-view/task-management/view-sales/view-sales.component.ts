@@ -34,7 +34,7 @@ export class ViewSalesComponent {
   public customerList: customer[] = []
   public selectedCustomer: string = ''
   public selectedDate = new Date()
-  public salesSourceColumns = ['sl_no', 'customer', 'received_amount', 'discount', 'recorded_by', 'date', 'note', 'more']
+  public salesSourceColumns = ['sl_no', 'customer', 'invoice_number', 'received_amount', 'discount', 'recorded_by', 'date', 'note', 'more']
   public beatInfo: beat | undefined
 
   length = 50;

@@ -81,7 +81,8 @@ export type unassignBeat = {
 }
 
 export type editSaleInvoiceHeader = {
-    "sale_invoice_id": number,
+    "invoice_id": number,
+    "invoice_number": string,
     "customer_id": number,
     "discount": number,
     "received_amount": number,
@@ -96,12 +97,12 @@ export type editSaleLineItems = {
 }
 
 export type updateSalesInvoiceLineItem = {
-    "sale_invoice_id": number,
+    "invoice_id": number,
     "item_details": item[]
 }
 
 export type deleteSaleInvoice = {   
-    "sale_invoice_id": number
+    "invoice_id": number
 }
 
 export type deleteSaleInvoiceLineItem = {

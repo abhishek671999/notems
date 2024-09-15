@@ -13,7 +13,7 @@ import { AddItemsToSaleComponent } from '../add-items-to-sale/add-items-to-sale.
 import { ConfirmationBoxComponent } from '../confirmation-box/confirmation-box.component';
 import { deleteSaleInvoiceLineItem, editSaleInvoiceHeader, editSaleLineItems, updateSalesInvoiceLineItem } from '../../../../shared/custom_dtypes/tasks';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
-import { addSalesDiscountValidation } from '../../../../shared/custom_validations/sales';
+import { addSalesDiscountValidation, addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
 import { lineItems, sale } from '../../../../shared/custom_dtypes/sales';
 import { of, switchMap } from 'rxjs';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
@@ -39,12 +39,13 @@ export class EditSalesInfoComponent {
     this.customerList = data.customerList
     this.editSalesForm = this.formBuilder.group({
       customer_id: [this.saleData.customer_id, [Validators.required]],
-      discount: [this.saleData.discount, [Validators.required]],
+      invoice_number: [this.saleData.invoice_number, [Validators.required]],
+      selling_price: [this.saleData.total_amount, [Validators.required]],
       received_amount: [this.saleData.received_amount, [Validators.required]],
       note: [this.saleData.note,],
-      amount: [this.saleData.total_amount]
+      amount: [this.saleData.total_amount + this.saleData.discount]
     },{
-      validators: [addSalesDiscountValidation(), addSalesDiscountValidation()]
+      validators: [addSalesReceievedAmountValidation(), salesSellingPriceValidation()]
     });
     this.itemsAdded = data.sale.line_items
   }
@@ -95,6 +96,21 @@ export class EditSalesInfoComponent {
   }
 
 
+  getDiscountAmount(){
+    return this.editSalesForm.value.selling_price > 0 ? `₹ ${String(this.editSalesForm.value.amount - this.editSalesForm.value.selling_price)} | `: ''
+  }
+
+  getDiscountAmountPercentage(){
+    if(this.editSalesForm.value.selling_price && this.editSalesForm.value.amount){
+      let discountPercentage = (((this.editSalesForm.value.amount - this.editSalesForm.value.selling_price)/ this.editSalesForm.value.amount)) * 100
+      return `(${discountPercentage.toFixed(2)} %)`
+    } 
+    else {
+      return ''
+    } 
+  }
+
+
   handleDragOver(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
@@ -125,7 +141,8 @@ export class EditSalesInfoComponent {
 
   editSales() {
     let body: editSaleInvoiceHeader = {
-      sale_invoice_id: this.saleData.sale_invoice_id,
+      invoice_id: this.saleData.invoice_id,
+      invoice_number: this.saleData.invoice_number,
       customer_id: this.editSalesForm.value.customer_id,
       discount: this.editSalesForm.value.discount,
       received_amount: this.editSalesForm.value.received_amount,
@@ -140,7 +157,7 @@ export class EditSalesInfoComponent {
           this.outputBoxVisible = true;
           const formData = new FormData();
           formData.append('file', this.file);
-          formData.append('sale_invoice_id', String(this.saleData.sale_invoice_id));
+          formData.append('invoice_id', String(this.saleData.invoice_id));
           return this.imageService.uploadImage(formData);
         } else {
           return of(null);
@@ -167,11 +184,9 @@ export class EditSalesInfoComponent {
     dialogRef.afterClosed().subscribe(
       (editData: any) => {
         if (editData?.length > 0) {
-          console.log('Edit data received: ', editData)
-          debugger
           let totalAmount = 0
           let body: updateSalesInvoiceLineItem = {
-            sale_invoice_id: Number(this.data.sale.sale_invoice_id),
+            invoice_id: Number(this.data.sale.invoice_id),
             item_details: editData
           }
           this.taskService.updateSaleInvoiceLineItem(body).subscribe(

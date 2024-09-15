@@ -15,10 +15,10 @@ export class BeatInfoComponent {
   @Input() beatId!: number;
 
   public beatInfo: beat | undefined
+  
   ngOnInit(){
     this.fetchBeatInfo()
   }
-
 
   fetchBeatInfo(){
     let httpParams = new HttpParams()

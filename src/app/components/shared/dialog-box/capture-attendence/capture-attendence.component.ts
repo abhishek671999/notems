@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, ViewChild } from '@angular/core';
 import { AttendenceService } from '../../../../shared/services/attendence/attendence.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,6 +9,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './capture-attendence.component.css'
 })
 export class CaptureAttendenceComponent {
+
+  @ViewChild('clockInButton') clockInButton: any;
+  @ViewChild('clockOutButton') clockOutButton: any;
+
 
   constructor(
     private attendenceService: AttendenceService,
@@ -38,6 +42,7 @@ export class CaptureAttendenceComponent {
   
   
   clockIn(){
+    if(this.clockInButton) this.clockInButton._elementRef.nativeElement.disabled = true
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         debugger
@@ -52,6 +57,7 @@ export class CaptureAttendenceComponent {
           },
           (error) => {
             alert(`'Error while clocking in', ${error.error.exception}`);
+            if(this.clockInButton) this.clockInButton._elementRef.nativeElement.disabled = false
           }
         );
       });
@@ -63,6 +69,7 @@ export class CaptureAttendenceComponent {
   }
   
   clockOut() {
+    if(this.clockOutButton) this.clockOutButton._elementRef.nativeElement.disabled = true
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const formData = new FormData();
@@ -76,6 +83,7 @@ export class CaptureAttendenceComponent {
           },
           (error) => {
             alert(`'Error while clocking in', ${error.error.exception}`);
+            if(this.clockOutButton) this.clockOutButton._elementRef.nativeElement.disabled = false
           }
         );
       });

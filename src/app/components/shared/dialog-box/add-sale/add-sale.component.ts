@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, viewChild } from '@angular/core';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
@@ -17,6 +17,7 @@ import { AddItemsToSaleComponent } from '../add-items-to-sale/add-items-to-sale.
 import { addSalesDiscountValidation, addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
@@ -25,6 +26,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './add-sale.component.css',
 })
 export class AddSaleComponent {
+  @ViewChild('addSaleButton') addSaleButton: any;
+
   constructor(
     private customerService: CustomersService,
     private taskService: TaskManagementService,
@@ -40,6 +43,7 @@ export class AddSaleComponent {
   ) {
     this.addSalesForm = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
+      invoice_number: ['', [Validators.required]],
       selling_price: ['', [Validators.required]],
       received_amount: ['', [Validators.required]],
       note: ['', ],
@@ -75,13 +79,13 @@ export class AddSaleComponent {
   }
 
   getDiscountAmount(){
-    return this.addSalesForm.value.selling_price > 0 ? `₹ ${String(this.addSalesForm.value.amount - this.addSalesForm.value.selling_price)} | `: ''
+    return this.addSalesForm.value.selling_price > 0 ? `₹ ${String(this.addSalesForm.value.amount - this.addSalesForm.value.selling_price)}  `: ''
   }
 
   getDiscountAmountPercentage(){
     if(this.addSalesForm.value.selling_price && this.addSalesForm.value.amount){
       let discountPercentage = (((this.addSalesForm.value.amount - this.addSalesForm.value.selling_price)/ this.addSalesForm.value.amount)) * 100
-      return `(${discountPercentage.toFixed(2)} %)`
+      return `(${discountPercentage.toFixed(2)} % off)`
     } 
     else {
       return ''
@@ -89,8 +93,11 @@ export class AddSaleComponent {
   }
 
   addSales() {
+    if(this.addSaleButton) this.addSaleButton._elementRef.nativeElement.disabled = true
+    console.log(event)
       let body: any = {
         customer_id: this.addSalesForm.value.customer_id,
+        invoice_number: this.addSalesForm.value.invoice_number,
         discount: this.addSalesForm.value.amount - this.addSalesForm.value.selling_price,
         received_amount: this.addSalesForm.value.received_amount,
         note: this.addSalesForm.value.note,
@@ -108,7 +115,7 @@ export class AddSaleComponent {
               this.outputBoxVisible = true;
               const formData = new FormData();
               formData.append('file', this.file);
-              formData.append('sale_invoice_id', response['sale_invoice_id']);
+              formData.append('invoice_id', response['invoice_id']);
               return this.imageService.uploadImage(formData);
             } else {
               return of(null);
@@ -126,6 +133,7 @@ export class AddSaleComponent {
             this.matDialog.open(ErrorMsgComponent, {
               data: { msg: 'Failed to add sale' },
             });
+            if(this.addSaleButton) this.addSaleButton._elementRef.nativeElement.disabled = false
           }
         );
 
@@ -175,7 +183,6 @@ export class AddSaleComponent {
     this.fileName = '';
     this.fileSize = '';
     this.uploadStatus = undefined;
-    debugger
     this.file = event.dataTransfer?.files[0] || event.target?.files[0];
     if(this.file){
       this.fileName = this.file.name;

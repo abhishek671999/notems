@@ -21,11 +21,11 @@ export function addSalesReceievedAmountValidation(): ValidatorFn {
   return (form: AbstractControl): ValidationErrors | null => {
 
       const receivedAmount = form.get("received_amount")?.value;
-      const amount = form.get('amount')?.value
+      const sellingPrice = form.get('selling_price')?.value
 
-      if (receivedAmount && amount) {
+      if (receivedAmount && sellingPrice) {
   
-          return amount >= receivedAmount ? null : {incorrectReceivedAmount:true};
+          return receivedAmount <= sellingPrice ? null : {incorrectReceivedAmount:true};
       }
 
       return null;
@@ -36,10 +36,11 @@ export function salesSellingPriceValidation(): ValidatorFn {
   return (form: AbstractControl) : ValidationErrors | null => {
 
     const sellingPrice = form.get('selling_price')?.value;
-    const amount = form.get('amount')?.value;
+    const amount = form.get('amount')?.value; 
+    console.log('selling price', sellingPrice, 'amount', amount)
 
     if(sellingPrice && amount){
-      return sellingPrice <= amount ? null : {incorrectSellingAmount: true}
+      return sellingPrice <= amount? null : {incorrectSellingAmount: true}
     }
     return null
   }

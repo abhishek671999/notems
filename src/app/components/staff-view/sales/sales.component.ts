@@ -27,7 +27,7 @@ export class SalesComponent {
   public selectedDate = new Date()
   public beatId: number = 0
   public salesInvoiceDataSource: [] = []
-  public salesInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount', 'more', 'edit']
+  public salesInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'more', 'edit']
 
   public beatInfo: beat | undefined
 

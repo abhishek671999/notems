@@ -16,6 +16,11 @@
     gap: 1em;
 }
 
+.discount-field{
+    display: flex;
+    gap: 1em;
+  }
+
 .image-thumbnail{
     display: flex;
     flex-direction: row;

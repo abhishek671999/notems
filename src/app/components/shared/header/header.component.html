@@ -9,12 +9,12 @@
     <div class="text-center">
       <p class="m-0" style="color: white; text-decoration: underline; font-size: large;">{{location}}</p>
     </div>
-    <div class="navigation">
+    <div class="navigation" (clickOutside)="closeNav()">
       <input id='hamburger-checkbox' type="checkbox"
                 class="toggle-menu">
       <div class="hamburger"></div>
       <ul class="menu">
-        <li style="margin: 0;" *ngFor="let item of dropdownList; index as i;" (click)="onClick(i)">
+        <li style="margin: 0;" *ngFor="let item of dropdownList; index as i;" (click)="onClick(i)" >
           <p style="padding: 0; margin: 0; padding-left: 1em;">{{item.name}}</p>
       </ul>
     </div>

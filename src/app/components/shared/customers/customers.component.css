@@ -17,10 +17,19 @@
     place-self: left;
 }
 
+.customer-table{
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.customer-table table{
+    padding-left: 1em;
+}
+
 
 @media screen and (max-width: 450px) {
     table th,td{
-        padding: 2px;
-        font-size: x-small;
+        padding: 3px;
+        font-size: small;
     }
 }

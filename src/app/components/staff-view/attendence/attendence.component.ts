@@ -17,6 +17,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DataSource } from '@angular/cdk/collections';
 import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.component';
 import { CaptureAttendenceComponent } from '../../shared/dialog-box/capture-attendence/capture-attendence.component';
+import { ViewImageComponent } from '../../shared/dialog-box/view-image/view-image.component';
 
 @Component({
   selector: 'app-attendence',
@@ -64,7 +65,7 @@ export class AttendenceComponent {
   public showCalendar: boolean = false;
   
   public attendenceRecordsDataSource: [] = []
-  public attendenceRecordsTableColumns: string[] = ['sl_no', 'date', 'punch_in', 'punch_out']
+  public attendenceRecordsTableColumns: string[] = ['sl_no', 'date', 'punch_in', 'punch_out', 'starting_km', 'ending_km', 'total_km']
 
   private LeaveType: leaveType[] | null;
   private intervalId: any
@@ -115,6 +116,7 @@ export class AttendenceComponent {
       (data: any) => {
         if(data?.result){
           this.attendence.punch_out = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
+          this.ngOnInit()
         }
       }
     )
@@ -128,6 +130,7 @@ export class AttendenceComponent {
       (data: any) => {
         if(data?.result){
           this.attendence.punch_in = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
+          this.ngOnInit()
         }
       }
     )
@@ -176,5 +179,9 @@ export class AttendenceComponent {
     this.matDialog.open(MapViewComponent, {
       data: { longitude: location[1], latitude: location[0] },
     });
+  }
+
+  openImage(title: string, url: string){
+    this.matDialog.open(ViewImageComponent, {data: {title: title, url: url}})
   }
 }
