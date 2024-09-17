@@ -99,12 +99,6 @@ export class sessionWrapper {
     return new Promise((resolve, reject) => {
       this.meAPIUtility.getMeData().subscribe((data: any) => {
         sessionStorage.setItem('user_id', data['user_id'])
-        if (data['organizations'].length > 0) {
-          sessionStorage.setItem('organization_id', data['organizations'][0]['organization_id']) // hardcode
-          sessionStorage.setItem('organization_name', data['organizations'][0]['organization_name']);
-        } else if (data['teams'].length > 0) {
-          sessionStorage.setItem('company_id', data['companies'][0]['company_id'])
-        } 
         resolve(true)
       }),
         (error: any) => reject(false)
@@ -132,6 +126,10 @@ export class sessionWrapper {
     sessionStorage.setItem('organization_id', org['organization_id'])
     sessionStorage.setItem('organization_name', org['organization_name'])
     if (String(org['role']).toLowerCase() == 'manager') sessionStorage.setItem('is_org_manager', 'true')
+  }
+
+  isTeamMember(){
+    return this.getItem('is_team_member') == 'true'? true: false
   }
 
   isTeamManager(){

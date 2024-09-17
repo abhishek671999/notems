@@ -7,6 +7,9 @@ import { customer } from '../../../../shared/custom_dtypes/customers';
 import { getTasks } from '../../../../shared/custom_dtypes/tasks';
 import { HttpParams } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { sale } from '../../../../shared/custom_dtypes/sales';
+import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -17,7 +20,8 @@ export class SalesAnalyticsComponent {
   constructor(
     private taskService: TaskManagementService,
     private sessionWrapper: sessionWrapper,
-    private customerService: CustomersService
+    private customerService: CustomersService,
+    private matdialog: MatDialog
   ) { }
 
   timeFrames = [
@@ -43,7 +47,7 @@ export class SalesAnalyticsComponent {
   public totalAmountReceived = 0
   
   public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'total_amount', 'discount', 'received_amount', 'recorded_by']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'recorded_by', 'more']
   
   length = 50;
   pageSize = 20;
@@ -119,5 +123,9 @@ export class SalesAnalyticsComponent {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
     this.fetchSalesAnalytics();
+  }
+
+  openMoreInfoWindow(row: sale){
+    this.matdialog.open(SalesMoreInfoComponent, { data: row} )
   }
 }

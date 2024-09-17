@@ -1,0 +1,6 @@
+.image-thumbnail{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    flex-wrap: wrap;
+}   

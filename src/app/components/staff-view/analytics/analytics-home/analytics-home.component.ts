@@ -16,7 +16,7 @@ export class AnalyticsHomeComponent {
   ){}
 
   ngOnInit(){
-    if(this.sessionWrapper.isTeamManager()){
+    if(this.sessionWrapper.isTeamManager() || this.sessionWrapper.isTeamMember()){
       if(this.sessionWrapper.getItem('team_type') == 'sales'){
         this.managementPages.push( {name: 'Sales Analytics' , href: `sales`})
         this.router.navigate(['./staff/analytics/sales'])
@@ -25,7 +25,6 @@ export class AnalyticsHomeComponent {
         this.router.navigate(['./staff/analytics/marketing'])
       }
     }else if(this.sessionWrapper.isOrgManager()){
-      this.managementPages.push()
       this.managementPages = [
         { name: 'Sales Analytics' , href: `sales`},
         { name: 'Marketing Analytics', href: "marketing"},

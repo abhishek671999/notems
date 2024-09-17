@@ -35,6 +35,7 @@ export class EditSalesInfoComponent {
     private matDialogRef: MatDialogRef<EditSalesInfoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    console.log(data.sale)
     this.saleData = data.sale
     this.customerList = data.customerList
     this.editSalesForm = this.formBuilder.group({
@@ -144,7 +145,7 @@ export class EditSalesInfoComponent {
       invoice_id: this.saleData.invoice_id,
       invoice_number: this.saleData.invoice_number,
       customer_id: this.editSalesForm.value.customer_id,
-      discount: this.editSalesForm.value.discount,
+      discount: this.editSalesForm.value.amount - this.editSalesForm.value.selling_price,
       received_amount: this.editSalesForm.value.received_amount,
       note: this.editSalesForm.value.note,
       beat_id: this.saleData.beat_id
@@ -170,11 +171,6 @@ export class EditSalesInfoComponent {
             });
             this.matDialogRef.close({result: true})
           },
-          (error: any) => {
-            this.matDialog.open(ErrorMsgComponent, {
-              data: { msg: 'Failed to edit sale' },
-            });
-          }
         );
     // this.taskService.editSaleLineItems(body2)
   }

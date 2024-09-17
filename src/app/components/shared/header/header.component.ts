@@ -26,8 +26,8 @@ export class HeaderComponent {
         name: 'Analytics',
         action: () => this.router.navigate(['./manager/analytics/sales'])
       },
-      'attendence': {
-        name: 'Attendence',
+      'manager_attendence': {
+        name: 'Team Attendence',
         action: () => this.router.navigate(['./manager/attendence/leave'])
       },
       'customer': {
@@ -55,7 +55,7 @@ export class HeaderComponent {
         action: () => this.router.navigate(['./manager/beats'])
       },
       'staff_attendence': {
-        name: 'Attendence',
+        name: 'My Attendence',
         action: () => this.router.navigate(['./staff/attendence'])
       },
       'staff_analytics': {
@@ -85,7 +85,7 @@ export class HeaderComponent {
     addManagerNavOptions(organaization: any){
       this.location = organaization.organization_name
       let managerNavOptions: Array<string>
-      managerNavOptions = ['profile', 'calendar', 'analytics','task_management', 'team_management', 'attendence', 'customer', 'items_manager']
+      managerNavOptions = ['profile', 'calendar', 'analytics','task_management', 'team_management', 'manager_attendence', 'customer', 'items_manager']
       for(let option of managerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -94,7 +94,7 @@ export class HeaderComponent {
     }
 
     addTeamManagerNavOptions(team: team){
-      let teamManagerNavOptions = ['profile', 'task_management', 'staff_analytics', 'staff_attendence', 'manager_self_tasks_management', 'customer' ,'staff_leave_history']
+      let teamManagerNavOptions = ['profile', 'task_management', 'staff_analytics', 'staff_attendence', 'manager_attendence', 'manager_self_tasks_management', 'customer' ,'staff_leave_history']
       for(let option of teamManagerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])

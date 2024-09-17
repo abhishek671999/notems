@@ -89,7 +89,7 @@ export class EditCustomerProspectComponent {
         this.matDialogRef.close({result: true})
       },
       (error: any) => {
-        this.matDialog.open(ErrorMsgComponent, {data: {msg: error.error.error}})
+        // this.matDialog.open(ErrorMsgComponent, {data: {msg: error.error.error}})
       }
     )
   }

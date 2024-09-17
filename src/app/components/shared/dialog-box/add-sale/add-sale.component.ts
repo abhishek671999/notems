@@ -130,9 +130,6 @@ export class AddSaleComponent {
             this.matDialogRef.close({result: true})
           },
           (error: any) => {
-            this.matDialog.open(ErrorMsgComponent, {
-              data: { msg: 'Failed to add sale' },
-            });
             if(this.addSaleButton) this.addSaleButton._elementRef.nativeElement.disabled = false
           }
         );

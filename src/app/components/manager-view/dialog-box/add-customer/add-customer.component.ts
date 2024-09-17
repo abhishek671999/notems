@@ -99,7 +99,7 @@ export class AddCustomerComponent {
         this.matDialogRef.close()
       },
       (error: any) => {
-        this.matDialog.open(ErrorMsgComponent, {data: {msg: error.error.description}})
+        // this.matDialog.open(ErrorMsgComponent, {data: {msg: error.error.description}})
       }
     )
   }

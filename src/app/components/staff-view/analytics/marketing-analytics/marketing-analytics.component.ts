@@ -7,6 +7,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
+import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-marketing-analytics',
@@ -19,11 +21,11 @@ export class MarketingAnalyticsComponent {
     private taskService: TaskManagementService,
     private customerService: CustomersService,
     private sessionWrapper: sessionWrapper,
-
+    private matdialog: MatDialog
   ) { }
   
   public tasksInvoiceDatasource: [] = []
-  public tasksInvoiceTableColumns: string[] = ['sl_no', 'customer', 'added_by', 'status', 'description']
+  public tasksInvoiceTableColumns: string[] =  ['sl_no', 'customer', 'added_by', 'created_at', 'status', 'location', 'description', 'note']
 
 
   timeFrames = [
@@ -116,4 +118,11 @@ export class MarketingAnalyticsComponent {
     this.pageIndex = e.pageIndex;
     this.fetchTasksAnalytics();
   } 
+
+  openLocationScreen(attendence: any) {
+    let location = attendence.split(',');
+    this.matdialog.open(MapViewComponent, {
+      data: { longitude: location[1], latitude: location[0] },
+    });
+  }
 }
