@@ -3,6 +3,8 @@ import { LoginService } from '../../../shared/services/register/login.service';
 import { Router } from '@angular/router';
 import { meAPIUtility, sessionWrapper } from '../../../shared/site-variables';
 import { team } from '../../../shared/custom_dtypes/team';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
 
 
 @Component({
@@ -15,6 +17,7 @@ export class HeaderComponent {
     private _loginService: LoginService, 
     private router: Router,
     private _meAPIutility: meAPIUtility,
+    private matdialog: MatDialog
   ) {
     }
     AvailableDropdownList: any = {
@@ -68,7 +71,15 @@ export class HeaderComponent {
       },
       'logout': {
         name: 'Logout',
-        action: () => this._loginService.logOut(),
+        action: () =>
+          {
+            let matdialogRef = this.matdialog.open(ConfirmationBoxComponent, {data: {msg: 'Are you sure want to logout??'}})
+            matdialogRef.afterClosed().subscribe(
+              (data: any) => {
+                if(data?.result) this._loginService.logOut()
+              }
+            )
+          }
       },
       'support': {
         name: 'Support',

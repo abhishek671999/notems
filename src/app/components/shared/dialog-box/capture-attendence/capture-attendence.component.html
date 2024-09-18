@@ -55,16 +55,15 @@
                 </div>
               </div>
             </form>
-        </div>     
-
+        </div> 
     </form>
 
 </div>
 <div mat-dialog-actions>
     <button [mat-dialog-close] mat-raised-button>Close</button>
     <div>
-      <button mat-flat-button #clockInButton (click)="clockIn()" *ngIf="data.clockIn" [disabled]="!location">Web login</button>
-      <button mat-flat-button #clockOutButton (click)="clockOut()" *ngIf="data.clockOut" [disabled]="!location">Web logout</button>
+      <button mat-flat-button #clockInButton (click)="clockIn()" *ngIf="data.clockIn" [disabled]="!(location && ( (!attendenceForm.value.starting_km && !file) || (attendenceForm.value.starting_km && file) ))">Web login</button>
+      <button mat-flat-button #clockOutButton (click)="clockOut()" *ngIf="data.clockOut" [disabled]="!(location && ( (!attendenceForm.value.ending_km && !file) || (attendenceForm.value.ending_km && file) ))">Web logout</button>
       <mat-error *ngIf="!location">Location required</mat-error>
     </div>
     

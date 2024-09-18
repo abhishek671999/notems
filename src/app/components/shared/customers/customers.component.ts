@@ -41,7 +41,7 @@ export class CustomersComponent {
   length = 50;
   pageSize = 30;
   pageIndex = 0;
-  pageSizeOptions = [30, 60, 90];
+  pageSizeOptions = [50, 100, 150];
   hidePageSize = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;

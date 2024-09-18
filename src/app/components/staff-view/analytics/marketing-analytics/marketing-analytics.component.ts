@@ -49,7 +49,7 @@ export class MarketingAnalyticsComponent {
   length = 50;
   pageSize = 20;
   pageIndex = 0;
-  pageSizeOptions = [5, 20, 50];
+  pageSizeOptions = [50, 100, 150];
   hidePageSize = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;

@@ -134,6 +134,6 @@
     <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectDiscount')">Discount should be less than amount</mat-error>
     <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectReceivedAmount')">Received amount should be less than selling amount</mat-error>
     <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectSellingAmount')">Selling amount should be less than amount</mat-error>
-    <mat-error style="font-size: x-small;" *ngIf="!this.file && addSalesForm.valid">Please add an image</mat-error>
+    <mat-error style="font-size: x-small;" *ngIf="!file && addSalesForm.valid">Please add an image</mat-error>
   </div>
 </mat-dialog-actions>

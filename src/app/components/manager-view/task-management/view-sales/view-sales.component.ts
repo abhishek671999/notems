@@ -37,10 +37,10 @@ export class ViewSalesComponent {
   public salesSourceColumns = ['sl_no', 'customer', 'invoice_number', 'received_amount', 'discount', 'recorded_by', 'date', 'note', 'more']
   public beatInfo: beat | undefined
 
-  length = 50;
-  pageSize = 20;
+  length = 30;
+  pageSize = 30;
   pageIndex = 0;
-  pageSizeOptions = [5, 20, 50];
+  pageSizeOptions = [50, 100, 150];
   hidePageSize = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;
