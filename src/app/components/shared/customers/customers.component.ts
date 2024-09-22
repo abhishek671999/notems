@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CustomersService } from '../../../shared/services/customer/customers.service';
 import { HttpParams } from '@angular/common/http';
 import { sessionWrapper } from '../../../shared/site-variables';
@@ -13,12 +13,13 @@ import { SuccessMsgComponent } from '../dialog-box/success-msg/success-msg.compo
 import { ErrorMsgComponent } from '../dialog-box/error-msg/error-msg.component';
 import { EditCustomerProspectComponent } from '../../manager-view/dialog-box/edit-customer-prospect/edit-customer-prospect.component';
 import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { locality } from '../../../shared/custom_dtypes/locality';
 import { LocalityService } from '../../../shared/services/locality/locality.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { PayLumpsumComponent } from '../bottom-sheet/pay-lumpsum/pay-lumpsum.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-customers',
@@ -39,9 +40,9 @@ export class CustomersComponent {
 
 
   length = 50;
-  pageSize = 30;
+  pageSize = 5;
   pageIndex = 0;
-  pageSizeOptions = [50, 100, 150];
+  pageSizeOptions = [5, 10, 15];
   hidePageSize = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;
@@ -49,8 +50,10 @@ export class CustomersComponent {
   availableLocalityList: locality[] = []
   selectedLocality: locality | undefined
 
-  public customerDataSource = [];
+  public customerDataSource: any;
+
   public customerTableColumns = [
+    'locality',
     'sl_no',
     'outlet_name',
     'type_name',
@@ -58,17 +61,19 @@ export class CustomersComponent {
     'pending_amount',
     'pay_pending_amount',
     'address',
-    'locality',
     'gst_no',
     'edit',
   ];
 
 
+
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
+
   ngOnInit() {
     this.fetchLocality()
     this.fetchCustomers()
-   
   }
+
 
   fetchLocality(){
     let httpParams = new HttpParams()
@@ -86,13 +91,17 @@ export class CustomersComponent {
   fetchCustomers(){
     let httpParams = new HttpParams();
     httpParams = httpParams.append('organization_id', String(this.sessionWrapper.getItem('organization_id')));
-    httpParams = httpParams.append('offset',  this.pageIndex * this.pageSize);
-    httpParams = httpParams.append('count', this.pageIndex * this.pageSize + this.pageSize);
     if(this.selectedLocality) httpParams = httpParams.append('locality_id', Number(this.selectedLocality))
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
-      this.customerDataSource = data['customers'];
+      this.customerDataSource = new MatTableDataSource<customer>(data['customers']);
+      this.customerDataSource.paginator = this.paginator;
       this.length = data['total_count']
     });
+  }
+
+  filterCustomer(event: Event){
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.customerDataSource.filter = filterValue.trim().toLowerCase();
   }
 
   addCustomer() {

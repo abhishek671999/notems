@@ -2,6 +2,7 @@
   <h2 style="text-align: center; margin: 0;">Customers</h2>
   <div class="header-section">
     <div class="filter-section">
+
       <mat-form-field class="form-field">
         <mat-label>Select Locality</mat-label>
         <mat-select
@@ -14,6 +15,12 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select Locality</mat-label>
+        <input type="text" matInput (keydown)="filterCustomer($event)">
+      </mat-form-field>
+      
     </div>
 
     <div class="action-section">

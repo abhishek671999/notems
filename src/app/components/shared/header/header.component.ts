@@ -88,6 +88,10 @@ export class HeaderComponent {
       'calendar': {
         name: 'Calendar',
         action: () => this.router.navigate(['./manager/calendar'])
+      },
+      'manager_reimbursement': {
+        name: 'Calendar',
+        action: () => this.router.navigate(['./manager/reimbursement'])
       }
 
 

@@ -23,7 +23,7 @@ export class SalesMoreInfoComponent {
 
   }
 
-  openImageInNewTab(image_url: string){
+  trwtwrtwrtwopenImageInNewTab(image_url: string){
     window.open(image_url, '_blank')
   }
 }
