@@ -8,3 +8,9 @@ export interface attendenceLocation{
     longitude: string,
     latitude: string
 }
+
+export interface addReimbursement{
+    date: string,
+    reimbursement_amount: string,
+    reimbursement_reason: number
+}

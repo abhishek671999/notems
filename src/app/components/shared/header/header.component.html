@@ -13,6 +13,7 @@
       <input id='hamburger-checkbox' type="checkbox"
                 class="toggle-menu">
       <div class="hamburger"></div>
+      
       <ul class="menu">
         <li style="margin: 0;" *ngFor="let item of dropdownList; index as i;" (click)="onClick(i)" >
           <p style="padding: 0; margin: 0; padding-left: 1em;">{{item.name}}</p>

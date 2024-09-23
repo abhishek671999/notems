@@ -10,6 +10,7 @@ import { ProspectsComponent } from '../clients/prospects/prospects.component';
 import { CategoryComponent } from '../../shared/category/category.component';
 import { LocalityComponent } from '../../shared/locality/locality.component';
 import { BeatsComponent } from '../../staff-view/beats/beats.component';
+import { ReimbursementComponent } from '../reimbursement/reimbursement.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'calendar', component: CalendarComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'beats', component: BeatsComponent},
+      { path: 'reimbursement', component: ReimbursementComponent},
       {
         path: 'analytics',
         children: [

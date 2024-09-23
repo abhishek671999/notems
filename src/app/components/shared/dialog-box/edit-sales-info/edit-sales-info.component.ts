@@ -48,6 +48,7 @@ export class EditSalesInfoComponent {
     },{
       validators: [addSalesReceievedAmountValidation(), salesSellingPriceValidation()]
     });
+    console.log(this.editSalesForm)
     this.itemsAdded = data.sale.line_items
   }
   

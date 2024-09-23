@@ -2,8 +2,8 @@
     <div class="top-section-wrapper">
         <div class="nav-button-section">
             <button (click)="applyLeave()" mat-raised-button>Appy Leave</button>
+            <button (click)="openReimbursement()" mat-raised-button>Apply Reimbursement</button>
             <button (click)="navigateToBeats()" mat-raised-button>Beats</button>
-            <button (click)="openCalendar()" mat-raised-button>Calendar</button>
         </div>
         <div class="punch-in-section">
             <div class="clock">
@@ -21,6 +21,7 @@
     </div>
     <br>
     <div class="my-leaves-section">
+        <h3 style="text-align: center; margin: 0;">Attendence history</h3>
         <div class="filter-section">
             <mat-form-field class="form-field">
                 <mat-label>Select time frame</mat-label>
@@ -61,61 +62,97 @@
             </mat-form-field>
         </div>
 
-          <h3 style="text-align: center; margin: 0;">Attendence history</h3>
-    <div class="attendence-history-table">
-        <table mat-table [dataSource]="attendenceRecordsDataSource">
-            <ng-container matColumnDef="sl_no">
-                <th mat-header-cell *matHeaderCellDef>Sl No.</th>
-                <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
-            </ng-container>
-            
-            <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>From</th>
-                <td mat-cell *matCellDef="let element">{{element.date}}</td>
-            </ng-container>
+        <div class="attendence-history-table">
+            <table mat-table [dataSource]="attendenceRecordsDataSource">
+                <ng-container matColumnDef="sl_no">
+                    <th mat-header-cell *matHeaderCellDef>Sl No.</th>
+                    <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef>From</th>
+                    <td mat-cell *matCellDef="let element">{{element.date}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="punch_in">
-                <th mat-header-cell *matHeaderCellDef>Punch In</th>
-                <td mat-cell *matCellDef="let element" (click)="openLocationScreen(element.punch_in_location)">
-                    {{element.punch_in}}<span class="material-symbols-outlined">location_on</span>
+                <ng-container matColumnDef="punch_in">
+                    <th mat-header-cell *matHeaderCellDef>Punch In</th>
+                    <td mat-cell *matCellDef="let element" (click)="openLocationScreen(element.punch_in_location)">
+                        {{element.punch_in}}<span class="material-symbols-outlined">location_on</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="punch_out">
+                    <th mat-header-cell *matHeaderCellDef>Punch out</th>
+                    <td mat-cell *matCellDef="let element" >
+                        <span *ngIf="element.punch_out" (click)="openLocationScreen(element.punch_out_location)">{{element.punch_out}}<span class="material-symbols-outlined">location_on</span></span>
+
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="starting_km">
+                    <th mat-header-cell *matHeaderCellDef>Start km</th>
+                    <td mat-cell *matCellDef="let element" >
+                    <span *ngIf="element.punch_in" (click)="openImage('Starting KM image', element.starting_km_image)">
+                        {{element.starting_km}}&nbsp;<span class="material-symbols-outlined" *ngIf="element.punch_in">image</span>
+                    </span>
                 </td>
-            </ng-container>
-
-            <ng-container matColumnDef="punch_out">
-                <th mat-header-cell *matHeaderCellDef>Punch out</th>
+                </ng-container>
+        
+                <ng-container matColumnDef="ending_km">
+                <th mat-header-cell *matHeaderCellDef>End km</th>
                 <td mat-cell *matCellDef="let element" >
-                    <span *ngIf="element.punch_out" (click)="openLocationScreen(element.punch_out_location)">{{element.punch_out}}<span class="material-symbols-outlined">location_on</span></span>
-
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="starting_km">
-                <th mat-header-cell *matHeaderCellDef>Start km</th>
-                <td mat-cell *matCellDef="let element" >
-                  <span *ngIf="element.punch_in" (click)="openImage('Starting KM image', element.starting_km_image)">
-                    {{element.starting_km}}&nbsp;<span class="material-symbols-outlined" *ngIf="element.punch_in">image</span>
+                    <span *ngIf="element.punch_out" (click)="openImage('Ending KM image', element.ending_km_image)">
+                    {{element.ending_km}} &nbsp;<span class="material-symbols-outlined" *ngIf="element.punch_out">image</span>
                 </span>
-              </td>
+                </td>
             </ng-container>
-    
-            <ng-container matColumnDef="ending_km">
-              <th mat-header-cell *matHeaderCellDef>End km</th>
-              <td mat-cell *matCellDef="let element" >
-                <span *ngIf="element.punch_out" (click)="openImage('Ending KM image', element.ending_km_image)">
-                  {{element.ending_km}} &nbsp;<span class="material-symbols-outlined" *ngIf="element.punch_out">image</span>
-              </span>
-            </td>
-          </ng-container>
-    
-            <ng-container matColumnDef="total_km">
-              <th mat-header-cell *matHeaderCellDef>Total km</th>
-              <td mat-cell *matCellDef="let element"><p *ngIf="element.punch_in && element.punch_out">{{element.ending_km - element.starting_km}}</p></td>
-            </ng-container>
-            
-            <tr mat-header-row *matHeaderRowDef="attendenceRecordsTableColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: attendenceRecordsTableColumns;"></tr>
-        </table>
+        
+                <ng-container matColumnDef="total_km">
+                <th mat-header-cell *matHeaderCellDef>Total km</th>
+                <td mat-cell *matCellDef="let element"><p *ngIf="element.punch_in && element.punch_out">{{element.ending_km - element.starting_km}}</p></td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="attendenceRecordsTableColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: attendenceRecordsTableColumns;"></tr>
+            </table>
+            <h3 *ngIf="attendenceRecordsDataSource.length == 0" style="text-align: center;">No records</h3>
+        </div>
     </div>
 
+    <div class="my-reimbursement-section">
+        <h2 style="text-align: center; margin: 0;">Reimbursement</h2>
+        <div class="attendence-history-table">
+            <table mat-table [dataSource]="reimbursementDataSource">
+                <ng-container matColumnDef="sl_no">
+                    <th mat-header-cell *matHeaderCellDef>Sl No.</th>
+                    <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef>Amount</th>
+                    <td mat-cell *matCellDef="let element">₹&nbsp;{{element.amount}}</td>
+                </ng-container>
+        
+                <ng-container matColumnDef="reason">
+                    <th mat-header-cell *matHeaderCellDef>Reason</th>
+                    <td mat-cell *matCellDef="let element">{{element.reason}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="image">
+                    <th mat-header-cell *matHeaderCellDef>Image</th>
+                    <td mat-cell *matCellDef="let element" >
+                        <span *ngIf="element.image_url" (click)="openImage('Ending KM image', element.image_url)">
+                        <span class="material-symbols-outlined" *ngIf="element.image_url">image</span>
+                        </span>
+                    </td>
+                </ng-container>
+        
+                
+                <tr mat-header-row *matHeaderRowDef="reimbursementTableColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: reimbursementTableColumns;"></tr>
+            </table>
+            <h3 *ngIf="reimbursementTableColumns.length == 0" style="text-align: center;">No records</h3>
+        </div>
     </div>
+
 </div>

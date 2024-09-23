@@ -18,6 +18,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.component';
 import { CaptureAttendenceComponent } from '../../shared/dialog-box/capture-attendence/capture-attendence.component';
 import { ViewImageComponent } from '../../shared/dialog-box/view-image/view-image.component';
+import { AddReimbursementComponent } from '../bottom-sheet/add-reimbursement/add-reimbursement.component';
 
 @Component({
   selector: 'app-attendence',
@@ -66,6 +67,9 @@ export class AttendenceComponent {
   
   public attendenceRecordsDataSource: [] = []
   public attendenceRecordsTableColumns: string[] = ['sl_no', 'date', 'punch_in', 'punch_out', 'starting_km', 'ending_km', 'total_km']
+
+  public reimbursementDataSource: any[] = []
+  public reimbursementTableColumns: string[] = ['sl_no', 'amount', 'reason', 'image']
 
   private LeaveType: leaveType[] | null;
   private intervalId: any
@@ -150,6 +154,17 @@ export class AttendenceComponent {
     this.router.navigate(['./staff/beats'])
   }
 
+  openReimbursement(){
+    let matbottomSheetRef = this.bottomSheet.open(AddReimbursementComponent)
+    matbottomSheetRef.afterDismissed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.ngOnInit()
+        }
+      }
+    )
+  }
+
 
   openCalendar() {
     this.bottomSheet.open(ViewCalendarComponent)
@@ -165,7 +180,13 @@ export class AttendenceComponent {
     if((this.selectedTimeFrame != 'custom') || (this.selectedTimeFrame == 'custom' && this.selectedFromDate && this.selectedToDate)){
       this.attendenceService.getMyAttendence(httpParams).subscribe(
         (data: any) => {
+          let reimbusermentList: any[] = []
           this.attendenceRecordsDataSource = data['attendance_list']
+          data['attendance_list'].forEach((attendance: any) => {
+            console.log(...attendance['reimbursement_list'])
+            reimbusermentList.push(...attendance['reimbursement_list'])
+          });
+          this.reimbursementDataSource = reimbusermentList
         },
         (error: any) => {
           alert('Failed to fetch attendnece')

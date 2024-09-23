@@ -27,12 +27,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { VisitsComponent } from '../visits/visits.component';
 import { LeaveHistoryComponent } from '../leave-history/leave-history.component';
 import {MatBadgeModule} from '@angular/material/badge';
+import { AddReimbursementComponent } from '../bottom-sheet/add-reimbursement/add-reimbursement.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     AttendenceComponent,
     LeaveActionComponent,
+    AddReimbursementComponent,
     BeatsComponent,
     SalesComponent,
     VisitsComponent,

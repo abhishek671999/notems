@@ -2,7 +2,7 @@
 <div class="main-container">
     <form class="new-task-form" [formGroup]="editSalesForm">
 
-        <mat-form-field>
+        <mat-form-field *ngIf="!data.disableCustomer">
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id">
                 <mat-option *ngFor="let customer of customerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
@@ -48,7 +48,7 @@
         </div>
 
         <div style="text-align: center;">
-          <button (click)="editItems()"  mat-raised-button>Edit items</button>
+          <button (click)="editItems()" *ngIf="!data.disableAddSale"  mat-raised-button>Edit items</button>
         </div>
 
         <div>
@@ -58,7 +58,7 @@
         <div class="discount-field">
           <mat-form-field >
               <mat-label>Enter Amount after discount</mat-label>
-              <input type="number" matInput placeholder="Amount after discount" formControlName="selling_price">
+              <input [readonly]="data.disableSellingPrice" type="number" matInput placeholder="Amount after discount" formControlName="selling_price">
               <mat-error *ngIf="editSalesForm.controls['selling_price'].hasError('required')">Required</mat-error>
           </mat-form-field>
           <div class="discount-section"  *ngIf="editSalesForm.controls['selling_price'].value">
@@ -69,27 +69,27 @@
 
         <mat-form-field >
           <mat-label>Enter Invoice number </mat-label>
-          <input type="text" matInput placeholder="Invoice number" formControlName="invoice_number">
+          <input [readonly]="data.disableInvoiceNumber" type="text" matInput placeholder="Invoice number" formControlName="invoice_number">
           <mat-error *ngIf="editSalesForm.controls['invoice_number'].hasError('required')">Required</mat-error>
       </mat-form-field>
 
         <mat-form-field >
             <mat-label>Enter received amount</mat-label>
-            <input matInput placeholder="Received amount" formControlName="received_amount">
+            <input [readonly]="data.disableReceivedAmount"  type="number" matInput placeholder="Received amount" formControlName="received_amount">
             <mat-error *ngIf="editSalesForm.controls['received_amount'].hasError('required')">Required</mat-error>
         </mat-form-field>
 
         <mat-form-field >
             <mat-label>Enter a note</mat-label>
-            <input matInput placeholder="Note" formControlName="note">
+            <input [readonly]="data.disableNote" matInput placeholder="Note" formControlName="note">
         </mat-form-field>
 
-        <div class="image-thumbnail">
+        <div class="image-thumbnail" >
           <div  *ngFor="let image of saleData.image_details">
             <a target="_blank" href="{{image.image_url}}"><img src="{{image.image_url}}" alt="" width="100px" height="100px"></a>
           </div>
         </div>
-        <div>
+        <div *ngIf="!data.disableAddSale">
             <form class="upload-form">  
               <label
                 for="file"

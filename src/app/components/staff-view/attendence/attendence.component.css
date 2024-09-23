@@ -35,6 +35,11 @@
     padding: 0.5em;
 }
 
+
+.my-reimbursement-section{
+    margin-top: 2em;
+}
+
 .filter-section{
     display: flex;
     width: 100%;

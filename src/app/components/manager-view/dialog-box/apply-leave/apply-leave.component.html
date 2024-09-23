@@ -30,18 +30,18 @@
                 <mat-error>End date is mandatory</mat-error>
               }
         </mat-form-field>
-        <mat-form-field>
-            <mat-label>Select leave type</mat-label>
-            <mat-select formControlName="leaveTypeId" required>
-              <mat-option>--</mat-option>
-              @for (leaveType of leaveTypes; track leaveType) {
-                <mat-option [value]="leaveType.leave_type_id">{{leaveType.leave_type_name}}</mat-option>
+          <mat-form-field>
+              <mat-label>Select leave type</mat-label>
+              <mat-select formControlName="leaveTypeId" required>
+                <mat-option>--</mat-option>
+                @for (leaveType of leaveTypes; track leaveType) {
+                  <mat-option [value]="leaveType.leave_type_id">{{leaveType.leave_type_name}}</mat-option>
+                }
+              </mat-select>
+              @if (leaveForm.controls.leaveTypeId.hasError('required')) {
+                <mat-error>Please choose a leave type</mat-error>
               }
-            </mat-select>
-            @if (leaveForm.controls.leaveTypeId.hasError('required')) {
-              <mat-error>Please choose a leave type</mat-error>
-            }
-        </mat-form-field>
+          </mat-form-field>
         <mat-form-field>
             <input matInput type="text" placeholder="Please enter reason" formControlName='reason'>
         </mat-form-field>

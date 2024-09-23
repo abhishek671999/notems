@@ -90,8 +90,12 @@ export class HeaderComponent {
         action: () => this.router.navigate(['./manager/calendar'])
       },
       'manager_reimbursement': {
-        name: 'Calendar',
+        name: 'Reimbursement',
         action: () => this.router.navigate(['./manager/reimbursement'])
+      },
+      'receipt': {
+        name: 'Receipt',
+        action: () => this.router.navigate(['./general/receipt'])
       }
 
 
@@ -100,7 +104,7 @@ export class HeaderComponent {
     addManagerNavOptions(organaization: any){
       this.location = organaization.organization_name
       let managerNavOptions: Array<string>
-      managerNavOptions = ['profile', 'calendar', 'analytics','task_management', 'team_management', 'manager_attendence', 'customer', 'items_manager']
+      managerNavOptions = ['profile', 'calendar', 'manager_reimbursement', 'analytics','task_management', 'team_management', 'manager_attendence', 'customer', 'items_manager']
       for(let option of managerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -128,7 +132,7 @@ export class HeaderComponent {
   }
 
     
-  dropdownList = [ this.AvailableDropdownList['logout']]
+  dropdownList = [ this.AvailableDropdownList['receipt'], this.AvailableDropdownList['logout']]
   username: string = ''
   message: string = ''
   location: string = ''

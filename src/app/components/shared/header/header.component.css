@@ -46,7 +46,9 @@
     z-index: 3;
     transition: 0.5s;
     padding: 0;
+    overflow: auto;
 }
+
 
 .menu ul{
     margin: 0;

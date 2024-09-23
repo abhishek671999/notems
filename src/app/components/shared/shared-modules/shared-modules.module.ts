@@ -43,6 +43,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CaptureAttendenceComponent } from '../dialog-box/capture-attendence/capture-attendence.component';
 import { ViewImageComponent } from '../dialog-box/view-image/view-image.component';
 import { ClickOutsideDirective } from '../../../shared/utils/clickOutside';
+import { ReceiptsComponent } from '../receipts/receipts.component';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatPaginator } from '@angular/material/paginator';
+import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amount/update-pending-amount.component';
 
 
 @NgModule({
@@ -61,6 +65,7 @@ import { ClickOutsideDirective } from '../../../shared/utils/clickOutside';
     AddCategoryComponent,
     AddLocalityComponent,
     PayLumpsumComponent,
+    UpdatePendingAmountComponent,
     AddSaleComponent,
     AddVisitComponent,
     EditSalesInfoComponent,
@@ -74,6 +79,7 @@ import { ClickOutsideDirective } from '../../../shared/utils/clickOutside';
     BeatInfoComponent,
     CaptureAttendenceComponent,
     ViewImageComponent,
+    ReceiptsComponent,
     ClickOutsideDirective
   ],
   imports: [
@@ -94,7 +100,9 @@ import { ClickOutsideDirective } from '../../../shared/utils/clickOutside';
     MatBadgeModule,
     MatMenuModule,
     MatDialogModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatDatepickerModule,
+    MatPaginator
   ],
   exports: [HeaderComponent, FooterComponent, BeatInfoComponent]
 })

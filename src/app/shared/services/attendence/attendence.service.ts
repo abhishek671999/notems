@@ -19,8 +19,19 @@ export class AttendenceService {
   private punchInEndpoint = host + 'attendance/punch_in/'
   private punchOutEndpoint = host + 'attendance/punch_out/'
 
+  // Reimbursement
+  private getReimbursementEndpoint = host + 'attendance/get_reimbursement_details/'
+  private addReimbursementEndpoint = host + 'attendance/add_reimbursement/'
+
   constructor(private httpClient: HttpClient) { }
 
+  getReimbursements(httpParams: HttpParams){
+    return this.httpClient.get(this.getReimbursementEndpoint, {params: httpParams})
+  }
+
+  addReimbursement(body: any){
+    return this.httpClient.post(this.addReimbursementEndpoint, body)
+  }
 
   getMyLeaves() {
     return this.httpClient.get(this.getMyLeavesEndpoint)

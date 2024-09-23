@@ -1,0 +1,32 @@
+.main-container{
+    min-height: 84vh;
+    max-height: fit-content;
+    width: 100%;
+}
+
+.filter-section{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+td, th {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.mat-sort-header-container {
+    justify-content: center !important;
+}
+
+.sub-header-section{
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+}
+
+.sub-header-section h3{
+    margin: 0;
+}

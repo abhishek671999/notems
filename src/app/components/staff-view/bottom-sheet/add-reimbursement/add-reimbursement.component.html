@@ -1,0 +1,71 @@
+<div class="main-container">
+    <h2>Add reimbursement</h2>
+        <form class="form-section" [formGroup]="reimbursementForm">
+            <mat-form-field>
+                <mat-label>Choose a date</mat-label>
+                  <input matInput formControlName="date" [matDatepicker]="picker">
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Enter Reimbursement amount</mat-label>
+                <input type="number"  matInput formControlName="reimbursement_amount">
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Enter Reimbursement text</mat-label>
+                <input type="text"  matInput formControlName="reimbursement_reason">
+            </mat-form-field>
+
+            <div>
+                <form class="upload-form">  
+                  <label
+                    for="file"
+                    (dragover)="handleDragOver($event)"
+                    (drop)="handleDrop($event)"
+                  >
+                    <i class="ph ph-upload"></i>
+                    <span>
+                      Click here to upload item image
+                    </span>
+                  </label>
+                
+                  <input
+                    id="file"
+                    type="file"
+                    name="file"
+                    (change)="onFileSelected($event)"
+                    accept="image/*"
+                    capture
+                  />
+                
+                  <div class="result" [style.display]="outputBoxVisible ? 'flex' : 'none'">
+                    <i class="ph ph-file"></i>
+                    <div class="file-details">
+                      <span class="file-name">{{ fileName }}</span>
+                      <ng-container *ngIf="uploadStatus === 200 || uploadStatus === undefined">
+                        <span class="file-size">{{ fileSize }}</span>
+                      </ng-container>
+                    </div>
+                
+                    <div class="upload-result" [style.display]="uploadStatus ? 'flex' : 'none'">
+                      <span>{{ uploadResult }}</span>
+                      <ng-container *ngIf="uploadStatus === 200; else error">
+                        <i class="ph ph-check-circle"></i>
+                      </ng-container>
+                      <ng-template #error>
+                        <i class="ph ph-x-circle"></i>
+                      </ng-template>
+                    </div>
+                  </div>
+                </form>
+            </div>  
+        </form>
+    
+    <div class="action-section">
+        <button mat-raised-button>Close</button>
+        <button [disabled]="reimbursementForm.invalid || !file"  #submitButton mat-flat-button (click)="addReimbursement()">Submit</button>
+    </div>
+</div>

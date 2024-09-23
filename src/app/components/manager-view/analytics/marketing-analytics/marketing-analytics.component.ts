@@ -52,7 +52,7 @@ export class MarketingAnalyticsComponent {
   public selectedRepresentative = ''
   
   length = 50;
-  pageSize = 20;
+  pageSize = 50;
   pageIndex = 0;
   pageSizeOptions = [50, 100, 150];
   hidePageSize = false;

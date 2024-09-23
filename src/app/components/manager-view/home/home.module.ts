@@ -43,6 +43,7 @@ import { AssignBeatComponent } from '../dialog-box/assign-beat/assign-beat.compo
 import { EditAssignedBeatComponent } from '../dialog-box/edit-assigned-beat/edit-assigned-beat.component';
 import { TaskManagementHomeModule } from '../task-management/task-management-home/task-management-home.module';
 import { AttendenceMoreInfoComponent } from '../dialog-box/attendence-more-info/attendence-more-info.component';
+import { ReimbursementComponent } from '../reimbursement/reimbursement.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { AttendenceMoreInfoComponent } from '../dialog-box/attendence-more-info/
     AddBeatComponent,
     EditBeatComponent,
     CalendarComponent,
+    ReimbursementComponent,
     HolidayComponent,
     LeaveComponent,
     UserManagementComponent,

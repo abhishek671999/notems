@@ -1,29 +1,32 @@
-import { Component } from '@angular/core';
-import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { getSales, sale } from '../../../shared/custom_dtypes/sales';
+import { SalesMoreInfoComponent } from '../dialog-box/sales-more-info/sales-more-info.component';
 import { PageEvent } from '@angular/material/paginator';
-import { FormControl, FormGroup } from '@angular/forms';
-import { customer } from '../../../../shared/custom_dtypes/customers';
-import { sessionWrapper } from '../../../../shared/site-variables';
-import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
-import { teamMember } from '../../../../shared/custom_dtypes/team';
-import { getSales, sale } from '../../../../shared/custom_dtypes/sales';
-import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
+import { customer } from '../../../shared/custom_dtypes/customers';
+import { teamMember } from '../../../shared/custom_dtypes/team';
+import { TaskManagementService } from '../../../shared/services/taskmanagement/task-management.service';
+import { TeamManagementService } from '../../../shared/services/team-management/team-management.service';
+import { sessionWrapper } from '../../../shared/site-variables';
+import { CustomersService } from '../../../shared/services/customer/customers.service';
 import { MatDialog } from '@angular/material/dialog';
+import { EditSalesInfoComponent } from '../dialog-box/edit-sales-info/edit-sales-info.component';
+import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amount/update-pending-amount.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
-  selector: 'app-sales-analytics',
-  templateUrl: './sales-analytics.component.html',
-  styleUrl: './sales-analytics.component.css'
+  selector: 'app-receipts',
+  templateUrl: './receipts.component.html',
+  styleUrl: './receipts.component.css'
 })
-export class SalesAnalyticsComponent {
+export class ReceiptsComponent {
   constructor(
     private taskService: TaskManagementService,
     private teamMembersService: TeamManagementService,
     private sessionWrapper: sessionWrapper,
     private customerService: CustomersService,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private matbottomSheet: MatBottomSheet
   ) { }
 
   timeFrames = [
@@ -50,7 +53,7 @@ export class SalesAnalyticsComponent {
   public totalAmountReceived = 0
   
   public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'recorded_by', 'more']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'recorded_by', 'edit']
   public teamMembers: teamMember[] = []
 
   length = 50;
@@ -136,9 +139,18 @@ export class SalesAnalyticsComponent {
     });
   }
 
-  openMoreInfoWindow(row: sale){
-    this.matdialog.open(SalesMoreInfoComponent, { data: row} )
+  openEditSalesWindow(row: sale){
+    let matdialogRef = this.matbottomSheet.open(UpdatePendingAmountComponent, { data: {sale: row, 
+      disableReceivedAmount: false, disableInvoiceNumber: true, disableSellingPrice: true, disableNote: true, disableAddSale: true, disableCustomer: true}} )
+    matdialogRef.afterDismissed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.ngOnInit()
+        }
+      }
+    )
   }
+
 
 
   handlePageEvent(e: PageEvent) {

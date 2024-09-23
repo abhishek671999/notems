@@ -1,0 +1,14 @@
+<div class="main-container">
+        <form [formGroup]="editSalesForm">
+        <mat-form-field >
+            <mat-label>Enter new received amount</mat-label>
+            <input type="number" matInput placeholder="New Received amount" formControlName="new_received_amount">
+            <mat-error *ngIf="editSalesForm.controls['new_received_amount'].hasError('required')">Required</mat-error>
+        </mat-form-field>
+        </form>
+
+        <div>
+            <button mat-raised-button (click)="matbottomSheetRef.dismiss()">Close</button>
+            <button [disabled]="editSalesForm.invalid" mat-flat-button (click)="editReceivedamount()">Submit</button>
+        </div>
+</div>

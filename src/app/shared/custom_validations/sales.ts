@@ -32,6 +32,22 @@ export function addSalesReceievedAmountValidation(): ValidatorFn {
   }
 }
 
+export function salesNewReceievedAmountValidation(): ValidatorFn {
+  return (form: AbstractControl): ValidationErrors | null => {
+
+      const receivedAmount = form.get("received_amount")?.value;
+      const sellingPrice = form.get('selling_price')?.value
+      const newReceivedAmount = form.get('new_selling_price')?.value
+
+      if (receivedAmount && sellingPrice && newReceivedAmount) {
+  
+          return receivedAmount + newReceivedAmount <= sellingPrice ? null : {incorrectReceivedAmount:true};
+      }
+
+      return null;
+  }
+}
+
 export function salesSellingPriceValidation(): ValidatorFn {
   return (form: AbstractControl) : ValidationErrors | null => {
 
