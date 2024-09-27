@@ -37,10 +37,15 @@ export function salesNewReceievedAmountValidation(): ValidatorFn {
 
       const receivedAmount = form.get("received_amount")?.value;
       const sellingPrice = form.get('selling_price')?.value
-      const newReceivedAmount = form.get('new_selling_price')?.value
+      const newReceivedAmount = form.get('new_received_amount')?.value
+      const discount = form.get('discount')?.value
 
-      if (receivedAmount && sellingPrice && newReceivedAmount) {
-  
+      console.log('Received amount: ', receivedAmount, 'selling price: ', sellingPrice, 'new received amount: ', newReceivedAmount, 'discount: ', discount)
+      if(typeof(receivedAmount)==='number' && newReceivedAmount < 0){
+        return  {lessThanZero:true}
+      }
+      else if (typeof(receivedAmount)==='number' && typeof(sellingPrice)==='number' && typeof(newReceivedAmount)==='number') {
+      console.log(receivedAmount + newReceivedAmount, sellingPrice)
           return receivedAmount + newReceivedAmount <= sellingPrice ? null : {incorrectReceivedAmount:true};
       }
 

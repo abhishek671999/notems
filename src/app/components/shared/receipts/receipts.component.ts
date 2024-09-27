@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditSalesInfoComponent } from '../dialog-box/edit-sales-info/edit-sales-info.component';
 import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amount/update-pending-amount.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ReceiptMoreInfoComponent } from '../dialog-box/receipt-more-info/receipt-more-info.component';
 
 @Component({
   selector: 'app-receipts',
@@ -53,7 +54,7 @@ export class ReceiptsComponent {
   public totalAmountReceived = 0
   
   public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'recorded_by', 'edit']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'recorded_by', 'edit', 'more']
   public teamMembers: teamMember[] = []
 
   length = 50;
@@ -149,6 +150,10 @@ export class ReceiptsComponent {
         }
       }
     )
+  }
+
+  openReceiptModificationLogs(row: sale){
+    this.matdialog.open(ReceiptMoreInfoComponent, {data: row})
   }
 
 

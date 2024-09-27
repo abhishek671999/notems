@@ -31,12 +31,17 @@ export class TaskManagementService {
   private updateSaleInvoiceLineItemEndpoint = host + 'sales/update_sale_invoice_line_items/'
   private deleteSalesInvoiceLineItemEndpoint = host + 'sales/delete_sale_invoice_line_item/'
 
-
   private assignBeatEndpoint = host + 'tasks/assign_beat/'
   private editAssignedBeatEndpoint = host + 'tasks/edit_beat_assignment/'
   private unassignBeatEndpoint = host + 'tasks/unassign_beat/'
 
+  private getSaleInvoiceActivityEndpoint = host + 'sales/get_sale_invoice_activity/'
+
   constructor(private httpClient: HttpClient) { }
+
+  getSaleInvoiceActivity(httpParams: HttpParams){
+    return this.httpClient.get(this.getSaleInvoiceActivityEndpoint, {params: httpParams})
+  }
 
   getAssigneeBeats(httpParams: HttpParams){
     return this.httpClient.get(this.getAssigneeBeatsEndpoint, {params: httpParams})

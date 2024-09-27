@@ -1,0 +1,9 @@
+.all-reimbursement-table{
+    max-height: 45vh;
+    overflow: scroll;
+}
+
+.km-count-table{
+    max-height: 45vh;
+    overflow: scroll;
+}

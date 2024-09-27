@@ -9,3 +9,20 @@ mat-form-field{
     min-width: 50vw;
     max-width: 100%;
 }
+
+
+.action-buttons{
+    width: 100%;
+    display: flex;
+    text-wrap-mode: wrap;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+.action-buttons div{
+    align-self: center;
+    justify-self: center;
+    max-width: 50%;
+    text-wrap: wrap;
+}

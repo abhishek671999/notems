@@ -45,3 +45,11 @@ export type getSales = {
     count?: number,
     date?: string | null
 }
+
+export type editSaleModificationLog = {
+    "sale_invoice_id": string,
+    "old_received_amount": number,
+    "new_received_amount": number,
+    "activity_time": string,
+    "activity_by": string
+}

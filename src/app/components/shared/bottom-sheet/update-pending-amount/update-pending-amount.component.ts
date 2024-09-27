@@ -25,6 +25,7 @@ export class UpdatePendingAmountComponent {
       customer_id: [this.saleData.customer_id, [Validators.required]],
       invoice_number: [this.saleData.invoice_number, [Validators.required]],
       selling_price: [this.saleData.total_amount, [Validators.required]],
+      discount: [this.saleData.discount, [Validators.required]],
       received_amount: [this.saleData.received_amount, [Validators.required]],
       new_received_amount: ['', [Validators.required]],
       note: [this.saleData.note,],
@@ -42,7 +43,7 @@ export class UpdatePendingAmountComponent {
       invoice_id: this.saleData.invoice_id,
       invoice_number: this.saleData.invoice_number,
       customer_id: this.editSalesForm.value.customer_id,
-      discount: this.editSalesForm.value.amount - this.editSalesForm.value.selling_price,
+      discount: this.editSalesForm.value.discount, // this.editSalesForm.value.amount - this.editSalesForm.value.selling_price,
       received_amount: this.editSalesForm.value.received_amount + this.editSalesForm.value.new_received_amount,
       note: this.editSalesForm.value.note,
       beat_id: this.saleData.beat_id

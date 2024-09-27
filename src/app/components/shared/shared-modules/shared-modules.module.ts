@@ -47,6 +47,8 @@ import { ReceiptsComponent } from '../receipts/receipts.component';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
 import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amount/update-pending-amount.component';
+import { ReimbursementMoreInfoComponent } from '../dialog-box/reimbursement-more-info/reimbursement-more-info.component';
+import { ReceiptMoreInfoComponent } from '../dialog-box/receipt-more-info/receipt-more-info.component';
 
 
 @NgModule({
@@ -73,6 +75,7 @@ import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amo
     ViewMoreSalesInfoComponent,
     AddItemsToSaleComponent,
     SalesMoreInfoComponent,
+    ReimbursementMoreInfoComponent,
     PageNotFoundComponent,
     SafePipe,
     HomeComponent,
@@ -80,7 +83,8 @@ import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amo
     CaptureAttendenceComponent,
     ViewImageComponent,
     ReceiptsComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    ReceiptMoreInfoComponent,
   ],
   imports: [
     CommonModule, 
@@ -102,7 +106,8 @@ import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amo
     MatDialogModule,
     NgOptimizedImage,
     MatDatepickerModule,
-    MatPaginator
+    MatPaginator,
+    MatDialogModule
   ],
   exports: [HeaderComponent, FooterComponent, BeatInfoComponent]
 })

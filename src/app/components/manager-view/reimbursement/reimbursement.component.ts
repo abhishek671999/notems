@@ -3,6 +3,9 @@ import { AttendenceService } from '../../../shared/services/attendence/attendenc
 import { HttpParams } from '@angular/common/http';
 import { sessionWrapper } from '../../../shared/site-variables';
 import { dateUtils } from '../../../shared/utils/date_utils';
+import { MatDialog } from '@angular/material/dialog';
+import { ReimbursementMoreInfoComponent } from '../../shared/dialog-box/reimbursement-more-info/reimbursement-more-info.component';
+import { reimbursementDetail } from '../../../shared/custom_dtypes/reimbursement';
 
 @Component({
   selector: 'app-reimbursement',
@@ -14,7 +17,8 @@ export class ReimbursementComponent {
   constructor(
     private attendenceService: AttendenceService,
     private sessionWrapper: sessionWrapper,
-    private dateUtils: dateUtils
+    private dateUtils: dateUtils,
+    private matdialog: MatDialog
   ){}
 
   timeFrames = [
@@ -26,12 +30,12 @@ export class ReimbursementComponent {
     { displayValue: 'Last 3 months', actualValue: 'last_3_months' },
     { displayValue: 'Last 6 months', actualValue: 'last_6_months' },
     { displayValue: 'This year', actualValue: 'this_year' },
-    { displayValue: 'Calendar', actualValue: 'custom' },
+    { displayValue: 'Calendar', actualValue: 'custom' }, 
   ];
   
   public selectedTimeFrame = this.timeFrames[0].actualValue
   public reimbusermentDataSource = []
-  public reimbursementDataColumn = ['sl_no', 'user', 'total_amount', 'km_driven']
+  public reimbursementDataColumn = ['sl_no', 'user', 'total_amount', 'km_driven', 'more']
 
   public selectedFromDate = ''
   public selectedToDate = ''
@@ -56,5 +60,12 @@ export class ReimbursementComponent {
       }
     )
   }
+
+
+
+openReimbursementInfo(reimbursementDetails: reimbursementDetail){
+  this.matdialog.open(ReimbursementMoreInfoComponent, {data: {user: reimbursementDetails, timeframe: this.selectedTimeFrame}})
+}
+  
 
 }

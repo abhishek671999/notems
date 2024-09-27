@@ -23,7 +23,18 @@ export class AttendenceService {
   private getReimbursementEndpoint = host + 'attendance/get_reimbursement_details/'
   private addReimbursementEndpoint = host + 'attendance/add_reimbursement/'
 
+  private getDetailedReimbursementForUserEndpoint = host + 'attendance/get_all_reimbursements/'
+  private getKMdrivenDetailsEndpoint = host + 'attendance/get_km_driven_details/'
+
   constructor(private httpClient: HttpClient) { }
+
+  getKMDrivenDetails(httpParams: HttpParams){
+    return this.httpClient.get(this.getKMdrivenDetailsEndpoint, {params: httpParams})
+  }
+
+  getDetailedReimbursement(httpParams: HttpParams){
+    return this.httpClient.get(this.getDetailedReimbursementForUserEndpoint, {params: httpParams})
+  }
 
   getReimbursements(httpParams: HttpParams){
     return this.httpClient.get(this.getReimbursementEndpoint, {params: httpParams})

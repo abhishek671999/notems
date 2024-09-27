@@ -7,8 +7,15 @@
         </mat-form-field>
         </form>
 
-        <div>
-            <button mat-raised-button (click)="matbottomSheetRef.dismiss()">Close</button>
-            <button [disabled]="editSalesForm.invalid" mat-flat-button (click)="editReceivedamount()">Submit</button>
+        <div class="action-buttons">
+            <div>
+                <button mat-raised-button (click)="matbottomSheetRef.dismiss()">Close</button>
+            </div>
+            <div>
+                <button [disabled]="editSalesForm.invalid" mat-flat-button (click)="editReceivedamount()">Submit</button>
+                <mat-error style="font-size: x-small;" *ngIf="editSalesForm.hasError('incorrectReceivedAmount')">New received amount should be less than pending amount</mat-error>
+                <mat-error style="font-size: x-small;" *ngIf="editSalesForm.hasError('lessThanZero')">Amount should be greater than zero</mat-error>
+            </div>
+            
         </div>
 </div>

@@ -158,6 +158,7 @@ export class AttendenceComponent {
     let matbottomSheetRef = this.bottomSheet.open(AddReimbursementComponent)
     matbottomSheetRef.afterDismissed().subscribe(
       (data: any) => {
+        console.log(data)
         if(data?.result){
           this.ngOnInit()
         }
