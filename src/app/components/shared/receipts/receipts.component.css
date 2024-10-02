@@ -15,10 +15,13 @@
 td, th {
     text-align: center !important;
     vertical-align: middle !important;
+    padding: 0.5em;
 }
+
 
 .mat-sort-header-container {
     justify-content: center !important;
+    width: min-content;
 }
 
 .sub-header-section{

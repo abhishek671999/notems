@@ -20,7 +20,7 @@ export class LeaveComponent {
   length = 50;
   pageSize = 20;
   pageIndex = 0;
-  pageSizeOptions = [5, 20, 50];
+  pageSizeOptions = [20, 50, 100];
   hidePageSize = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;

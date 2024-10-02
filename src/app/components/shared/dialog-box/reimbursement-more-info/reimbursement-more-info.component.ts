@@ -16,7 +16,6 @@ export class ReimbursementMoreInfoComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private attendenceService: AttendenceService,
-    private sessionWrapper: sessionWrapper,
     private matdialog: MatDialog
   ){
     console.log(data)
@@ -56,6 +55,6 @@ export class ReimbursementMoreInfoComponent {
   }
 
   openImageDialog(element: any){
-    this.matdialog.open(ViewImageComponent, {data: {url: element.reimbursement_image_url} })
+    this.matdialog.open(ViewImageComponent, {data: {url: element.reimbursement_image_url, title: `Date: ${element.date} - Amount: ₹${element.reimbursement_amount}` } })
   }
 }

@@ -49,6 +49,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amount/update-pending-amount.component';
 import { ReimbursementMoreInfoComponent } from '../dialog-box/reimbursement-more-info/reimbursement-more-info.component';
 import { ReceiptMoreInfoComponent } from '../dialog-box/receipt-more-info/receipt-more-info.component';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { ImageLoaderComponent } from '../subcomponents/image-loader/image-loader.component';
 
 
 @NgModule({
@@ -85,6 +87,7 @@ import { ReceiptMoreInfoComponent } from '../dialog-box/receipt-more-info/receip
     ReceiptsComponent,
     ClickOutsideDirective,
     ReceiptMoreInfoComponent,
+    ImageLoaderComponent
   ],
   imports: [
     CommonModule, 
@@ -107,8 +110,9 @@ import { ReceiptMoreInfoComponent } from '../dialog-box/receipt-more-info/receip
     NgOptimizedImage,
     MatDatepickerModule,
     MatPaginator,
-    MatDialogModule
+    MatDialogModule,
+    MatSortModule
   ],
-  exports: [HeaderComponent, FooterComponent, BeatInfoComponent]
+  exports: [HeaderComponent, FooterComponent, BeatInfoComponent, ImageLoaderComponent]
 })
 export class SharedModulesModule { }

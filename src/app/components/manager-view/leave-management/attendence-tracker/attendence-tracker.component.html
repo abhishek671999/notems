@@ -2,7 +2,6 @@
 
     <div class="attendence">
       <div class="attendenc-filter">
-        <h2 style="text-align: center;">Attendence</h2>
         <mat-form-field>
           <mat-label>Choose a date</mat-label>
             <input matInput [(ngModel)]="attendenceDate" (dateChange)="fetchAttendence()" [matDatepicker]="picker">

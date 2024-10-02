@@ -40,9 +40,9 @@ export class CustomersComponent {
 
 
   length = 50;
-  pageSize = 5;
+  pageSize = 50;
   pageIndex = 0;
-  pageSizeOptions = [5, 10, 15];
+  pageSizeOptions = [50, 100, 150];
   hidePageSize = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;
@@ -59,7 +59,6 @@ export class CustomersComponent {
     'type_name',
     'contact_persons_details',
     'pending_amount',
-    'pay_pending_amount',
     'address',
     'gst_no',
     'edit',

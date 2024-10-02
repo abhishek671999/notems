@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { getSales, sale } from '../../../shared/custom_dtypes/sales';
 import { SalesMoreInfoComponent } from '../dialog-box/sales-more-info/sales-more-info.component';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { customer } from '../../../shared/custom_dtypes/customers';
 import { teamMember } from '../../../shared/custom_dtypes/team';
 import { TaskManagementService } from '../../../shared/services/taskmanagement/task-management.service';
@@ -14,6 +14,11 @@ import { EditSalesInfoComponent } from '../dialog-box/edit-sales-info/edit-sales
 import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amount/update-pending-amount.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ReceiptMoreInfoComponent } from '../dialog-box/receipt-more-info/receipt-more-info.component';
+import { LocalityService } from '../../../shared/services/locality/locality.service';
+import { locality } from '../../../shared/custom_dtypes/locality';
+import {MatSort, Sort} from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-receipts',
@@ -24,11 +29,31 @@ export class ReceiptsComponent {
   constructor(
     private taskService: TaskManagementService,
     private teamMembersService: TeamManagementService,
+    private localityService: LocalityService,
     private sessionWrapper: sessionWrapper,
     private customerService: CustomersService,
     private matdialog: MatDialog,
     private matbottomSheet: MatBottomSheet
-  ) { }
+  ) { 
+    
+    if(this.sessionWrapper.isTeamManager() || this.sessionWrapper.isTeamMember()){
+      if(this.sessionWrapper.getItem('team_type') == 'sales'){
+        this.saleInvoiceTableColumns.push('edit')
+      }
+    }
+  }
+
+  ngAfterViewInit(){
+    this.saleInvoiceDatasource.sort = this.sort
+    this.saleInvoiceDatasource.paginator = this.paginator;
+  }
+
+  @ViewChild(MatSort)
+  sort: MatSort = new MatSort;
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+
+  private _liveAnnouncer = inject(LiveAnnouncer);
 
   timeFrames = [
     { displayValue: 'Today', actualValue: 'today' },
@@ -44,6 +69,7 @@ export class ReceiptsComponent {
   
   public selectedTimeFrame = this.timeFrames[0].actualValue
   public selectedCustomerType = ''
+  public selectedLocality = ''
   public selectedCustomer = ''
   public selectedFromDate = ''
   public selectedToDate = ''
@@ -53,9 +79,10 @@ export class ReceiptsComponent {
   public discount = 0
   public totalAmountReceived = 0
   
-  public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'recorded_by', 'edit', 'more']
+  public saleInvoiceDatasource = new MatTableDataSource()
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'recorded_by', 'recorded_at', 'more']
   public teamMembers: teamMember[] = []
+  public localities: locality[] = []
 
   length = 50;
   pageSize = 50;
@@ -70,13 +97,14 @@ export class ReceiptsComponent {
     { typeId: 1, typeName: 'B2C' }
   ]
   public customerList: customer[] = []
+  public visibleCustomerList: customer[] = []
 
   
   ngOnInit() {
     this.fetchCustomer()
     this.fetchSalesAnalytics()
     this.fetchTeamMembers()
-    
+    this.fetchLocalities()
   }
 
   fetchTeamMembers(){
@@ -85,21 +113,17 @@ export class ReceiptsComponent {
       (data: any) => {
         this.teamMembers = data['users']
       },
-      (error: any) => {
-        alert('Failed to fetch team members')
-      }
     )
   }
 
   fetchSalesAnalytics() {
     let body: getSales = {
-      time_frame: this.selectedTimeFrame,
-      offset: this.pageIndex * this.pageSize,
-      count: this.pageIndex * this.pageSize + this.pageSize
+      receipt_time_frame: this.selectedTimeFrame,
     }
     if (this.selectedCustomer) body.customer_id = Number(this.selectedCustomer)
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
     if (this.selectedRepresentative) body.recorded_by = Number(this.selectedRepresentative)
+    if (this.selectedLocality) body.locality_id = Number(this.selectedLocality)
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
         body['from_date'] = this.selectedFromDate
@@ -113,7 +137,7 @@ export class ReceiptsComponent {
     if (Object.keys(body).length > 0) {
       this.taskService.getSales(body).subscribe(
         (data: any) => {
-          this.saleInvoiceDatasource = data['sale_invoices']
+          this.saleInvoiceDatasource.data = data['sale_invoices']
           this.length = data['total_count']
           this.totalAmount = data['total_amount']
           this.discount = data['total_discount']
@@ -137,6 +161,7 @@ export class ReceiptsComponent {
     }
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
       this.customerList = data['customers'];
+      this.visibleCustomerList = this.customerList
     });
   }
 
@@ -156,7 +181,39 @@ export class ReceiptsComponent {
     this.matdialog.open(ReceiptMoreInfoComponent, {data: row})
   }
 
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
 
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.outlet_name?.toLowerCase().startsWith(filter));
+  }
+
+  fetchLocalities(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    this.localityService.getLocalities(httpParams).subscribe(
+      (data: any) => {
+        data['localities'].forEach((locality: locality)=> {
+          locality.is_edit = false
+        });
+        this.localities = data['localities']
+      }
+    )
+  }
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
 
   handlePageEvent(e: PageEvent) {
     this.length = e.length;

@@ -50,9 +50,9 @@ export class SalesAnalyticsComponent {
   public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'recorded_by', 'more']
   
   length = 50;
-  pageSize = 20;
+  pageSize = 50;
   pageIndex = 0;
-  pageSizeOptions = [5, 20, 50];
+  pageSizeOptions = [50, 100, 150];
   hidePageSize = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;

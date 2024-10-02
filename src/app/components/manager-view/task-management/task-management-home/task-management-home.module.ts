@@ -22,7 +22,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
-
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -34,6 +34,7 @@ import { MatBadgeModule } from '@angular/material/badge';
   imports: [
     CommonModule,
     TaskManagementHomeRoutingModule,
+    MatTabsModule,
     SharedModulesModule,
     RouterModule,
     MatButtonModule,
@@ -57,6 +58,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatMenuModule,
     MatBadgeModule,
     MatSelectModule,
+    
   ]
 })
 export class TaskManagementHomeModule { }

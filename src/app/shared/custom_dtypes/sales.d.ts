@@ -36,8 +36,10 @@ export type sale = {
 export type getSales = {
     customer_id?: number,
     type?: number,
+    locality_id?: number,
     beat_id?: number,
     time_frame?: string,
+    receipt_time_frame?: string,
     from_date?: string ,
     to_date?: string,
     recorded_by?: number,

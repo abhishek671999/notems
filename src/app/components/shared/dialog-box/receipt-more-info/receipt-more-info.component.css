@@ -1,0 +1,11 @@
+.main-container{
+    min-width: fit-content;
+    max-width: 90vw;
+}
+
+td, th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 0.1em;
+    
+}

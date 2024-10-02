@@ -27,6 +27,10 @@ export class LocalityComponent {
   public localityDataTableColumns = ['sl_no', 'locality_name', 'edit', 'delete']
 
   ngOnInit() {
+    this.fetchLocalities()
+  }
+
+  fetchLocalities(){
     let httpParams = new HttpParams()
     httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
     this.localityService.getLocalities(httpParams).subscribe(
@@ -35,8 +39,7 @@ export class LocalityComponent {
           locality.is_edit = false
         });
         this.localityDataSource = data['localities']
-      },
-      (error: any) => alert('Failed to fetch categories')
+      }
     )
   }
 

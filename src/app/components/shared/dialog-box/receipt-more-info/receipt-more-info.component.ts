@@ -18,7 +18,7 @@ export class ReceiptMoreInfoComponent {
   }
 
   public receiptMoreInfoDataSource = []
-  public receiptMoreInfoDataColumns = ['sl_no', 'old_amount', 'new_amount', 'activity_by', 'activity_time']
+  public receiptMoreInfoDataColumns = ['sl_no', 'old_amount', 'new_amount', 'total_amount_received', 'pending_amount', 'activity_by', 'activity_time']
 
 
   ngOnInit(){

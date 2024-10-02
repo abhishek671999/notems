@@ -144,7 +144,7 @@ export class EditSalesInfoComponent {
   editSales() {
     let body: editSaleInvoiceHeader = {
       invoice_id: this.saleData.invoice_id,
-      invoice_number: this.saleData.invoice_number,
+      invoice_number: this.editSalesForm.value.invoice_number,
       customer_id: this.editSalesForm.value.customer_id,
       discount: this.editSalesForm.value.amount - this.editSalesForm.value.selling_price,
       received_amount: this.editSalesForm.value.received_amount,

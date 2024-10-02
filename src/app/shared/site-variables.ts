@@ -83,10 +83,16 @@ export class meAPIUtility {
       this.cookieService.deleteAll('/');
     }
   }
-
-  
 }
 
+
+@Injectable({
+  providedIn: 'root'
+})
+export class localStorageWrapper{
+  constructor(){} // todo
+
+}
 
 @Injectable({
   providedIn: 'root',
