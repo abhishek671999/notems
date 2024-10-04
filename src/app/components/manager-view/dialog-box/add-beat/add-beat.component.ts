@@ -99,7 +99,7 @@ export class AddBeatComponent {
 
   search(value: any) { 
     let filter = value.toLowerCase();
-    return this.customerList.filter((customer: customer) => customer.outlet_name?.toLowerCase().startsWith(filter));
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
   }
 
   addBeatCall() {

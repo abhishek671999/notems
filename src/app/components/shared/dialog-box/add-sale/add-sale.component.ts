@@ -18,6 +18,7 @@ import { addSalesDiscountValidation, addSalesReceievedAmountValidation, salesSel
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButton } from '@angular/material/button';
+import { teamMember } from '../../../../shared/custom_dtypes/team';
 
 
 @Component({
@@ -47,6 +48,7 @@ export class AddSaleComponent {
       invoice_number: ['', [Validators.required]],
       selling_price: ['', [Validators.required]],
       received_amount: ['', [Validators.required]],
+      staff_id: [''],
       note: ['', ],
       amount: [0,]
     },{
@@ -55,10 +57,16 @@ export class AddSaleComponent {
   );
     this.customerList = data.customerList
     this.visibleCustomerList = this.customerList
+    this.staffList = data.staffList
+    this.visibleStaffList = this.staffList
   }
 
   public visibleCustomerList: customer[] = []
   public customerList: customer[];
+
+  public staffList: teamMember[] = [];
+  public visibleStaffList: teamMember[] = []
+
   public beatId: number = 0;
   public location: string = '';
   public itemsAdded: item[] = []
@@ -105,6 +113,7 @@ export class AddSaleComponent {
         beat_id: this.data.beatId,
         item_details: this.itemsAdded
       }
+      if(this.addSalesForm.value.staff_id) body['user_id'] = this.addSalesForm.value.staff_id
       this.taskService
         .addSale(body)
         .pipe(
@@ -190,14 +199,21 @@ export class AddSaleComponent {
   }
 
 
-  onKey(event: Event) { 
+  onKey(event: Event, searchField: string) { 
     let searchText: string = (event.target as HTMLInputElement).value
-    this.visibleCustomerList = this.search(searchText);
+
+    if(searchField == 'customer') this.visibleCustomerList = this.searchCustomer(searchText);
+    else if(searchField == 'staff') this.visibleStaffList = this.searchStaff(searchText)
   }
 
 
-  search(value: any) { 
+  searchCustomer(value: any) { 
     let filter = value.toLowerCase();
-    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter) || customer.customer_name?.toLowerCase().startsWith(filter));
+  }
+
+  searchStaff(value: any) { 
+    let filter = value.toLowerCase();
+    return this.staffList.filter((staff: teamMember) => staff.user_identity?.toLowerCase().startsWith(filter));
   }
 }

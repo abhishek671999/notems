@@ -23,6 +23,7 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import {MatTabsModule} from '@angular/material/tabs';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatMenuModule,
     MatBadgeModule,
     MatSelectModule,
-    
+    MatSortModule,
   ]
 })
 export class TaskManagementHomeModule { }

@@ -183,11 +183,7 @@ export class AttendenceComponent {
         (data: any) => {
           let reimbusermentList: any[] = []
           this.attendenceRecordsDataSource = data['attendance_list']
-          data['attendance_list'].forEach((attendance: any) => {
-            console.log(...attendance['reimbursement_list'])
-            reimbusermentList.push(...attendance['reimbursement_list'])
-          });
-          this.reimbursementDataSource = reimbusermentList
+          this.reimbursementDataSource = data['reimbursement_list']
         },
         (error: any) => {
           alert('Failed to fetch attendnece')

@@ -57,4 +57,8 @@ export class ReimbursementMoreInfoComponent {
   openImageDialog(element: any){
     this.matdialog.open(ViewImageComponent, {data: {url: element.reimbursement_image_url, title: `Date: ${element.date} - Amount: ₹${element.reimbursement_amount}` } })
   }
+
+  openImage(title: string, url: string){
+    this.matdialog.open(ViewImageComponent, {data: {title: title, url: url}})
+  }
 }

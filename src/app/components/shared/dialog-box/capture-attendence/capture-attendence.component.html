@@ -31,8 +31,7 @@
                 type="file"
                 name="file"
                 (change)="onFileSelected($event)"
-                accept="image/*"
-                capture
+                accept="capture=camera,image/*" 
               />
             
               <div class="result" [style.display]="outputBoxVisible ? 'flex' : 'none'">

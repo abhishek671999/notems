@@ -15,6 +15,7 @@ export type lineItems = {
 }
 
 export type sale = {
+    recorded_user_id: number
     "type_id": number,
     "type_name": string,
     "customer": string,

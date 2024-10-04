@@ -28,6 +28,7 @@ import { VisitsComponent } from '../visits/visits.component';
 import { LeaveHistoryComponent } from '../leave-history/leave-history.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import { AddReimbursementComponent } from '../bottom-sheet/add-reimbursement/add-reimbursement.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { AddReimbursementComponent } from '../bottom-sheet/add-reimbursement/add
     MatMenuModule,
     RouterModule,
     SharedModulesModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSortModule
   ]
 })
 export class HomeModule { }

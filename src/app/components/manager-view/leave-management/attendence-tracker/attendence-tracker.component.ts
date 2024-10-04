@@ -104,6 +104,5 @@ export class AttendenceTrackerComponent {
   openImage(title: string, url: string){
     this.matDialog.open(ViewImageComponent, {data: {title: title, url: url}})
   }
-
-
+  
 }

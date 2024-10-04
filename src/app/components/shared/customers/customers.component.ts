@@ -48,6 +48,7 @@ export class CustomersComponent {
   showFirstLastButtons = true;
 
   availableLocalityList: locality[] = []
+  visibleLocalityList: locality[] = []
   selectedLocality: locality | undefined
 
   public customerDataSource: any;
@@ -55,7 +56,7 @@ export class CustomersComponent {
   public customerTableColumns = [
     'locality',
     'sl_no',
-    'outlet_name',
+    'customer_name',
     'type_name',
     'contact_persons_details',
     'pending_amount',
@@ -80,6 +81,7 @@ export class CustomersComponent {
     this.localityService.getLocalities(httpParams).subscribe(
       (data: any) => {
         this.availableLocalityList = data['localities']
+        this.visibleLocalityList = this.availableLocalityList
       },
       (error: any) => {
         alert('Failed to fetch localities')
@@ -179,5 +181,16 @@ export class CustomersComponent {
         }
       }
     )
+  }
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleLocalityList = this.search(searchText);
+  }
+
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.availableLocalityList.filter((locality: locality) => locality.locality_name?.toLowerCase().startsWith(filter));
   }
 }

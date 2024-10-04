@@ -41,6 +41,7 @@ export class UpdatePendingAmountComponent {
   editReceivedamount(){
     let body: editSaleInvoiceHeader = {
       invoice_id: this.saleData.invoice_id,
+      recorded_user_id: this.saleData.recorded_user_id,
       invoice_number: this.saleData.invoice_number,
       customer_id: this.editSalesForm.value.customer_id,
       discount: this.editSalesForm.value.discount, // this.editSalesForm.value.amount - this.editSalesForm.value.selling_price,

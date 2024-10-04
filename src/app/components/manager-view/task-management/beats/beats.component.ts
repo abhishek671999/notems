@@ -3,14 +3,13 @@ import { TaskManagementService } from '../../../../shared/services/taskmanagemen
 import { HttpParams } from '@angular/common/http';
 import { sessionWrapper } from '../../../../shared/site-variables';
 import { dateUtils } from '../../../../shared/utils/date_utils';
-import { addBeat, deleteBeat } from '../../../../shared/custom_dtypes/tasks';
+import { deleteBeat } from '../../../../shared/custom_dtypes/tasks';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
 import { AddBeatComponent } from '../../dialog-box/add-beat/add-beat.component';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
-import { DataSource } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
 import { beat } from '../../../../shared/custom_dtypes/beats';
 import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';
@@ -140,7 +139,7 @@ export class BeatsComponent {
       (customer_id: number, index: number) => 
         {
           let filteredCustomer = this.customerList.filter((customer: customer) => customer.customer_id == customer_id)
-          customerName += (filteredCustomer.length > 0)? `${index+1}. ${filteredCustomer[0].outlet_name} <br>` : ''
+          customerName += (filteredCustomer.length > 0)? `${index+1}. ${filteredCustomer[0].customer_name} <br>` : ''
         }
     )
     return customerName
@@ -152,7 +151,7 @@ export class BeatsComponent {
       (customer_id: number, index: number) => 
         {
           let filteredCustomer = this.customerList.filter((customer: customer) => customer.customer_id == customer_id)
-          customerName += (filteredCustomer.length > 0)? `${index+1}. ${filteredCustomer[0].outlet_name} <br>` : ''
+          customerName += (filteredCustomer.length > 0)? `${index+1}. ${filteredCustomer[0].customer_name} <br>` : ''
         }
     )
     return customerName

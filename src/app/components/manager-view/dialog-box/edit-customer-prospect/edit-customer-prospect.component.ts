@@ -30,7 +30,7 @@ export class EditCustomerProspectComponent {
     console.log('This is type: ', data)
 
     this.editCustomerForm = this.formbuilder.group({
-      outlet_name: [data.customer.outlet_name, [Validators.required]],
+      customer_name: [data.customer.customer_name, [Validators.required]],
       contact_persons_details: this.formbuilder.array([], [Validators.required]),
       type: [data.type],
       note: [data.customer.note],
@@ -74,7 +74,7 @@ export class EditCustomerProspectComponent {
   editCustomer() {
     let body: editCustomer = {
       "customer_id": this.data.customer.customer_id,
-      "outlet_name": this.editCustomerForm.value.outlet_name,
+      "customer_name": this.editCustomerForm.value.customer_name,
       "contact_persons_details": this.editCustomerForm.value.contact_persons_details,
       "type": this.editCustomerForm.value.type,
       "note": this.editCustomerForm.value.note,

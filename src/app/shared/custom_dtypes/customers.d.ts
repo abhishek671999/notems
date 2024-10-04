@@ -5,7 +5,7 @@ export type deleteCustomer = {
 export type editCustomer = {
     customer_id: number,
     type: number,
-    outlet_name: string,
+    customer_name: string,
     contact_persons_details: string,
     note: string,
     gst_no: string,
@@ -16,7 +16,7 @@ export type editCustomer = {
 
 export type addCustomer = {
     type: number,
-    outlet_name: string,
+    customer_name: string,
     contact_persons_details: string,
     locality_id: number,
     note: string,
@@ -30,7 +30,7 @@ export type customer = {
     pending_amount: number,
     "customer_id": number,
     "type": string,
-    "outlet_name": string,
+    "customer_name": string,
     "gst_no": string | null,
     "contact_person": string,
     "note": string,

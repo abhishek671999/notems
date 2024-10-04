@@ -5,9 +5,22 @@
         <mat-form-field *ngIf="!data.disableCustomer">
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id">
+              <input matInput (input)="onKey($event, 'customer')" placeholder="Type to search...">
                 <mat-option *ngFor="let customer of customerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
             </mat-select>
         </mat-form-field>
+
+        <div *ngIf="staffList">
+          <mat-form-field>
+            <mat-label>Select staff name</mat-label>
+            <mat-select formControlName="staff_id" >
+              <mat-form-field>
+                <input matInput (input)="onKey($event, 'staff')" placeholder="Type to search...">
+              </mat-form-field>
+              <mat-option *ngFor="let staff of visibleStaffList; let i=index" [value]="staff.user_id">{{staff.user_identity }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        </div>
 
         <div *ngIf="itemsAdded.length > 0">
           <table mat-table [dataSource]="itemsAdded">
@@ -85,8 +98,8 @@
         </mat-form-field>
 
         <div class="image-thumbnail" >
-          <div  *ngFor="let image of saleData.image_details">
-            <a target="_blank" href="{{image.image_url}}"><img src="{{image.image_url}}" alt="" width="100px" height="100px"></a>
+          <div *ngFor="let image of saleData.image_details">
+            <img (click)="openImage('Receipt', image.image_url)" src="{{image.image_url}}" alt="" width="100px" height="100px">
           </div>
         </div>
         <div *ngIf="!data.disableAddSale">
@@ -108,7 +121,6 @@
                 name="file"
                 (change)="onFileSelected($event)"
                 accept="image/*"
-                capture
               />
             
               <div class="result" [style.display]="outputBoxVisible ? 'flex' : 'none'">

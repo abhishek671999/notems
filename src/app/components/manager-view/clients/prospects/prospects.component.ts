@@ -23,7 +23,7 @@ export class ProspectsComponent {
 
   public customerDataSource = [];
   public customerTableColumns = [
-    'outlet_name',
+    'customer_name',
     'contact_person',
     'mobile',
     'note',

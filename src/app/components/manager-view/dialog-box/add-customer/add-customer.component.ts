@@ -27,7 +27,7 @@ export class AddCustomerComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     this.newCustomerForm = this.formbuilder.group({
-      outlet_name: ['', [Validators.required]],
+      customer_name: ['', [Validators.required]],
       contact_persons_details: this.formbuilder.array([this.formbuilder.group({
         'contact_person_name': ['', [Validators.required]],
         'email_or_phone': ['', [Validators.required]]
@@ -85,7 +85,7 @@ export class AddCustomerComponent {
   addCustomer() {
     let body: addCustomer = {
       "type": this.data.type, // 1 refers to customer, 2 refers to prospects
-      "outlet_name": this.newCustomerForm.value.outlet_name,
+      "customer_name": this.newCustomerForm.value.customer_name,
       "contact_persons_details": this.newCustomerForm.value.contact_persons_details,
       "locality_id": this.newCustomerForm.value.locality_id,
       "note": this.newCustomerForm.value.note,

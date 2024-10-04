@@ -56,7 +56,6 @@ export class CaptureAttendenceComponent {
             this.matdialogRef.close({result: true})
           },
           (error) => {
-            alert(`'Error while clocking in', ${error.error.exception}`);
             if(this.clockInButton) this.clockInButton._elementRef.nativeElement.disabled = false
           }
         );
@@ -82,7 +81,6 @@ export class CaptureAttendenceComponent {
             this.matdialogRef.close({result: true})
           },
           (error) => {
-            alert(`'Error while clocking in', ${error.error.exception}`);
             if(this.clockOutButton) this.clockOutButton._elementRef.nativeElement.disabled = false
           }
         );

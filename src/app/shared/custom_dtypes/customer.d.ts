@@ -2,7 +2,7 @@ export type customer = {
         "customer_id": number,
         "type": number,
         "type_name": string,
-        "outlet_name": string,
+        "customer_name": string,
         "gst_no": string,
         "address": string,
         "contact_persons_details": any[],

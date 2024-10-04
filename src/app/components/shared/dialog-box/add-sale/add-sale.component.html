@@ -6,11 +6,23 @@
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id" >
               <mat-form-field>
-                <input matInput (input)="onKey($event)" placeholder="Type to search...">
+                <input matInput (input)="onKey($event, 'customer')" placeholder="Type to search...">
               </mat-form-field>
-              <mat-option *ngFor="let customer of visibleCustomerList; let i=index" [value]="customer.customer_id">{{customer.customer_name || customer.outlet_name}}</mat-option>
+              <mat-option *ngFor="let customer of visibleCustomerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
             </mat-select>
         </mat-form-field>
+
+        <div *ngIf="staffList">
+          <mat-form-field>
+            <mat-label>Select staff name</mat-label>
+            <mat-select formControlName="staff_id" >
+              <mat-form-field>
+                <input matInput (input)="onKey($event, 'staff')" placeholder="Type to search...">
+              </mat-form-field>
+              <mat-option *ngFor="let staff of visibleStaffList; let i=index" [value]="staff.user_id">{{staff.user_identity }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        </div>
 
         <div *ngIf="itemsAdded.length > 0">
           <table mat-table [dataSource]="itemsAdded">
@@ -100,7 +112,6 @@
                 name="file"
                 (change)="onFileSelected($event)"
                 accept="image/*"
-                capture
               />
             
               <div class="result" [style.display]="outputBoxVisible ? 'flex' : 'none'">

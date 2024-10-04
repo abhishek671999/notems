@@ -66,7 +66,7 @@
         <mat-select [(value)]="selectedCustomer" (selectionChange)="fetchTasksAnalytics()">
           <mat-option>None</mat-option>
           @for (customer of customerList; track customer) {
-            <mat-option [value]="customer.customer_id">{{customer.outlet_name}}</mat-option>
+            <mat-option [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
           }
         </mat-select>
       </mat-form-field>

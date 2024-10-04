@@ -4,7 +4,7 @@
         <form  class="form-section" [formGroup]="newCustomerForm">
             <mat-form-field>
                 <mat-label>Enter outlet name</mat-label>
-                <input matInput formControlName="outlet_name">
+                <input matInput formControlName="customer_name">
             </mat-form-field>
             <div formArrayName="contact_persons_details">
                 <div *ngFor="let control of contactPersonsFormArray().controls; let i=index" [formGroupName]="i" >

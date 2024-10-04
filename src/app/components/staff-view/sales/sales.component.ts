@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TaskManagementService } from '../../../shared/services/taskmanagement/task-management.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,10 @@ import { dateUtils } from '../../../shared/utils/date_utils';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { UpdatePendingAmountComponent } from '../../shared/bottom-sheet/update-pending-amount/update-pending-amount.component';
 import { customer } from '../../../shared/custom_dtypes/customers';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-sales',
@@ -28,6 +32,12 @@ export class SalesComponent {
     private dateUtils: dateUtils
   ) { }
 
+  @ViewChild(MatSort)
+  sort: MatSort = new MatSort;
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+  private _liveAnnouncer = inject(LiveAnnouncer);
+
 
   timeFrames = [
     { displayValue: 'Today', actualValue: 'today' },
@@ -42,8 +52,8 @@ export class SalesComponent {
   ];
     
   public beatId: number = 0
-  public salesInvoiceDataSource: [] = []
-  public salesInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'more', 'edit']
+  public salesInvoiceDataSource = new MatTableDataSource()
+  public salesInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'recorded_at', 'more', 'edit']
 
   public selectedTimeFrame = this.timeFrames[0].actualValue
   public selectedCustomer = ''
@@ -61,6 +71,12 @@ export class SalesComponent {
       this.fetchSales()
       this.fetchBeatInfo()
     });
+  }
+
+
+  ngAfterViewInit(){
+    this.salesInvoiceDataSource.sort = this.sort
+    this.salesInvoiceDataSource.paginator = this.paginator;
   }
 
   fetchSales(){
@@ -81,7 +97,7 @@ export class SalesComponent {
     if (Object.keys(body).length > 0) {
       this.taskService.getSales(body).subscribe(
         (data: any) => {
-          this.salesInvoiceDataSource = data['sale_invoices']
+          this.salesInvoiceDataSource.data = data['sale_invoices']
         },
         (error: any) => {
           console.log(error);
@@ -139,7 +155,7 @@ export class SalesComponent {
 
   search(value: any) { 
     let filter = value.toLowerCase();
-    return this.customerList.filter((customer: customer) => customer.outlet_name?.toLowerCase().startsWith(filter));
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
   }
 
   addSales() {
@@ -147,6 +163,18 @@ export class SalesComponent {
     dialogRef.afterClosed().subscribe(
       (data: any) => this.ngOnInit()
     )
+  }
+
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
   
 }

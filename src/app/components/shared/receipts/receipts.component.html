@@ -51,7 +51,7 @@
 
       <mat-form-field>
         <mat-label>Select Locality</mat-label>
-        <mat-select [(value)]="selectedLocality" (selectionChange)="fetchSalesAnalytics()"  (selectionChange)="fetchCustomer()">
+        <mat-select [(value)]="selectedLocality" (selectionChange)="selectedCustomer = ''" (selectionChange)="fetchSalesAnalytics()"  (selectionChange)="fetchCustomer()">
           <mat-option>None</mat-option>
           @for (locality of localities; track locality) {
               <mat-option [value]="locality.locality_id">{{locality.locality_name}}</mat-option>
@@ -67,7 +67,7 @@
           </mat-form-field>
           <mat-option>None</mat-option>
           @for (customer of visibleCustomerList; track customer) {
-            <mat-option [value]="customer.customer_id">{{customer.outlet_name}}</mat-option>
+            <mat-option [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -76,7 +76,7 @@
       <h3>Total amount:&nbsp;₹&nbsp;{{totalAmount + discount}}</h3>
       <h3>Total amount received:&nbsp;₹&nbsp;{{totalAmountReceived}}</h3>
       <h3>Total Discount:&nbsp;₹&nbsp;{{discount}}</h3>
-      <div>
+      <div *ngIf="isOrgManager">
         <button mat-raised-button (click)="openAddSaleWindow()">Add receipt</button>
       </div>
     </div>

@@ -81,6 +81,7 @@ export type unassignBeat = {
 }
 
 export type editSaleInvoiceHeader = {
+    "recorded_user_id": number,
     "invoice_id": number,
     "invoice_number": string,
     "customer_id": number,

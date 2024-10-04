@@ -42,6 +42,7 @@ export class ReceiptsComponent {
         this.saleInvoiceTableColumns.push('edit_receipt')
       }
     }else if (this.sessionWrapper.isOrgManager()){
+      this.isOrgManager = true
       this.saleInvoiceTableColumns.push('edit_sale')
     }
   }
@@ -57,6 +58,8 @@ export class ReceiptsComponent {
   paginator!: MatPaginator;
 
   private _liveAnnouncer = inject(LiveAnnouncer);
+
+  isOrgManager: boolean = false
 
   timeFrames = [
     { displayValue: 'Today', actualValue: 'today' },
@@ -110,7 +113,6 @@ export class ReceiptsComponent {
     this.fetchSalesAnalytics()
     this.fetchTeamMembers()
     this.fetchLocalities()
-    
   }
 
   fetchTeamMembers(){
@@ -162,6 +164,7 @@ export class ReceiptsComponent {
       'organization_id',
       String(this.sessionWrapper.getItem('organization_id'))
     );
+    if(this.selectedLocality) httpParams = httpParams.append('locality_id', this.selectedLocality)
     if (this.selectedCustomerType) {
       httpParams = httpParams.append('type', this.selectedCustomerType)
     }
@@ -184,7 +187,7 @@ export class ReceiptsComponent {
   }
 
   openEditSalesWindow(row: sale){
-    let matdialog = this.matdialog.open(EditSalesInfoComponent,  {data: {sale: row}})
+    let matdialog = this.matdialog.open(EditSalesInfoComponent,  {data: {sale: row, customerList: this.allCustomerList, staffList: this.teamMembers}})
     matdialog.afterClosed().subscribe(
       (data: any) => {
         if(data?.result){
@@ -195,7 +198,14 @@ export class ReceiptsComponent {
   }
 
   openAddSaleWindow(){
-    let matdialog = this.matdialog.open(AddSaleComponent, {data: {customerList: this.allCustomerList}})
+    let matdialog = this.matdialog.open(AddSaleComponent, {data: {customerList: this.allCustomerList, staffList: this.teamMembers}})
+    matdialog.afterClosed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.ngOnInit()
+        }
+      }
+    )
   }
 
   openReceiptModificationLogs(row: sale){
@@ -209,7 +219,7 @@ export class ReceiptsComponent {
 
   search(value: any) { 
     let filter = value.toLowerCase();
-    return this.customerList.filter((customer: customer) => customer.outlet_name?.toLowerCase().startsWith(filter));
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
   }
 
   fetchLocalities(){

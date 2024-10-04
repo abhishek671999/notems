@@ -17,6 +17,8 @@ import { addSalesDiscountValidation, addSalesReceievedAmountValidation, salesSel
 import { lineItems, sale } from '../../../../shared/custom_dtypes/sales';
 import { of, switchMap } from 'rxjs';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
+import { teamMember } from '../../../../shared/custom_dtypes/team';
+import { ViewImageComponent } from '../view-image/view-image.component';
 
 @Component({
   selector: 'app-edit-sales-info',
@@ -35,13 +37,19 @@ export class EditSalesInfoComponent {
     private matDialogRef: MatDialogRef<EditSalesInfoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(data.sale)
+    console.log(data)
     this.saleData = data.sale
     this.customerList = data.customerList
+    this.visibleCustomerList = this.customerList
+
+    this.staffList = data.staffList
+    this.visibleStaffList = this.staffList
+
     this.editSalesForm = this.formBuilder.group({
       customer_id: [this.saleData.customer_id, [Validators.required]],
       invoice_number: [this.saleData.invoice_number, [Validators.required]],
       selling_price: [this.saleData.total_amount, [Validators.required]],
+      staff_id: [this.saleData.recorded_user_id, [Validators.required]],
       received_amount: [this.saleData.received_amount, [Validators.required]],
       note: [this.saleData.note,],
       amount: [this.saleData.total_amount + this.saleData.discount]
@@ -54,6 +62,11 @@ export class EditSalesInfoComponent {
   
   public saleData: sale;
   public customerList: customer[];
+  public visibleCustomerList: customer[];
+
+  public staffList: teamMember[] = [];
+  public visibleStaffList: teamMember[] = []
+
   public beatId: number = 0;
   public location: string = '';
   public itemListsource: item[] = [];
@@ -143,6 +156,7 @@ export class EditSalesInfoComponent {
 
   editSales() {
     let body: editSaleInvoiceHeader = {
+      recorded_user_id: this.editSalesForm.value.staff_id,
       invoice_id: this.saleData.invoice_id,
       invoice_number: this.editSalesForm.value.invoice_number,
       customer_id: this.editSalesForm.value.customer_id,
@@ -219,5 +233,26 @@ export class EditSalesInfoComponent {
         }
       }
     )
+  }
+
+  onKey(event: Event, searchField: string) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+
+    if(searchField == 'customer') this.visibleCustomerList = this.searchCustomer(searchText);
+    else if(searchField == 'staff') this.visibleStaffList = this.searchStaff(searchText)
+  }
+
+  searchCustomer(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter) || customer.customer_name?.toLowerCase().startsWith(filter));
+  }
+
+  searchStaff(value: any) { 
+    let filter = value.toLowerCase();
+    return this.staffList.filter((staff: teamMember) => staff.user_identity?.toLowerCase().startsWith(filter));
+  }
+
+  openImage(title: string, url: string){
+    this.matDialog.open(ViewImageComponent, {data: {title: title, url: url}})
   }
 }
