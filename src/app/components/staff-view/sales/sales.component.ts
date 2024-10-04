@@ -9,6 +9,9 @@ import { HttpParams } from '@angular/common/http';
 import { beat } from '../../../shared/custom_dtypes/beats';
 import { getSales, sale } from '../../../shared/custom_dtypes/sales';
 import { dateUtils } from '../../../shared/utils/date_utils';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { UpdatePendingAmountComponent } from '../../shared/bottom-sheet/update-pending-amount/update-pending-amount.component';
+import { customer } from '../../../shared/custom_dtypes/customers';
 
 @Component({
   selector: 'app-sales',
@@ -21,13 +24,34 @@ export class SalesComponent {
     private route: ActivatedRoute,
     private taskService: TaskManagementService,
     private matdialog: MatDialog,
+    private matbottomSheet: MatBottomSheet,
     private dateUtils: dateUtils
   ) { }
 
-  public selectedDate = new Date()
+
+  timeFrames = [
+    { displayValue: 'Today', actualValue: 'today' },
+    { displayValue: 'Yesterday', actualValue: 'yesterday' },
+    { displayValue: 'This week', actualValue: 'this_week' },
+    { displayValue: 'This month', actualValue: 'this_month' },
+    { displayValue: 'Last month', actualValue: 'last_month' },
+    { displayValue: 'Last 3 months', actualValue: 'last_3_months' },
+    { displayValue: 'Last 6 months', actualValue: 'last_6_months' },
+    { displayValue: 'This year', actualValue: 'this_year' },
+    { displayValue: 'Calendar', actualValue: 'custom' },
+  ];
+    
   public beatId: number = 0
   public salesInvoiceDataSource: [] = []
   public salesInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'more', 'edit']
+
+  public selectedTimeFrame = this.timeFrames[0].actualValue
+  public selectedCustomer = ''
+  public selectedFromDate = ''
+  public selectedToDate = ''
+  public customerList: customer[] = []
+  public visibleCustomerList: customer[] = []
+
 
   public beatInfo: beat | undefined
 
@@ -42,17 +66,30 @@ export class SalesComponent {
   fetchSales(){
     let body: getSales = {
       beat_id: this.beatId,
+      receipt_time_frame: this.selectedTimeFrame
     };
-    if(this.selectedDate) body['date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedDate))
-    this.taskService.getSales(body).subscribe(
-      (data: any) => {
-        this.salesInvoiceDataSource = data['sale_invoices']
-      },
-      (error: any) => {
-        console.log(error);
-        alert('Error while fetching tasks');
+    if(this.selectedCustomer) body['customer_id'] = Number(this.selectedCustomer)
+    if (this.selectedTimeFrame == 'custom') {
+      if (this.selectedFromDate && this.selectedToDate) {
+        body['from_date'] = this.selectedFromDate
+        body['to_date'] = this.selectedToDate
       }
-    );
+      else {
+        body = {}
+      }
+    }
+    if (Object.keys(body).length > 0) {
+      this.taskService.getSales(body).subscribe(
+        (data: any) => {
+          this.salesInvoiceDataSource = data['sale_invoices']
+        },
+        (error: any) => {
+          console.log(error);
+          alert('Error while fetching tasks');
+        }
+      );
+    }
+
   }
 
   fetchBeatInfo(){
@@ -68,6 +105,11 @@ export class SalesComponent {
     )
   }
 
+  retriveBeatCustomers(customerList: customer[]){
+    this.customerList = customerList
+    this.visibleCustomerList = this.customerList
+  }
+
   viewMore(element: any) {
     this.matdialog.open(ViewMoreSalesInfoComponent, { data: element })
   }
@@ -77,6 +119,27 @@ export class SalesComponent {
     dialogRef.afterClosed().subscribe(
       (data: any) => this.ngOnInit()
     )
+  }
+
+  openEditPendingAmountWindow(row: sale){
+    let matdialogRef = this.matbottomSheet.open(UpdatePendingAmountComponent, { data: {sale: row,}} )
+    matdialogRef.afterDismissed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.ngOnInit()
+        }
+      }
+    )
+  }
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.outlet_name?.toLowerCase().startsWith(filter));
   }
 
   addSales() {

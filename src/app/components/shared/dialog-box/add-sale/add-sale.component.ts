@@ -41,6 +41,7 @@ export class AddSaleComponent {
     @Inject(MAT_DIALOG_DATA) private data: any
 
   ) {
+    console.log(data)
     this.addSalesForm = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
       invoice_number: ['', [Validators.required]],

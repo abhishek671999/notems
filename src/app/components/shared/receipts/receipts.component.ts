@@ -19,6 +19,7 @@ import { locality } from '../../../shared/custom_dtypes/locality';
 import {MatSort, Sort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { AddSaleComponent } from '../dialog-box/add-sale/add-sale.component';
 
 @Component({
   selector: 'app-receipts',
@@ -38,8 +39,10 @@ export class ReceiptsComponent {
     
     if(this.sessionWrapper.isTeamManager() || this.sessionWrapper.isTeamMember()){
       if(this.sessionWrapper.getItem('team_type') == 'sales'){
-        this.saleInvoiceTableColumns.push('edit')
+        this.saleInvoiceTableColumns.push('edit_receipt')
       }
+    }else if (this.sessionWrapper.isOrgManager()){
+      this.saleInvoiceTableColumns.push('edit_sale')
     }
   }
 
@@ -96,6 +99,8 @@ export class ReceiptsComponent {
     { typeId: 2, typeName: 'B2B' },
     { typeId: 1, typeName: 'B2C' }
   ]
+
+  public allCustomerList: customer[] = []
   public customerList: customer[] = []
   public visibleCustomerList: customer[] = []
 
@@ -105,6 +110,7 @@ export class ReceiptsComponent {
     this.fetchSalesAnalytics()
     this.fetchTeamMembers()
     this.fetchLocalities()
+    
   }
 
   fetchTeamMembers(){
@@ -162,12 +168,12 @@ export class ReceiptsComponent {
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
       this.customerList = data['customers'];
       this.visibleCustomerList = this.customerList
+      if(!this.selectedLocality) this.allCustomerList = this.customerList
     });
   }
 
-  openEditSalesWindow(row: sale){
-    let matdialogRef = this.matbottomSheet.open(UpdatePendingAmountComponent, { data: {sale: row, 
-      disableReceivedAmount: false, disableInvoiceNumber: true, disableSellingPrice: true, disableNote: true, disableAddSale: true, disableCustomer: true}} )
+  openEditPendingAmountWindow(row: sale){
+    let matdialogRef = this.matbottomSheet.open(UpdatePendingAmountComponent, { data: {sale: row,}} )
     matdialogRef.afterDismissed().subscribe(
       (data: any) => {
         if(data?.result){
@@ -175,6 +181,21 @@ export class ReceiptsComponent {
         }
       }
     )
+  }
+
+  openEditSalesWindow(row: sale){
+    let matdialog = this.matdialog.open(EditSalesInfoComponent,  {data: {sale: row}})
+    matdialog.afterClosed().subscribe(
+      (data: any) => {
+        if(data?.result){
+          this.ngOnInit()
+        }
+      }
+    )
+  }
+
+  openAddSaleWindow(){
+    let matdialog = this.matdialog.open(AddSaleComponent, {data: {customerList: this.allCustomerList}})
   }
 
   openReceiptModificationLogs(row: sale){
