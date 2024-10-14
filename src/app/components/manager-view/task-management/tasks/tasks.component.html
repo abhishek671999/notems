@@ -24,7 +24,10 @@
       <mat-option [value]="teamMember.user_id">{{teamMember.user_identity}}</mat-option>
     }
       </mat-select>
-    </mat-form-field>
+  </mat-form-field>
+  <div>
+    <button (click)="clearfilter()" mat-raised-button>Clear filters</button>
+  </div>
     </div>
   </div>
 

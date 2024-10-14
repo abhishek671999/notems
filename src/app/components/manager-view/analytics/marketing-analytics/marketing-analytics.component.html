@@ -64,12 +64,19 @@
       <mat-form-field>
         <mat-label>Select customer</mat-label>
         <mat-select [(value)]="selectedCustomer" (selectionChange)="fetchTasksAnalytics()">
+          <mat-form-field>
+            <input matInput (input)="onKey($event)" placeholder="Type to search...">
+          </mat-form-field>
           <mat-option>None</mat-option>
-          @for (customer of customerList; track customer) {
+          @for (customer of visibleCustomerList; track customer) {
             <mat-option [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
           }
         </mat-select>
       </mat-form-field>
+
+      <div class="clear-filter">
+        <button (click)="clearFilters()" mat-raised-button>Clear filters</button>
+      </div>
     </div>
     <table mat-table [dataSource]="tasksInvoiceDatasource" class="mat-elevation-z8 demo-table">
       <ng-container matColumnDef="sl_no">

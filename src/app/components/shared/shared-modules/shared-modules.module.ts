@@ -51,7 +51,8 @@ import { ReimbursementMoreInfoComponent } from '../dialog-box/reimbursement-more
 import { ReceiptMoreInfoComponent } from '../dialog-box/receipt-more-info/receipt-more-info.component';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ImageLoaderComponent } from '../subcomponents/image-loader/image-loader.component';
-
+import {MatRadioModule} from '@angular/material/radio';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,9 @@ import { ImageLoaderComponent } from '../subcomponents/image-loader/image-loader
     MatDatepickerModule,
     MatPaginator,
     MatDialogModule,
-    MatSortModule
+    MatSortModule,
+    MatRadioModule,
+    MatCheckboxModule
   ],
   exports: [HeaderComponent, FooterComponent, BeatInfoComponent, ImageLoaderComponent]
 })

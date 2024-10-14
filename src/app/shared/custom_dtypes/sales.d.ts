@@ -46,7 +46,8 @@ export type getSales = {
     recorded_by?: number,
     offset?: number,
     count?: number,
-    date?: string | null
+    date?: string | null,
+    get_modified_records?: boolean
 }
 
 export type editSaleModificationLog = {

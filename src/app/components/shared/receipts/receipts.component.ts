@@ -80,6 +80,7 @@ export class ReceiptsComponent {
   public selectedFromDate = ''
   public selectedToDate = ''
   public selectedRepresentative = ''
+  public selectByModifiedDate = false
 
   public totalAmount = 0
   public discount = 0
@@ -132,6 +133,7 @@ export class ReceiptsComponent {
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
     if (this.selectedRepresentative) body.recorded_by = Number(this.selectedRepresentative)
     if (this.selectedLocality) body.locality_id = Number(this.selectedLocality)
+    if (this.selectByModifiedDate) body.get_modified_records = this.selectByModifiedDate
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
         body['from_date'] = this.selectedFromDate
@@ -234,6 +236,19 @@ export class ReceiptsComponent {
       }
     )
   }
+
+  clearFilters(){
+    this.selectedTimeFrame = this.timeFrames[0].actualValue
+    this.selectedCustomerType = ''
+    this.selectedLocality = ''
+    this.selectedCustomer = ''
+    this.selectedFromDate = ''
+    this.selectedToDate = ''
+    this.selectedRepresentative = ''
+    this.selectByModifiedDate = false
+    this.fetchSalesAnalytics()
+  }
+
   announceSortChange(sortState: Sort) {
     // This example uses English messages. If your application supports
     // multiple language, you would internationalize these strings.

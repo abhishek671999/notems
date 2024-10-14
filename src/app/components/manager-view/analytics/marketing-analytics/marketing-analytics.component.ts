@@ -66,6 +66,7 @@ export class MarketingAnalyticsComponent {
   ]
 
   public customerList: customer[] = []
+  public visibleCustomerList: customer[] = []
   public teamMembers: teamMember[] = [];
 
 
@@ -78,6 +79,7 @@ export class MarketingAnalyticsComponent {
   
   fetchTeamMembers(){
     let httpParams = new HttpParams()
+    httpParams = httpParams.append('team_type_id', 1)
     this.teamMembersService.getUsers(httpParams).subscribe(
       (data: any) => {
         this.teamMembers = data['users']
@@ -99,6 +101,7 @@ export class MarketingAnalyticsComponent {
     }
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
       this.customerList = data['customers'];
+      this.visibleCustomerList = this.customerList
     });
   }
 
@@ -132,6 +135,16 @@ export class MarketingAnalyticsComponent {
       )
     }
   }
+  
+  clearFilters(){
+    this.selectedTimeFrame = this.timeFrames[0].actualValue
+    this.selectedCustomerType = ''
+    this.selectedCustomer = ''
+    this.selectedFromDate = ''
+    this.selectedToDate = ''
+    this.selectedRepresentative = ''
+    this.fetchTasksAnalytics()
+  }
 
   handlePageEvent(e: PageEvent) {
     this.length = e.length;
@@ -146,4 +159,17 @@ export class MarketingAnalyticsComponent {
       data: { longitude: location[1], latitude: location[0] },
     });
   }
+
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
+  }
+
 }

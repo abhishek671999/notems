@@ -44,6 +44,7 @@ import { EditAssignedBeatComponent } from '../dialog-box/edit-assigned-beat/edit
 import { TaskManagementHomeModule } from '../task-management/task-management-home/task-management-home.module';
 import { AttendenceMoreInfoComponent } from '../dialog-box/attendence-more-info/attendence-more-info.component';
 import { ReimbursementComponent } from '../reimbursement/reimbursement.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { ReimbursementComponent } from '../reimbursement/reimbursement.component
     MatMenuModule,
     MatBadgeModule,
     MatSelectModule,
-    TaskManagementHomeModule
+    TaskManagementHomeModule,
+    MatCheckboxModule
   ],
 })
 export class HomeModule {}

@@ -39,7 +39,6 @@ export class TasksComponent {
 
   ngOnInit() {
     this.fetchBeats()
-
     let httpParams = new HttpParams()
     this.teamService.getMyTeams(httpParams).subscribe(
       (data: any) => {
@@ -116,5 +115,13 @@ export class TasksComponent {
         }
       }
     )
+  }
+
+  clearfilter(){  
+    this.selectedTeam = ''
+    this.selectedTeamMember = ''
+    this.teamMembers = []
+    this.selectedDate = new Date()
+    this.fetchBeats()
   }
 }

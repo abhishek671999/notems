@@ -44,6 +44,7 @@ export class SalesAnalyticsComponent {
   public selectedFromDate = ''
   public selectedToDate = ''
   public selectedRepresentative = ''
+  public selectByModifiedDate = false
 
   public totalAmount = 0
   public discount = 0
@@ -66,6 +67,7 @@ export class SalesAnalyticsComponent {
     { typeId: 1, typeName: 'B2C' }
   ]
   public customerList: customer[] = []
+  public visibleCustomerList: customer[] = []
 
   
   ngOnInit() {
@@ -77,6 +79,7 @@ export class SalesAnalyticsComponent {
 
   fetchTeamMembers(){
     let httpParams = new HttpParams()
+    httpParams = httpParams.append('team_type_id', 2)
     this.teamMembersService.getUsers(httpParams).subscribe(
       (data: any) => {
         this.teamMembers = data['users']
@@ -96,6 +99,7 @@ export class SalesAnalyticsComponent {
     if (this.selectedCustomer) body.customer_id = Number(this.selectedCustomer)
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
     if (this.selectedRepresentative) body.recorded_by = Number(this.selectedRepresentative)
+    if (this.selectByModifiedDate) body.get_modified_records = this.selectByModifiedDate
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
         body['from_date'] = this.selectedFromDate
@@ -122,6 +126,17 @@ export class SalesAnalyticsComponent {
     }
   }
 
+  clearFilters(){
+    this.selectedTimeFrame = this.timeFrames[0].actualValue
+    this.selectedCustomerType = ''
+    this.selectedCustomer = ''
+    this.selectedFromDate = ''
+    this.selectedToDate = ''
+    this.selectedRepresentative = ''
+    this.fetchSalesAnalytics()
+  }
+
+
   fetchCustomer() {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
@@ -133,11 +148,24 @@ export class SalesAnalyticsComponent {
     }
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
       this.customerList = data['customers'];
+      this.visibleCustomerList = this.customerList
     });
   }
 
   openMoreInfoWindow(row: sale){
     this.matdialog.open(SalesMoreInfoComponent, { data: row} )
+  }
+
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
   }
 
 

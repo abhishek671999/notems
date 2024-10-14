@@ -3,10 +3,12 @@
     <div class="filter-section">
       <mat-form-field class="form-field">
         <mat-label>Select time frame</mat-label>
+
         <mat-select
           [(value)]="selectedTimeFrame"
           (selectionChange)="fetchSalesAnalytics()"
         >
+        <mat-checkbox (change)="fetchSalesAnalytics()" [(ngModel)]="selectByModifiedDate">Fetch by modified date</mat-checkbox>
           <mat-option *ngFor="let time of timeFrames" [value]="time.actualValue">
             {{ time.displayValue }}
           </mat-option>
@@ -71,6 +73,11 @@
           }
         </mat-select>
       </mat-form-field>
+
+      <div class="clear-filter">
+        <button (click)="clearFilters()" mat-raised-button>Clear filters</button>
+      </div>
+
     </div>
     <div class="sub-header-section">
       <h3>Total amount:&nbsp;₹&nbsp;{{totalAmount + discount}}</h3>
