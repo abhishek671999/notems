@@ -45,6 +45,8 @@ import { TaskManagementHomeModule } from '../task-management/task-management-hom
 import { AttendenceMoreInfoComponent } from '../dialog-box/attendence-more-info/attendence-more-info.component';
 import { ReimbursementComponent } from '../reimbursement/reimbursement.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ItemWiseAnalyticsComponent } from '../analytics/item-wise-analytics/item-wise-analytics.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     AddUserToTeamComponent,
     SalesAnalyticsComponent,
     MarketingAnalyticsComponent,
+    ItemWiseAnalyticsComponent,
     LeaveStatusUpdateComponent,
     AssignBeatComponent,
     AttendenceMoreInfoComponent,
@@ -100,7 +103,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatBadgeModule,
     MatSelectModule,
     TaskManagementHomeModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSortModule,
   ],
 })
 export class HomeModule {}

@@ -64,8 +64,19 @@ export class ReimbursementComponent {
 
 
 openReimbursementInfo(reimbursementDetails: reimbursementDetail){
-  this.matdialog.open(ReimbursementMoreInfoComponent, {data: {user: reimbursementDetails, timeframe: this.selectedTimeFrame}})
+  let matObj: matObj =  {user: reimbursementDetails, timeframe: this.selectedTimeFrame}
+  if(this.selectedTimeFrame == 'custom'){
+    matObj['from_date'] = String(this.dateUtils.getStandardizedDateFormate(new Date(this.selectedFromDate)))
+    matObj['to_date'] = String(this.dateUtils.getStandardizedDateFormate(new Date(this.selectedToDate) ))
+  }
+  this.matdialog.open(ReimbursementMoreInfoComponent, {data: matObj})
 }
-  
+ 
+}
 
+type matObj = {
+  user: reimbursementDetail,
+  timeframe: string,
+  from_date?: string,
+  to_date?: string
 }

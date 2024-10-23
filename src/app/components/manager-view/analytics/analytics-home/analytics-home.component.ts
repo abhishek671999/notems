@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class AnalyticsHomeComponent {
   managementPages = [
     {name: 'Sales Analytics' , href: `sales`},
-    {name: 'Marketing Analytics', href: "marketing"} ,
+    {name: 'Marketing Analytics', href: "marketing"},
+    {name: 'Item Analytics', href: 'items'}
   ]
 }

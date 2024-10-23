@@ -123,6 +123,15 @@ export type getTasks = {
     date?: string | null
 }
 
+export type getItemAnalytics ={
+    "organization_id": number,
+    "time_frame": string,
+    "from_date"?: string, 
+    "to_date"?: string,
+    "customer_wise": boolean,
+    "item_wise": boolean,
+}
+
 
 
 export type task = {

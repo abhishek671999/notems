@@ -204,7 +204,7 @@ export class EditSalesInfoComponent {
             (data: any) => { 
               this.itemsAdded = editData
               this.itemsAdded.forEach((item: item) => {
-                totalAmount = item.price * (item.quantity? item.quantity: 0)
+                totalAmount += item.price * (item.quantity? item.quantity: 0)
               })
               this.editSalesForm.patchValue({
                 amount: totalAmount

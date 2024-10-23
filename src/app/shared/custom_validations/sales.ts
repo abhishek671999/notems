@@ -24,8 +24,10 @@ export function addSalesReceievedAmountValidation(): ValidatorFn {
       const sellingPrice = form.get('selling_price')?.value
 
       if (receivedAmount && sellingPrice) {
-  
-          return receivedAmount <= sellingPrice ? null : {incorrectReceivedAmount:true};
+        if(typeof(receivedAmount)==='number' && receivedAmount < 0){
+          return  {lessThanZero:true}
+        }
+        return receivedAmount <= sellingPrice ? null : {incorrectReceivedAmount:true};
       }
 
       return null;

@@ -154,9 +154,9 @@ export class AddSaleComponent {
         console.log('data receivd:', data)
         if (data?.length > 0) {
           this.itemsAdded = data
-          let totalAmount = 0
+          let totalAmount = Number(this.addSalesForm.value.amount)
           this.itemsAdded.forEach((item: item) => {
-            totalAmount = item.price * (item.quantity? item.quantity: 0)
+            totalAmount += item.price * (item.quantity? item.quantity: 0)
           })
           this.addSalesForm.patchValue({
             amount: totalAmount

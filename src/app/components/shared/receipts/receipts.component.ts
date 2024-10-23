@@ -85,9 +85,10 @@ export class ReceiptsComponent {
   public totalAmount = 0
   public discount = 0
   public totalAmountReceived = 0
+  public collectedAmount = 0
   
   public saleInvoiceDatasource = new MatTableDataSource()
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'recorded_by', 'recorded_at', 'more']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'collected_amount', 'locality', 'recorded_by', 'recorded_at', 'more']
   public teamMembers: teamMember[] = []
   public localities: locality[] = []
 
@@ -127,7 +128,7 @@ export class ReceiptsComponent {
 
   fetchSalesAnalytics() {
     let body: getSales = {
-      receipt_time_frame: this.selectedTimeFrame,
+      time_frame: this.selectedTimeFrame,
     }
     if (this.selectedCustomer) body.customer_id = Number(this.selectedCustomer)
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
@@ -152,6 +153,7 @@ export class ReceiptsComponent {
           this.totalAmount = data['total_amount']
           this.discount = data['total_discount']
           this.totalAmountReceived = data['total_amount_received']
+          this.collectedAmount = data['collected_amount']
         },
         (error: any) => {
           console.log(error)
@@ -211,7 +213,7 @@ export class ReceiptsComponent {
   }
 
   openReceiptModificationLogs(row: sale){
-    this.matdialog.open(ReceiptMoreInfoComponent, {data: row})
+    this.matdialog.open(SalesMoreInfoComponent, {data: row})
   }
 
   onKey(event: Event) { 
