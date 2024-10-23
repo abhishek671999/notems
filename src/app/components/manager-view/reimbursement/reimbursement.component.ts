@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AttendenceService } from '../../../shared/services/attendence/attendence.service';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { dateUtils } from '../../../shared/utils/date_utils';
 import { MatDialog } from '@angular/material/dialog';
 import { ReimbursementMoreInfoComponent } from '../../shared/dialog-box/reimbursement-more-info/reimbursement-more-info.component';
@@ -16,7 +16,7 @@ export class ReimbursementComponent {
 
   constructor(
     private attendenceService: AttendenceService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private dateUtils: dateUtils,
     private matdialog: MatDialog
   ){}
@@ -39,15 +39,21 @@ export class ReimbursementComponent {
 
   public selectedFromDate = ''
   public selectedToDate = ''
+  public organizationId!: number;
 
 
   ngOnInit(){
-    this.fetchReimbursements()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchReimbursements()
+      }
+    )
   }
 
   fetchReimbursements(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', String(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', String(this.organizationId))
     httpParams = httpParams.append('time_frame', this.selectedTimeFrame)
     if(this.selectedTimeFrame == 'custom'){
       httpParams = httpParams.append('from_date', String(this.dateUtils.getStandardizedDateFormate(new Date(this.selectedFromDate) )))
@@ -64,8 +70,18 @@ export class ReimbursementComponent {
 
 
 openReimbursementInfo(reimbursementDetails: reimbursementDetail){
-  this.matdialog.open(ReimbursementMoreInfoComponent, {data: {user: reimbursementDetails, timeframe: this.selectedTimeFrame}})
+  let matObj: matObj =  {user: reimbursementDetails, timeframe: this.selectedTimeFrame}
+  if(this.selectedTimeFrame == 'custom'){
+    matObj['from_date'] = String(this.dateUtils.getStandardizedDateFormate(new Date(this.selectedFromDate)))
+    matObj['to_date'] = String(this.dateUtils.getStandardizedDateFormate(new Date(this.selectedToDate) ))
+  }
+  this.matdialog.open(ReimbursementMoreInfoComponent, {data: matObj})
+} 
 }
-  
 
+type matObj = {
+  user: reimbursementDetail,
+  timeframe: string,
+  from_date?: string,
+  to_date?: string
 }

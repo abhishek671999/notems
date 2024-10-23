@@ -82,7 +82,7 @@ export class SalesComponent {
   fetchSales(){
     let body: getSales = {
       beat_id: this.beatId,
-      receipt_time_frame: this.selectedTimeFrame
+      time_frame: this.selectedTimeFrame
     };
     if(this.selectedCustomer) body['customer_id'] = Number(this.selectedCustomer)
     if (this.selectedTimeFrame == 'custom') {

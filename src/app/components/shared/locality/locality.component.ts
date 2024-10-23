@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LocalityService } from '../../../shared/services/locality/locality.service';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { MatDialog } from '@angular/material/dialog';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { HttpParams } from '@angular/common/http';
@@ -18,21 +18,27 @@ import { AddLocalityComponent } from '../bottom-sheet/add-locality/add-locality.
 export class LocalityComponent {
   constructor(
     private localityService: LocalityService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matdialog: MatDialog,
     private matbottomSheet: MatBottomSheet
   ) { }
 
   public localityDataSource: locality[] = []
   public localityDataTableColumns = ['sl_no', 'locality_name', 'edit', 'delete']
+  public organizationId!: number
 
   ngOnInit() {
-    this.fetchLocalities()
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchLocalities()
+      }
+    )
   }
 
   fetchLocalities(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.localityService.getLocalities(httpParams).subscribe(
       (data: any) => {
         data['localities'].forEach((locality: locality)=> {

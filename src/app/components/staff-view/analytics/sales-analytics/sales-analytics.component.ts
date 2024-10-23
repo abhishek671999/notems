@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { FormControl, FormGroup } from '@angular/forms';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { getTasks } from '../../../../shared/custom_dtypes/tasks';
 import { HttpParams } from '@angular/common/http';
@@ -19,7 +18,7 @@ import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-in
 export class SalesAnalyticsComponent {
   constructor(
     private taskService: TaskManagementService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private customerService: CustomersService,
     private matdialog: MatDialog
   ) { }
@@ -63,11 +62,17 @@ export class SalesAnalyticsComponent {
     { typeId: 1, typeName: 'B2C' }
   ]
   public customerList: customer[] = []
+  public organizationId!: number
 
   
   ngOnInit() {
-    this.fetchSalesAnalytics()
-    
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchSalesAnalytics()
+        this.fetchCustomer()
+      }
+    )
   }
 
   fetchSalesAnalytics() {
@@ -108,7 +113,7 @@ export class SalesAnalyticsComponent {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     if (this.selectedCustomerType) {
       httpParams = httpParams.append('type', this.selectedCustomerType)

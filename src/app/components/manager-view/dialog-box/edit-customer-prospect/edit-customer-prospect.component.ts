@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { editCustomer } from '../../../../shared/custom_dtypes/customers';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
 import { locality } from '../../../../shared/custom_dtypes/locality';
@@ -21,7 +21,7 @@ export class EditCustomerProspectComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomersService,
     private formbuilder: FormBuilder,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matDialog: MatDialog,
     private matDialogRef: MatDialogRef<EditCustomerProspectComponent>,
     private localityService: LocalityService
@@ -52,15 +52,20 @@ export class EditCustomerProspectComponent {
     { typeId: 1, typeName: 'B2C' }
   ]
 
-
+  public organizationId!: number;
 
   ngOnInit() {
-    this.fetchLocalities()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      this.fetchLocalities()
+      }
+    )
   }
 
   fetchLocalities(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.localityService.getLocalities(httpParams).subscribe(
       (data: any) => {
         this.localityList = data['localities']
@@ -81,7 +86,7 @@ export class EditCustomerProspectComponent {
       "gst_no": this.editCustomerForm.value.gst_no,
       "locality_id": this.editCustomerForm.value.locality_id,
       "address": this.editCustomerForm.value.address,
-      "organization_id": Number(this.sessionWrapper.getItem('organization_id'))
+      "organization_id": Number(this.organizationId)
     }
     this.customerService.editCustomer(body).subscribe(
       (data: any) => {

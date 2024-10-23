@@ -1,9 +1,7 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
-import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
-import { dateUtils } from '../../../../shared/utils/date_utils';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { team } from '../../../../shared/custom_dtypes/team';
@@ -25,10 +23,8 @@ export class EditBeatComponent {
   constructor(
     private tasksService: TaskManagementService,
     private teamService: TeamManagementService,
-    private customerService: CustomersService,
     private localityService: LocalityService,
-    private sessionWrapper: sessionWrapper,
-    private dateUtils: dateUtils,
+    private meUtility: meAPIUtility,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
     private matdialogRef: MatDialogRef<EditBeatComponent>,
@@ -53,8 +49,19 @@ export class EditBeatComponent {
   public customerList: customer[] = []
   public localityList: locality[] = []
   public visibleCustomerList: customer[]
+  public organizationId!: number;
 
   ngOnInit() {
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      this.fetchMyTeams()
+      this.fetchLocalities()
+      }
+  )
+  }
+
+  fetchMyTeams(){
     let httpParams = new HttpParams()
     this.teamService.getMyTeams(httpParams).subscribe(
       (data: any) => {
@@ -63,12 +70,11 @@ export class EditBeatComponent {
       ,
       (error: any) => console.log(error)
     )
-    this.fetchLocalities()
   }
 
   fetchLocalities(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.localityService.getLocalities(httpParams).subscribe(
       (data: any) => {
         this.localityList = data['localities']

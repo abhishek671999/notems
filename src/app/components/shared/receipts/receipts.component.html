@@ -82,88 +82,101 @@
     <div class="sub-header-section">
       <h3>Total amount:&nbsp;₹&nbsp;{{totalAmount + discount}}</h3>
       <h3>Total amount received:&nbsp;₹&nbsp;{{totalAmountReceived}}</h3>
-      <h3>Total Discount:&nbsp;₹&nbsp;{{discount}}</h3>
+      <h3 *ngIf="selectByModifiedDate">Collected Amount:&nbsp;₹&nbsp;{{collectedAmount}}</h3>
+      <h3>Total Pending amount:&nbsp;₹&nbsp;{{totalAmount - totalAmountReceived}}</h3>
       <div *ngIf="isOrgManager">
         <button mat-raised-button (click)="openAddSaleWindow()">Add receipt</button>
       </div>
     </div>
-    <table mat-table [dataSource]="saleInvoiceDatasource" matSort  (matSortChange)="announceSortChange($event)">
-      <ng-container matColumnDef="sl_no">
-        <th mat-header-cell *matHeaderCellDef>Sl No.</th>
-        <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="customer">
-        <th mat-header-cell *matHeaderCellDef>Customer</th>
-        <td mat-cell *matCellDef="let element">{{element.customer}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="invoice_number">
-        <th mat-header-cell *matHeaderCellDef>Invoice number</th>
-        <td mat-cell *matCellDef="let element">{{element.invoice_number}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="from_date">
-        <th mat-header-cell *matHeaderCellDef>From date</th>
-        <td mat-cell *matCellDef="let element">{{element.from_date}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="total_amount">
-        <th mat-header-cell *matHeaderCellDef>Total amount</th>
-        <td mat-cell *matCellDef="let element">₹&nbsp;{{element.total_amount + element.discount}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="discount">
-          <th mat-header-cell *matHeaderCellDef>Discount</th>
-          <td mat-cell *matCellDef="let element">₹&nbsp;{{element.discount}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="received_amount">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef>Received amount</th>
-        <td mat-cell *matCellDef="let element">₹&nbsp;{{element.received_amount}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="pending_amount">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef>Pending amount</th>
-        <td mat-cell *matCellDef="let element">₹&nbsp;{{element.pending_amount}}</td>
-      </ng-container>
-
-
-      <ng-container matColumnDef="recorded_by">
-        <th mat-header-cell *matHeaderCellDef>Recorded by</th>
-        <td mat-cell *matCellDef="let element">{{element.recorded_by}}</td>
-      </ng-container>
+    <div class="table-section">
+      <table mat-table [dataSource]="saleInvoiceDatasource" matSort  (matSortChange)="announceSortChange($event)">
+        <ng-container matColumnDef="sl_no">
+          <th mat-header-cell *matHeaderCellDef>Sl No.</th>
+          <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
+        </ng-container>
       
-      <ng-container matColumnDef="recorded_at">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef>Recorded at</th>
-        <td mat-cell *matCellDef="let element">{{element.recorded_at}}</td>
-      </ng-container>
+        <ng-container matColumnDef="customer">
+          <th mat-header-cell *matHeaderCellDef>Customer</th>
+          <td mat-cell *matCellDef="let element">{{element.customer}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="invoice_number">
+          <th mat-header-cell *matHeaderCellDef>Invoice number</th>
+          <td mat-cell *matCellDef="let element">{{element.invoice_number}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="from_date">
+          <th mat-header-cell *matHeaderCellDef>From date</th>
+          <td mat-cell *matCellDef="let element">{{element.from_date}}</td>
+        </ng-container>
       
-
-      <ng-container matColumnDef="edit_receipt">
-        <th mat-header-cell *matHeaderCellDef>Edit</th>
-        <td mat-cell *matCellDef="let element">
-          <span (click)="openEditPendingAmountWindow(element)" class="material-symbols-outlined">edit</span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="edit_sale">
-        <th mat-header-cell *matHeaderCellDef>Edit</th>
-        <td mat-cell *matCellDef="let element">
-          <span (click)="openEditSalesWindow(element)" class="material-symbols-outlined">edit</span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="more">
-        <th mat-header-cell *matHeaderCellDef>More</th>
-        <td mat-cell *matCellDef="let element">
-          <span class="material-symbols-outlined" (click)="openReceiptModificationLogs(element)">info</span>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="saleInvoiceTableColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: saleInvoiceTableColumns;"></tr>
-    </table>
+        <ng-container matColumnDef="total_amount">
+          <th mat-header-cell *matHeaderCellDef>Total amount</th>
+          <td mat-cell *matCellDef="let element">₹&nbsp;{{element.total_amount + element.discount}}</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="discount">
+            <th mat-header-cell *matHeaderCellDef>Discount</th>
+            <td mat-cell *matCellDef="let element">₹&nbsp;{{element.discount}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="received_amount">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Received amount</th>
+          <td mat-cell *matCellDef="let element">₹&nbsp;{{element.received_amount}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="pending_amount">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Pending amount</th>
+          <td mat-cell *matCellDef="let element">₹&nbsp;{{element.pending_amount}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="collected_amount">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Collected amount</th>
+          <td mat-cell *matCellDef="let element">₹&nbsp;{{element.collected_amount}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="locality">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Locality</th>
+          <td mat-cell *matCellDef="let element">{{element.locality}}</td>
+        </ng-container>
+  
+  
+        <ng-container matColumnDef="recorded_by">
+          <th mat-header-cell *matHeaderCellDef>Recorded by</th>
+          <td mat-cell *matCellDef="let element">{{element.recorded_by}}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="recorded_at">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Recorded at</th>
+          <td mat-cell *matCellDef="let element">{{element.recorded_at}}</td>
+        </ng-container>
+        
+  
+        <ng-container matColumnDef="edit_receipt">
+          <th mat-header-cell *matHeaderCellDef>Edit</th>
+          <td mat-cell *matCellDef="let element">
+            <span (click)="openEditPendingAmountWindow(element)" class="material-symbols-outlined">edit</span>
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="edit_sale">
+          <th mat-header-cell *matHeaderCellDef>Edit</th>
+          <td mat-cell *matCellDef="let element">
+            <span (click)="openEditSalesWindow(element)" class="material-symbols-outlined">edit</span>
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="more">
+          <th mat-header-cell *matHeaderCellDef>More</th>
+          <td mat-cell *matCellDef="let element">
+            <span class="material-symbols-outlined" (click)="openReceiptModificationLogs(element)">info</span>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="saleInvoiceTableColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: saleInvoiceTableColumns;"></tr>
+      </table>
+    </div>
     <mat-paginator [pageSizeOptions]="pageSizeOptions"
       showFirstLastButtons
       aria-label="Select page of periodic elements">

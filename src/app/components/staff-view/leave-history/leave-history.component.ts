@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LeaveActionComponent } from '../dialog/leave-action/leave-action.component';
 import { ApplyLeaveComponent } from '../../manager-view/dialog-box/apply-leave/apply-leave.component';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ViewCalendarComponent } from '../../shared/bottom-sheet/view-calendar/view-calendar.component';
 
@@ -19,7 +19,7 @@ export class LeaveHistoryComponent {
   constructor(
     private attendenceService: AttendenceService,
     private matDialog: MatDialog,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private bottomSheet: MatBottomSheet
   ){}
 
@@ -27,11 +27,16 @@ export class LeaveHistoryComponent {
   public leaveTypes: [] = []
   public myAppliedLeavesDataSource: appliedLeaves[] = []
   public myAppliedLeavesTableColumns = ["sl_no", "from_date", "to_date", "status", "type"]
- 
+  public organizationId!: number
   
   ngOnInit(){
-    this.fetchMyLeaves()
-    this.fetchLeaveTypes()
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchMyLeaves()
+        this.fetchLeaveTypes()
+      }
+    )
   }
 
   fetchMyLeaves(){
@@ -62,7 +67,7 @@ export class LeaveHistoryComponent {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     this.attendenceService.getLeaveTypes(httpParams).subscribe(
       (data: any) => {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LocalityService } from '../../../../shared/services/locality/locality.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { addLocality } from '../../../../shared/custom_dtypes/locality';
@@ -16,7 +16,7 @@ export class AddLocalityComponent {
   constructor(
     private localityService: LocalityService,
     private formbuilder: FormBuilder,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matsheetRef: MatBottomSheetRef<AddLocalityComponent>,
     private matdialog: MatDialog
   ) { 
@@ -25,11 +25,21 @@ export class AddLocalityComponent {
     })
   }
   public newLocalityForm: FormGroup;
+  public organizationId!: number
+
+  ngOnInit(){
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+  
+        this.organizationId = data['organization_id']
+      }
+    )
+  }
 
   addLocality() {
     let body: addLocality = {
       locality_name: this.newLocalityForm.value.locality_name,
-      organization_id: Number(this.sessionWrapper.getItem('organization_id'))
+      organization_id: Number(this.organizationId)
     }
     this.localityService.addLocality(body).subscribe(
       (data: any) => this.matsheetRef.dismiss(true),

@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
-import { FormControl, FormGroup } from '@angular/forms';
 import { customer } from '../../../../shared/custom_dtypes/customers';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { getSales, sale } from '../../../../shared/custom_dtypes/sales';
 import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSort, Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -21,10 +23,16 @@ export class SalesAnalyticsComponent {
   constructor(
     private taskService: TaskManagementService,
     private teamMembersService: TeamManagementService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private customerService: CustomersService,
     private matdialog: MatDialog
   ) { }
+
+  private _liveAnnouncer = inject(LiveAnnouncer);
+  @ViewChild(MatSort)
+  sort: MatSort = new MatSort;
+
+
 
   timeFrames = [
     { displayValue: 'Today', actualValue: 'today' },
@@ -50,8 +58,8 @@ export class SalesAnalyticsComponent {
   public discount = 0
   public totalAmountReceived = 0
   
-  public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'recorded_by', 'more']
+  public saleInvoiceDatasource = new MatTableDataSource()
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'collected_amount', 'locality', 'recorded_by', 'more']
   public teamMembers: teamMember[] = []
 
   length = 50;
@@ -68,12 +76,18 @@ export class SalesAnalyticsComponent {
   ]
   public customerList: customer[] = []
   public visibleCustomerList: customer[] = []
+  public organizationId!: number;
 
   
   ngOnInit() {
-    this.fetchCustomer()
-    this.fetchSalesAnalytics()
-    this.fetchTeamMembers()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchCustomer()
+        this.fetchSalesAnalytics()
+        this.fetchTeamMembers()
+      }
+    )
     
   }
 
@@ -113,7 +127,7 @@ export class SalesAnalyticsComponent {
     if (Object.keys(body).length > 0) {
       this.taskService.getSales(body).subscribe(
         (data: any) => {
-          this.saleInvoiceDatasource = data['sale_invoices']
+          this.saleInvoiceDatasource.data = data['sale_invoices']
           this.length = data['total_count']
           this.totalAmount = data['total_amount']
           this.discount = data['total_discount']
@@ -141,7 +155,7 @@ export class SalesAnalyticsComponent {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     if (this.selectedCustomerType) {
       httpParams = httpParams.append('type', this.selectedCustomerType)
@@ -175,4 +189,23 @@ export class SalesAnalyticsComponent {
     this.pageIndex = e.pageIndex;
     this.fetchSalesAnalytics();
   }
+
+
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+
+  ngAfterViewInit(){
+    this.saleInvoiceDatasource.sort = this.sort
+  }
+
 }

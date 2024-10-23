@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { AttendenceService } from '../../../shared/services/attendence/attendence.service';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -16,7 +16,7 @@ import { HolidayComponent } from '../dialog-box/holiday/holiday.component';
 export class CalendarComponent {
 
   constructor(
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private attendenceService: AttendenceService,
     private calendarService: CalendarService,
     private matdialog: MatDialog
@@ -30,12 +30,22 @@ export class CalendarComponent {
     weekends: true
   };
   private holidayList: [] = []
+  private organizationId!: number;
 
   ngOnInit() {
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchHolidayList()
+      }
+    )
+  }
+  
+  fetchHolidayList(){
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     this.attendenceService.getHolidayList(httpParams).subscribe(
       (data: any) => {
@@ -46,6 +56,7 @@ export class CalendarComponent {
         this.calendarOptions.events = [];
       }
     );
+
   }
 
   handleDateClick(arg: any) {

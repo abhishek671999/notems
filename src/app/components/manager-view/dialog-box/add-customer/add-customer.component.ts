@@ -2,10 +2,9 @@ import { Component, Inject } from '@angular/core';
 import { addCustomer } from '../../../../shared/custom_dtypes/customers';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
-import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
 import { LocalityService } from '../../../../shared/services/locality/locality.service';
 import { HttpParams } from '@angular/common/http';
 import { locality } from '../../../../shared/custom_dtypes/locality';
@@ -21,7 +20,7 @@ export class AddCustomerComponent {
     private customerService: CustomersService,
     private localityService: LocalityService,
     private formbuilder: FormBuilder,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matDialog: MatDialog,
     private matDialogRef: MatDialogRef<AddCustomerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -47,14 +46,20 @@ export class AddCustomerComponent {
   ]
 
   localityList: locality[] = []
+  public organizationId!: number;
 
   ngOnInit(){
-    this.fetchLocalities()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchLocalities()
+      }
+    )
   }
 
   fetchLocalities(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.localityService.getLocalities(httpParams).subscribe(
       (data: any) => {
         this.localityList = data['localities']
@@ -91,7 +96,7 @@ export class AddCustomerComponent {
       "note": this.newCustomerForm.value.note,
       "gst_no": this.newCustomerForm.value.gst_no,
       "address": this.newCustomerForm.value.address,
-      "organization_id": Number(this.sessionWrapper.getItem('organization_id'))
+      "organization_id": Number(this.organizationId)
     }
     this.customerService.addCustomer(body).subscribe(
       (data: any) => {

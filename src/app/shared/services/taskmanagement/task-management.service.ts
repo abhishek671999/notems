@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { host } from '../../site-variables';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { addBeat, addTask, assignBeat, deleteBeat, deleteSaleInvoice, deleteSaleInvoiceLineItem, deleteTask, editBeat, editSaleInvoiceHeader, editSaleLineItems, editTask, getTasks, unassignBeat, updateSalesInvoiceLineItem } from '../../custom_dtypes/tasks';
+import { addBeat, addTask, assignBeat, deleteBeat, deleteSaleInvoice, deleteSaleInvoiceLineItem, deleteTask, editBeat, editSaleInvoiceHeader, editSaleLineItems, editTask, getItemAnalytics, getTasks, unassignBeat, updateSalesInvoiceLineItem } from '../../custom_dtypes/tasks';
 
 
 @Injectable({
@@ -24,6 +24,7 @@ export class TaskManagementService {
 
   private addSaleEndpoint = host + 'sales/add_sale_invoice/'
   private getSalesEndpoint = host + 'sales/get_sale_invoices/'
+  private getItemsAnalyticsEndpoint = host + 'sales/get_item_analytics/'
   private editSaleInvoiceHeaderEndpoint = host + 'sales/edit_sale_invoice_header/'
   private editSaleInvoiceLineItemsEndpoint = host + 'sales/edit_sale_invoice_line_item/'
   private deleteSalesInvoiceEndpoint = host + 'sales/delete_sale_invoice/'
@@ -38,6 +39,10 @@ export class TaskManagementService {
   private getSaleInvoiceActivityEndpoint = host + 'sales/get_sale_invoice_activity/'
 
   constructor(private httpClient: HttpClient) { }
+
+  getItemsAnalytics(body: getItemAnalytics){
+    return this.httpClient.post(this.getItemsAnalyticsEndpoint, body)
+  }
 
   getSaleInvoiceActivity(httpParams: HttpParams){
     return this.httpClient.get(this.getSaleInvoiceActivityEndpoint, {params: httpParams})

@@ -3,15 +3,13 @@ import { Component } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { PageEvent } from '@angular/material/paginator';
 import { getTasks } from '../../../../shared/custom_dtypes/tasks';
-import { FormControl, FormGroup } from '@angular/forms';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { MatDialog } from '@angular/material/dialog';
-import { sale } from '../../../../shared/custom_dtypes/sales';
 
 @Component({
   selector: 'app-marketing-analytics',
@@ -24,13 +22,12 @@ export class MarketingAnalyticsComponent {
     private teamMembersService: TeamManagementService,
     private taskService: TaskManagementService,
     private customerService: CustomersService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matdialog: MatDialog
   ) { }
   
   public tasksInvoiceDatasource: [] = []
   public tasksInvoiceTableColumns: string[] = ['sl_no', 'customer', 'added_by', 'created_at', 'status', 'location', 'description', 'note']
-
 
   timeFrames = [
     { displayValue: 'Today', actualValue: 'today' },
@@ -69,17 +66,24 @@ export class MarketingAnalyticsComponent {
   public visibleCustomerList: customer[] = []
   public teamMembers: teamMember[] = [];
 
+  public organizationId!: number;
+
 
   ngOnInit() {
-    this.fetchTeamMembers()
-    this.fetchTasksAnalytics()
-    this.fetchCustomer()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchTeamMembers()
+        this.fetchTasksAnalytics()
+        this.fetchCustomer()
+      }
+    )
   }
   
   
   fetchTeamMembers(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('team_type_id', 1)
+    httpParams = httpParams.append('team_type_id', 1) // hardcode
     this.teamMembersService.getUsers(httpParams).subscribe(
       (data: any) => {
         this.teamMembers = data['users']
@@ -94,7 +98,7 @@ export class MarketingAnalyticsComponent {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     if (this.selectedCustomerType) {
       httpParams = httpParams.append('type', this.selectedCustomerType)

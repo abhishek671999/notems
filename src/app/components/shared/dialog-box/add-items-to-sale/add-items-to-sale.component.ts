@@ -1,9 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { item } from '../../../../shared/custom_dtypes/items';
-import { CategoryService } from '../../../../shared/services/category/category.service';
 import { ItemsService } from '../../../../shared/services/items/items.service';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { category } from '../../../../shared/custom_dtypes/category';
 
@@ -15,10 +14,9 @@ import { category } from '../../../../shared/custom_dtypes/category';
 export class AddItemsToSaleComponent {
 
   constructor(
-    private categoryService: CategoryService,
     private itemsService: ItemsService,
-    private sessionWrapper: sessionWrapper,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private meUtility: meAPIUtility,
     private matdialogRef: MatDialogRef<AddItemsToSaleComponent>
   ) { 
   }
@@ -30,12 +28,22 @@ export class AddItemsToSaleComponent {
   public itemListColumns = ['sl_no', 'item_name', 'item_price', 'quantity'];
 
   public allitemsList = []
+  public organizationId!: number
 
   ngOnInit() {
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchItems()
+      }
+    )
+  }
+
+  fetchItems(){
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      Number(this.sessionWrapper.getItem('organization_id'))
+      Number(this.organizationId)
     );
     this.itemsService.getItems(httpParams).subscribe(
       (data: any) => {
@@ -61,7 +69,6 @@ export class AddItemsToSaleComponent {
       }
     );
   }
-
 
   addItem(item: any) {
     item.quantity += 1;

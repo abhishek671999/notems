@@ -1,9 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { reimbursementDetail } from '../../../../shared/custom_dtypes/reimbursement';
 import { AttendenceService } from '../../../../shared/services/attendence/attendence.service';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../../shared/site-variables';
 import { ViewImageComponent } from '../view-image/view-image.component';
 
 @Component({
@@ -36,6 +34,8 @@ export class ReimbursementMoreInfoComponent {
     let httpParams = new HttpParams()
     httpParams = httpParams.append('user_id', this.data.user.user_id)
     httpParams = httpParams.append('time_frame', this.data.timeframe)
+    if(this.data.from_date) httpParams =  httpParams.append('from_date', this.data.from_date)
+    if(this.data.to_date) httpParams = httpParams.append('to_date', this.data.to_date)
     this.attendenceService.getDetailedReimbursement(httpParams).subscribe(
       (data: any) => {
         this.allReimbursementsDatasource = data['reimbursement_details']
@@ -47,6 +47,8 @@ export class ReimbursementMoreInfoComponent {
     let httpParams = new HttpParams()
     httpParams = httpParams.append('user_id', this.data.user.user_id)
     httpParams = httpParams.append('time_frame', this.data.timeframe)
+    if(this.data.from_date) httpParams = httpParams.append('from_date', this.data.from_date)
+    if(this.data.to_date) httpParams = httpParams.append('to_date', this.data.to_date)
     this.attendenceService.getKMDrivenDetails(httpParams).subscribe(
       (data: any) => {
         this.kmDrivenDataSource = data['km_driven_result']

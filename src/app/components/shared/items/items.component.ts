@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ItemsService } from '../../../shared/services/items/items.service';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { HttpParams } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { deleteItem, editItem, item } from '../../../shared/custom_dtypes/items';
@@ -24,7 +24,7 @@ export class ItemsComponent {
     private itemService: ItemsService,
     private categoryService: CategoryService,
     private router: Router,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog
   ) {
@@ -38,10 +38,21 @@ export class ItemsComponent {
   public itemSource: any[] = []
   public categoryList: any[] = []
   public itemsTableColumns = ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'delete']
+  public organizationId!: number
   
   ngOnInit() {
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchCategories()
+        this.fetchItems()
+      }
+    )
+  }
+
+  fetchItems(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', String(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', String(this.organizationId))
     this.itemService.getItems(httpParams).subscribe(
       (data: any) => {
         data['items'].forEach((item: item) => {
@@ -60,7 +71,11 @@ export class ItemsComponent {
         console.log(error)
       }
     )
-
+  }
+  
+  fetchCategories(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('organization_id', String(this.organizationId))
     this.categoryService.getCategories(httpParams).subscribe(
       (data: any) => this.categoryList = data['categories'],
       (error: any) => alert('Failed to get categories')

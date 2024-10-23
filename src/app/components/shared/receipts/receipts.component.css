@@ -18,7 +18,6 @@ td, th {
     padding: 0.5em;
 }
 
-
 .mat-sort-header-container {
     justify-content: center !important;
     width: min-content;
@@ -32,4 +31,8 @@ td, th {
 
 .sub-header-section h3{
     margin: 0;
+}
+
+.table-section{
+    overflow: auto;
 }

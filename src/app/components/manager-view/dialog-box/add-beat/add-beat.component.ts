@@ -1,7 +1,7 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { addBeat } from '../../../../shared/custom_dtypes/tasks';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -28,7 +28,7 @@ export class AddBeatComponent {
     private teamService: TeamManagementService,
     private customerService: CustomersService,
     private localityService: LocalityService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private dateUtils: dateUtils,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
@@ -51,8 +51,20 @@ export class AddBeatComponent {
   public customerList: customer[] = []
   public localityList: locality[] = []
   public visibleCustomerList: customer[] = []
+  public organizationId!: number;
 
   ngOnInit() {
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchMyTeams()
+        this.fetchCustomer()
+        this.fetchLocalities()
+      }
+    )
+  }
+
+  fetchMyTeams(){
     let httpParams = new HttpParams()
     this.teamService.getMyTeams(httpParams).subscribe(
       (data: any) => {
@@ -61,14 +73,11 @@ export class AddBeatComponent {
       ,
       (error: any) => console.log(error)
     )
-
-    this.fetchCustomer()
-    this.fetchLocalities()
   }
 
   fetchLocalities(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.localityService.getLocalities(httpParams).subscribe(
       (data: any) => {
         this.localityList = data['localities']
@@ -81,7 +90,7 @@ export class AddBeatComponent {
 
   fetchCustomer(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.customerService.getCustomer(httpParams).subscribe(
       (data: any) => {
         this.customerList = data['customers']

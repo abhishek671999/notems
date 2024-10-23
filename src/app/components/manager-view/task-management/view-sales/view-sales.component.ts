@@ -4,13 +4,12 @@ import { TaskManagementService } from '../../../../shared/services/taskmanagemen
 import { HttpParams } from '@angular/common/http';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { MatDialog } from '@angular/material/dialog';
 import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
 import { sale } from '../../../../shared/custom_dtypes/sales';
 import { beat } from '../../../../shared/custom_dtypes/beats';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { SharedModulesModule } from '../../../shared/shared-modules/shared-modules.module';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -27,7 +26,7 @@ export class ViewSalesComponent {
     private route: ActivatedRoute,
     private taskService: TaskManagementService,
     private customerService: CustomersService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matdialog: MatDialog,
     private dateUtils: dateUtils
   ) { }
@@ -73,14 +72,20 @@ export class ViewSalesComponent {
 
   public totalAmount = 0
   public discount = 0
-  public totalAmountReceived = 0
+  public totalAmountReceived = 0;
+  public organizationId!: number;
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.beatId = params['beat_id']
       this.fetchSales()
     })
-    this.fetchCustomers()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      this.fetchCustomers()
+      }
+    )
   }
 
   ngAfterViewInit(){
@@ -90,7 +95,7 @@ export class ViewSalesComponent {
 
   fetchCustomers(){
     let httpParams = new HttpParams()
-      httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+      httpParams = httpParams.append('organization_id', Number(this.organizationId))
       this.customerService.getCustomer(httpParams).subscribe(
         (data: any) => {
           this.customerList = data['customers']

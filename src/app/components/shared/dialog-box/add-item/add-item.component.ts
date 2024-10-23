@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { addItem } from '../../../../shared/custom_dtypes/items';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { ItemsService } from '../../../../shared/services/items/items.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../dialog-box/success-msg/success-msg.component';
@@ -23,12 +23,12 @@ export class AddItemComponent {
 
   constructor(
     private formbuilder: FormBuilder,
-    private sessionWrapper: sessionWrapper,
     private itemService: ItemsService,
     private categoryService: CategoryService,
     private matDialog: MatDialog,
     private matBottomSheet: MatBottomSheet,
-    private matDialogRef: MatDialogRef<AddItemComponent>
+    private matDialogRef: MatDialogRef<AddItemComponent>,
+    private meUtility: meAPIUtility
   ) {
     this.newItem = this.formbuilder.group({
       "item_name": ['', [Validators.required]],
@@ -38,10 +38,20 @@ export class AddItemComponent {
   }
   
   public availableCategories: category[] = []
+  public organizationId!: number
   
   ngOnInit() {
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchCategories()
+      }
+    )
+  }
+  
+  fetchCategories(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.categoryService.getCategories(httpParams).subscribe(
       (data: any) =>  this.availableCategories = data['categories'],
       (error: any) => console.log(error)
@@ -53,7 +63,7 @@ export class AddItemComponent {
       "item_name": this.newItem.value.item_name,
       "price": this.newItem.value.price,
       "category_id": this.newItem.value.category_id,
-      "organization_id": Number(this.sessionWrapper.getItem('organization_id'))
+      "organization_id": Number(this.organizationId)
     }
     this.itemService.addItems(body).subscribe(
       (data: any) => {

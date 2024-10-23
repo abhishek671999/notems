@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { AttendenceService } from '../../../../shared/services/attendence/attendence.service';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { MatDialog } from '@angular/material/dialog';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { dateUtils } from '../../../../shared/utils/date_utils';
-import { AttendenceMoreInfoComponent } from '../../dialog-box/attendence-more-info/attendence-more-info.component';
 import { ViewImageComponent } from '../../../shared/dialog-box/view-image/view-image.component';
 
 
@@ -19,7 +18,7 @@ import { ViewImageComponent } from '../../../shared/dialog-box/view-image/view-i
 export class AttendenceTrackerComponent {
   constructor(
     private attendenceService: AttendenceService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matDialog: MatDialog,
     private dateUtils: dateUtils
   ) {
@@ -53,17 +52,28 @@ export class AttendenceTrackerComponent {
   private intervalId: any;
   public currentTime: Date | null;
   public attendenceDate = new Date()
+  public organizationId!: number;
 
   ngOnInit() {
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      this.fetchHolidayList()
+      }
+    )
     this.fetchAttendence()
     this.intervalId = setInterval(() => {
       this.currentTime = new Date();
     }, 1000);
 
+
+  }
+
+  fetchHolidayList(){
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     this.attendenceService.getHolidayList(httpParams).subscribe(
       (data: any) => {
@@ -73,8 +83,6 @@ export class AttendenceTrackerComponent {
         this.calendarOptions.events = [];
       }
     );
-
-    
   }
   
   fetchAttendence() {

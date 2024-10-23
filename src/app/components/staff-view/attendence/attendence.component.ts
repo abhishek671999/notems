@@ -3,18 +3,14 @@ import { AttendenceService } from '../../../shared/services/attendence/attendenc
 import { MatDialog } from '@angular/material/dialog';
 import { ApplyLeaveComponent } from '../../manager-view/dialog-box/apply-leave/apply-leave.component';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { leaveType } from '../../../shared/custom_dtypes/attendence';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { dateUtils } from '../../../shared/utils/date_utils';
 import { Router } from '@angular/router';
-import { appliedLeaves } from '../../../shared/custom_dtypes/leave';
-import { LeaveActionComponent } from '../dialog/leave-action/leave-action.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ViewCalendarComponent } from '../../shared/bottom-sheet/view-calendar/view-calendar.component';
-import { FormControl, FormGroup } from '@angular/forms';
-import { DataSource } from '@angular/cdk/collections';
 import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.component';
 import { CaptureAttendenceComponent } from '../../shared/dialog-box/capture-attendence/capture-attendence.component';
 import { ViewImageComponent } from '../../shared/dialog-box/view-image/view-image.component';
@@ -29,7 +25,7 @@ export class AttendenceComponent {
   constructor(
     private attendenceService: AttendenceService,
     private matDialog: MatDialog,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private dateUtils: dateUtils,
     private router: Router,
     private bottomSheet: MatBottomSheet
@@ -74,34 +70,51 @@ export class AttendenceComponent {
   private LeaveType: leaveType[] | null;
   private intervalId: any
   private LeaveCount: {} = {}
+  private organizationId!: number;
 
   ngOnInit() {
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchLeaveType()
+        this.fetchHolidayList()
+      }
+    )
     this.fetchMyAttendenceRecords()
 
     this.intervalId = setInterval(() => {
       this.currentTime = new Date();
     }, 1000);
+  }
 
-    let httpParams = new HttpParams();
-    httpParams = httpParams.append(
-      'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
-    );
-
-
+  fetchMyLeave(){
     this.attendenceService.getMyLeaves().subscribe((data: any) => {
       this.attendence = data['attendance'];
       this.LeaveCount = data['leave_count']
       this.isClockedIn = Boolean(this.attendence.punch_in);
     });
+  }
 
+  fetchLeaveType(){
+    let httpParams = new HttpParams();
+    httpParams = httpParams.append(
+      'organization_id',
+      String(this.organizationId)
+    );
     this.attendenceService.getLeaveTypes(httpParams).subscribe(
       (data: any) => {
         this.LeaveType = data['leave_types'];
       },
       (error: any) => {}
     );
+  }
 
+  fetchHolidayList(){
+    let httpParams = new HttpParams();
+    httpParams = httpParams.append(
+      'organization_id',
+      String(this.organizationId)
+    );
     this.attendenceService.getHolidayList(httpParams).subscribe(
       (data: any) => {
         this.calendarOptions.events = data['holidays'];

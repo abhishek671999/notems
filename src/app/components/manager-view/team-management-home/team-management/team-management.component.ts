@@ -3,7 +3,7 @@ import { TeamManagementService } from '../../../../shared/services/team-manageme
 import { HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { addTeam, deleteTeam, editTeam } from '../../../../shared/custom_dtypes/users';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
@@ -17,10 +17,10 @@ import { team } from '../../../../shared/custom_dtypes/team';
 })
 export class TeamManagementComponent {
   constructor(
-    private sessionWrapper: sessionWrapper,
     private matDialog: MatDialog,
     private teammanagementService: TeamManagementService,
-    private router: Router
+    private router: Router,
+    private meUtility: meAPIUtility
   ) { }
 
   public teamDataSource: any = []
@@ -32,8 +32,19 @@ export class TeamManagementComponent {
     { id: 2, name: 'Sales' },
     {id: 1, name: 'Marketing'}
   ]
+  public organizationId!: number;
 
   ngOnInit() {
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      this.fetchMyTeam()
+      }
+    )
+    
+  }
+
+  fetchMyTeam(){
     let httpParams = new HttpParams();
     this.teammanagementService.getMyTeams(httpParams).subscribe(
       (data: any) => {
@@ -52,7 +63,7 @@ export class TeamManagementComponent {
     let body: addTeam = {
       name: this.newTeam,
       type: Number(this.selectedDepartment),
-      organization_id: Number(this.sessionWrapper.getItem('organization_id'))
+      organization_id: Number(this.organizationId)
     }
     this.teammanagementService.addTeam(body).subscribe(
       (data: any) => {
