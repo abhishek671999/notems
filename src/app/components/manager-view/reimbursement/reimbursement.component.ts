@@ -76,7 +76,7 @@ openReimbursementInfo(reimbursementDetails: reimbursementDetail){
     matObj['to_date'] = String(this.dateUtils.getStandardizedDateFormate(new Date(this.selectedToDate) ))
   }
   this.matdialog.open(ReimbursementMoreInfoComponent, {data: matObj})
-} 
+  } 
 }
 
 type matObj = {

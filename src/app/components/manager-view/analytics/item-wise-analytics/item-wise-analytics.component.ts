@@ -24,7 +24,6 @@ export class ItemWiseAnalyticsComponent {
     private dateUtils: dateUtils,
     private meUtility: meAPIUtility
   ){
-
   }
 
   @ViewChild(MatSort)

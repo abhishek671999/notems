@@ -88,6 +88,7 @@
         <button mat-raised-button (click)="openAddSaleWindow()">Add receipt</button>
       </div>
     </div>
+
     <div class="table-section">
       <table mat-table [dataSource]="saleInvoiceDatasource" matSort  (matSortChange)="announceSortChange($event)">
         <ng-container matColumnDef="sl_no">
