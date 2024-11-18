@@ -37,7 +37,7 @@ export class AddBeatComponent {
   ) { 
     this.newBeat = this.formBuilder.group({
       "team_id": ['', [Validators.required]],
-      "customer_list": [, [Validators.required]],
+      "customer_list": [],
       "title": ['', [Validators.required]],
       "note": ['', Validators.required],
       "description": ['', [Validators.required]],

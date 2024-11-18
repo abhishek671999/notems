@@ -31,6 +31,7 @@ export class ViewCalendarComponent {
     this.meUtility.getCommonData().subscribe(
       (data: any) => {
         this.organizationId = data['organization_id']
+        this.fetchHolidayList()
       }
     )
   }

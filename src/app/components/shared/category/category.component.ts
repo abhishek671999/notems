@@ -32,6 +32,7 @@ export class CategoryComponent {
     this.meUtility.getCommonData().subscribe(
       (data: any) => {
         this.organizationId = data['organization_id']
+        this.fetchCategories()
       }
     )
   }

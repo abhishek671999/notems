@@ -25,6 +25,7 @@ export class BeatsComponent {
     this.meUtility.getMeData().subscribe(
       (data: any) => {
         this.userId = data['user_id']
+        this.fetchDailyBeats()
       }
     )
   }

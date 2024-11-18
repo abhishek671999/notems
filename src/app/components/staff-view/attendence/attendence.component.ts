@@ -78,6 +78,7 @@ export class AttendenceComponent {
         this.organizationId = data['organization_id']
         this.fetchLeaveType()
         this.fetchHolidayList()
+        this.fetchMyLeave()
       }
     )
     this.fetchMyAttendenceRecords()
@@ -132,7 +133,7 @@ export class AttendenceComponent {
     captureAttendenceRef.afterClosed().subscribe(
       (data: any) => {
         if(data?.result){
-          this.attendence.punch_out = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
+          this.attendence['punch_out'] = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
           this.ngOnInit()
         }
       }
@@ -146,7 +147,8 @@ export class AttendenceComponent {
     captureAttendenceRef.afterClosed().subscribe(
       (data: any) => {
         if(data?.result){
-          this.attendence.punch_in = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
+          debugger
+          this.attendence['punch_in'] = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
           this.ngOnInit()
         }
       }
