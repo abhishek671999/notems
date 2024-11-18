@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { FormControl, FormGroup } from '@angular/forms';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { getTasks } from '../../../../shared/custom_dtypes/tasks';
 import { HttpParams } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { sale } from '../../../../shared/custom_dtypes/sales';
+import { getSales, sale } from '../../../../shared/custom_dtypes/sales';
 import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
 
 @Component({
@@ -19,7 +18,7 @@ import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-in
 export class SalesAnalyticsComponent {
   constructor(
     private taskService: TaskManagementService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private customerService: CustomersService,
     private matdialog: MatDialog
   ) { }
@@ -47,7 +46,7 @@ export class SalesAnalyticsComponent {
   public totalAmountReceived = 0
   
   public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'recorded_by', 'more']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'locality', 'recorded_by', 'more']
   
   length = 50;
   pageSize = 50;
@@ -63,18 +62,25 @@ export class SalesAnalyticsComponent {
     { typeId: 1, typeName: 'B2C' }
   ]
   public customerList: customer[] = []
-
+  public organizationId!: number
+  public selectByModifiedDate = false
   
   ngOnInit() {
-    this.fetchSalesAnalytics()
-    
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchSalesAnalytics()
+        this.fetchCustomer()
+      }
+    )
   }
 
   fetchSalesAnalytics() {
-    let body: getTasks = {
+    let body: getSales = {
       time_frame: this.selectedTimeFrame,
       offset: this.pageIndex * this.pageSize,
-      count: this.pageIndex * this.pageSize + this.pageSize
+      count: this.pageIndex * this.pageSize + this.pageSize,
+      get_modified_records: this.selectByModifiedDate
     }
     if (this.selectedCustomer) body.customer_id = Number(this.selectedCustomer)
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
@@ -108,7 +114,7 @@ export class SalesAnalyticsComponent {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     if (this.selectedCustomerType) {
       httpParams = httpParams.append('type', this.selectedCustomerType)

@@ -1,12 +1,8 @@
-import { HttpParams } from '@angular/common/http';
 import { Component, Inject, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
 import { customer } from '../../../../shared/custom_dtypes/customers';
-import { addTask, getTasks } from '../../../../shared/custom_dtypes/tasks';
+import { addTask } from '../../../../shared/custom_dtypes/tasks';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
@@ -24,9 +20,7 @@ export class AddVisitComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private taskService: TaskManagementService,
-    private customerService: CustomersService,
     private formBuilder: FormBuilder,
-    private sessionWrapper: sessionWrapper,
     private matdialog: MatDialog,
     private matdialogRef: MatDialogRef<AddVisitComponent>
   ) {

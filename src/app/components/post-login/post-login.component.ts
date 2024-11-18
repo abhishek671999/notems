@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConnectcomponentsService } from '../../shared/services/connectcomponents.service';
-import { meAPIUtility, sessionWrapper } from '../../shared/site-variables';
+import { meAPIUtility } from '../../shared/site-variables';
 import { LoginService } from '../../shared/services/register/login.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,6 @@ export class PostLoginComponent {
     public meAPIUtility: meAPIUtility,
     public loginService: LoginService,
     private matdialog: MatDialog,
-    private sessionWrapper: sessionWrapper
   ) { }
   showSpinner = true
   errorOccured = false
@@ -31,16 +30,15 @@ export class PostLoginComponent {
   ngOnInit() {
     this.meAPIUtility.getMeData().subscribe((data: any) => {
       this.myInfo = data;
-      sessionStorage.setItem('user_id', data['user_id'])
       if (this.myInfo['first_name']) {
         if (this.myInfo['organizations'].length > 0) {
-          this.sessionWrapper.setOrgSessionVariables(this.myInfo['organizations'][0])
+          this.meAPIUtility.setOrganization(this.myInfo['organizations'][0])
           if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'manager') {
             this.router.navigate(['manager/attendence/attendence']);
           }
           else alert('Unknow error in redirection')
         } else if (this.myInfo['teams'].length > 0) {
-          this.sessionWrapper.setTeamSessionVariables(this.myInfo['teams'][0])
+          this.meAPIUtility.setTeam(this.myInfo['teams'][0])
           if (String(this.myInfo['teams'][0]['role']).toLowerCase() == 'team member') {
             this.router.navigate(['staff/attendence'])
           } else if(String(this.myInfo['teams'][0]['role']).toLowerCase() == 'manager'){

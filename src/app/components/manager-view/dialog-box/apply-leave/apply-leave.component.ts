@@ -26,7 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { leaveType } from '../../../../shared/custom_dtypes/attendence';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { MatInputModule } from '@angular/material/input';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
 import { CommonModule } from '@angular/common';
@@ -59,7 +59,7 @@ export class ApplyLeaveComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private attendenceService: AttendenceService,
     private dateUtils: dateUtils,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matDialog: MatDialog,
     private matdialogRef: MatDialogRef<ApplyLeaveComponent>
   ) {
@@ -72,8 +72,15 @@ export class ApplyLeaveComponent {
     leaveTypeId: new FormControl<number | null>(null, Validators.required),
     reason: new FormControl<string | null>(''),
   });
+  public organizationId!: number;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      }
+    )
+  }
 
   applyLeave() {
     let body = {
@@ -85,7 +92,7 @@ export class ApplyLeaveComponent {
       ),
       reason: this.leaveForm.value.reason,
       type_id: this.leaveForm.value.leaveTypeId,
-      organization_id: this.sessionWrapper.getItem('organization_id'),
+      organization_id: this.organizationId,
     };
     this.attendenceService.applyLeave(body).subscribe(
       (data: any) => {

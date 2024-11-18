@@ -2,13 +2,14 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
 import { getItemAnalytics } from '../../../../shared/custom_dtypes/tasks';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { FormControl, FormGroup } from '@angular/forms';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { item } from '../../../../shared/custom_dtypes/items';
+import { organization } from '../../../../shared/custom_dtypes/me';
 
 @Component({
   selector: 'app-item-wise-analytics',
@@ -20,10 +21,9 @@ export class ItemWiseAnalyticsComponent {
 
   constructor(
     private taskService: TaskManagementService,
-    private sessionWrapper: sessionWrapper,
-    private dateUtils: dateUtils
+    private dateUtils: dateUtils,
+    private meUtility: meAPIUtility
   ){
-    this.organizationId = Number(this.sessionWrapper.getItem('organization_id'))
   }
 
   @ViewChild(MatSort)
@@ -50,7 +50,7 @@ export class ItemWiseAnalyticsComponent {
     { displayValue: 'Item Wise', actualValue: 'item_wise' },
   ];
 
-  private organizationId: number;
+  private organizationId!: number;
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   public selectedGroup: string = this.groupList[0].actualValue;
@@ -66,7 +66,12 @@ export class ItemWiseAnalyticsComponent {
   public itemSalesTableColumns: string[] =['sl_no', 'customer', 'total_amount', 'item_description']
 
   ngOnInit(){
-    this.fetchItemAnalytics()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchItemAnalytics()
+      }
+    )
   }
 
   fetchItemAnalytics(){

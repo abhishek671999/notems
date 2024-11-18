@@ -1,23 +1,14 @@
-import { HttpParams } from '@angular/common/http';
-import { Component, ElementRef, Inject, ViewChild, viewChild } from '@angular/core';
-import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { ItemsService } from '../../../../shared/services/items/items.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { item } from '../../../../shared/custom_dtypes/items';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
-import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 import { of, switchMap } from 'rxjs';
 import { ImagesService } from '../../../../shared/services/images/images.service';
 import { AddItemsToSaleComponent } from '../add-items-to-sale/add-items-to-sale.component';
-import { addSalesDiscountValidation, addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatButton } from '@angular/material/button';
+import { addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
 
 
@@ -30,12 +21,8 @@ export class AddSaleComponent {
   @ViewChild('addSaleButton') addSaleButton: any;
 
   constructor(
-    private customerService: CustomersService,
     private taskService: TaskManagementService,
-    private itemsService: ItemsService,
     private imageService: ImagesService,
-    private sessionWrapper: sessionWrapper,
-    private matsnackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
     private matDialogRef: MatDialogRef<AddSaleComponent>,

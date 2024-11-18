@@ -1,9 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { reimbursementDetail } from '../../../../shared/custom_dtypes/reimbursement';
 import { AttendenceService } from '../../../../shared/services/attendence/attendence.service';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../../shared/site-variables';
 import { ViewImageComponent } from '../view-image/view-image.component';
 
 @Component({

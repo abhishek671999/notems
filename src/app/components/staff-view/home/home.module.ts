@@ -29,6 +29,7 @@ import { LeaveHistoryComponent } from '../leave-history/leave-history.component'
 import {MatBadgeModule} from '@angular/material/badge';
 import { AddReimbursementComponent } from '../bottom-sheet/add-reimbursement/add-reimbursement.component';
 import { MatSortModule } from '@angular/material/sort';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { MatSortModule } from '@angular/material/sort';
     RouterModule,
     SharedModulesModule,
     MatBadgeModule,
-    MatSortModule
+    MatSortModule,
+    MatCheckboxModule
   ]
 })
 export class HomeModule { }

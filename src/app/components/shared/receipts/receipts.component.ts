@@ -7,13 +7,12 @@ import { customer } from '../../../shared/custom_dtypes/customers';
 import { teamMember } from '../../../shared/custom_dtypes/team';
 import { TaskManagementService } from '../../../shared/services/taskmanagement/task-management.service';
 import { TeamManagementService } from '../../../shared/services/team-management/team-management.service';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { CustomersService } from '../../../shared/services/customer/customers.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditSalesInfoComponent } from '../dialog-box/edit-sales-info/edit-sales-info.component';
 import { UpdatePendingAmountComponent } from '../bottom-sheet/update-pending-amount/update-pending-amount.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { ReceiptMoreInfoComponent } from '../dialog-box/receipt-more-info/receipt-more-info.component';
 import { LocalityService } from '../../../shared/services/locality/locality.service';
 import { locality } from '../../../shared/custom_dtypes/locality';
 import {MatSort, Sort} from '@angular/material/sort';
@@ -31,21 +30,11 @@ export class ReceiptsComponent {
     private taskService: TaskManagementService,
     private teamMembersService: TeamManagementService,
     private localityService: LocalityService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private customerService: CustomersService,
     private matdialog: MatDialog,
-    private matbottomSheet: MatBottomSheet
-  ) { 
-    
-    if(this.sessionWrapper.isTeamManager() || this.sessionWrapper.isTeamMember()){
-      if(this.sessionWrapper.getItem('team_type') == 'sales'){
-        this.saleInvoiceTableColumns.push('edit_receipt')
-      }
-    }else if (this.sessionWrapper.isOrgManager()){
-      this.isOrgManager = true
-      this.saleInvoiceTableColumns.push('edit_sale')
-    }
-  }
+    private matbottomSheet: MatBottomSheet,
+  ) { }
 
   ngAfterViewInit(){
     this.saleInvoiceDatasource.sort = this.sort
@@ -108,13 +97,26 @@ export class ReceiptsComponent {
   public allCustomerList: customer[] = []
   public customerList: customer[] = []
   public visibleCustomerList: customer[] = []
+  public organizationId!: number
 
   
   ngOnInit() {
-    this.fetchCustomer()
-    this.fetchSalesAnalytics()
-    this.fetchTeamMembers()
-    this.fetchLocalities()
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        let role = data['role'].toLowerCase()
+        if(['manager', 'team member'].includes(role) && data['team_type'] == 'sales'){
+            this.saleInvoiceTableColumns.push('edit_receipt')
+        }else if (role == 'manager'){
+          this.isOrgManager = true
+          this.saleInvoiceTableColumns.push('edit_sale')
+        }
+        this.organizationId = data['organization_id']
+        this.fetchCustomer()
+        this.fetchSalesAnalytics()
+        this.fetchTeamMembers()
+        this.fetchLocalities()
+      }
+    )
   }
 
   fetchTeamMembers(){
@@ -166,7 +168,7 @@ export class ReceiptsComponent {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     if(this.selectedLocality) httpParams = httpParams.append('locality_id', this.selectedLocality)
     if (this.selectedCustomerType) {
@@ -228,7 +230,7 @@ export class ReceiptsComponent {
 
   fetchLocalities(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.localityService.getLocalities(httpParams).subscribe(
       (data: any) => {
         data['localities'].forEach((locality: locality)=> {

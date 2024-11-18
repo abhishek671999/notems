@@ -7,7 +7,7 @@ import { MapViewComponent } from '../dialog-box/map-view/map-view.component';
 import { SafePipe } from '../../../shared/pipe/safe.pipe';
 import { ItemsComponent } from '../items/items.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AddCustomerComponent } from '../../manager-view/dialog-box/add-customer/add-customer.component';
+import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

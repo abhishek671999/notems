@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { deleteBeat } from '../../../../shared/custom_dtypes/tasks';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ export class BeatsComponent {
     private tasksService: TaskManagementService,
     private teamService: TeamManagementService,
     private customerService: CustomersService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private dateUtils: dateUtils,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
@@ -57,27 +57,38 @@ export class BeatsComponent {
   public savedBeats: any = [];
   public customerList: customer[] = []
   public savedBeatsColumns = ['beat_id', 'title', 'reporter', 'team_name', 'team_type', 'description', 'locality_name', 'create_date', 'edit', 'delete']
+  public organizationId!: number;
 
   ngOnInit() {
-    {
-      let httpParams = new HttpParams()
-      this.teamService.getMyTeams(httpParams).subscribe(
-        (data: any) => {
-         this.teams = data['teams']
-        }
-        ,
-        (error: any) => console.log(error)
-      )
-    }
-    {
-      let httpParams = new HttpParams()
-      httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
-      this.customerService.getCustomer(httpParams).subscribe(
-        (data: any) => this.customerList = data['customers'],
-        (error: any) => alert('Failed to get customer list')
-      )
-    }
-    this.fetchBeats()
+
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      this.fetchMyTeams()
+      this.fetchCustomers()
+      this.fetchBeats()
+      }
+    )
+  }
+
+  fetchMyTeams(){
+    let httpParams = new HttpParams()
+    this.teamService.getMyTeams(httpParams).subscribe(
+      (data: any) => {
+       this.teams = data['teams']
+      }
+      ,
+      (error: any) => console.log(error)
+    )
+  }
+
+  fetchCustomers(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
+    this.customerService.getCustomer(httpParams).subscribe(
+      (data: any) => this.customerList = data['customers'],
+      (error: any) => alert('Failed to get customer list')
+    )
   }
 
   fetchBeats(){

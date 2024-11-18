@@ -1,14 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { CustomersService } from '../../../shared/services/customer/customers.service';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import {
   addCustomer,
   customer,
   deleteCustomer,
 } from '../../../shared/custom_dtypes/customers';
 import { MatDialog } from '@angular/material/dialog';
-import { AddCustomerComponent } from '../../manager-view/dialog-box/add-customer/add-customer.component';
+import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
 import { SuccessMsgComponent } from '../dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../dialog-box/error-msg/error-msg.component';
 import { EditCustomerProspectComponent } from '../../manager-view/dialog-box/edit-customer-prospect/edit-customer-prospect.component';
@@ -30,12 +30,12 @@ export class CustomersComponent {
   constructor(
     private customerService: CustomersService,
     private localityService: LocalityService,
-    private sessionWrapper: sessionWrapper,
     private matDialog: MatDialog,
     private router: Router,
-    private matsheet: MatBottomSheet
+    private matsheet: MatBottomSheet,
+    private meUtility: meAPIUtility
   ) {
-    if(this.sessionWrapper.isOrgManager() || this.sessionWrapper.isTeamManager()) this.customerTableColumns.push('delete');
+    
   }
 
 
@@ -64,20 +64,26 @@ export class CustomersComponent {
     'gst_no',
     'edit',
   ];
-
-
-
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
+  public organizationId!: number
+
   ngOnInit() {
-    this.fetchLocality()
-    this.fetchCustomers()
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        let role = data['role'].toLowerCase()
+        if(role == 'manager' && !this.customerTableColumns.includes('delete')) this.customerTableColumns.push('delete');
+        this.fetchLocality()
+        this.fetchCustomers()
+      }
+    )
   }
 
 
   fetchLocality(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', String(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', String(this.organizationId))
     this.localityService.getLocalities(httpParams).subscribe(
       (data: any) => {
         this.availableLocalityList = data['localities']
@@ -91,7 +97,7 @@ export class CustomersComponent {
 
   fetchCustomers(){
     let httpParams = new HttpParams();
-    httpParams = httpParams.append('organization_id', String(this.sessionWrapper.getItem('organization_id')));
+    httpParams = httpParams.append('organization_id', String(this.organizationId));
     if(this.selectedLocality) httpParams = httpParams.append('locality_id', Number(this.selectedLocality))
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
       this.customerDataSource = new MatTableDataSource<customer>(data['customers']);

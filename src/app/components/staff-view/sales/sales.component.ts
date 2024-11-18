@@ -61,6 +61,7 @@ export class SalesComponent {
   public selectedToDate = ''
   public customerList: customer[] = []
   public visibleCustomerList: customer[] = []
+  public selectByModifiedDate = false
 
 
   public beatInfo: beat | undefined
@@ -82,7 +83,8 @@ export class SalesComponent {
   fetchSales(){
     let body: getSales = {
       beat_id: this.beatId,
-      time_frame: this.selectedTimeFrame
+      time_frame: this.selectedTimeFrame,
+      get_modified_records: this.selectByModifiedDate
     };
     if(this.selectedCustomer) body['customer_id'] = Number(this.selectedCustomer)
     if (this.selectedTimeFrame == 'custom') {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,27 +11,32 @@ export class AnalyticsHomeComponent {
   managementPages: managementPage[] = []
 
   constructor(
-    private sessionWrapper: sessionWrapper,
+    private meUtilty: meAPIUtility,
     private router: Router
   ){}
 
   ngOnInit(){
-    if(this.sessionWrapper.isTeamManager() || this.sessionWrapper.isTeamMember()){
-      if(this.sessionWrapper.getItem('team_type') == 'sales'){
-        this.managementPages.push( {name: 'Sales Analytics' , href: `sales`})
-        this.router.navigate(['./staff/analytics/sales'])
-      }else if(this.sessionWrapper.getItem('team_type') == 'marketing'){
-        this.managementPages.push({name: 'Marketing Analytics', href: "marketing"} )
-        this.router.navigate(['./staff/analytics/marketing'])
+    this.meUtilty.getCommonData().subscribe(
+      (data: any) => {
+        let role = data['role'].toLowerCase()
+        let teamType = data['team_type']?.toLowerCase()
+        if(['manager', 'team member'].includes(role) && teamType){
+          if(teamType == 'sales'){
+            this.managementPages.push( {name: 'Sales Analytics' , href: `sales`})
+            this.router.navigate(['./staff/analytics/sales'])
+          }else if(teamType == 'marketing'){
+            this.managementPages.push({name: 'Marketing Analytics', href: "marketing"} )
+            this.router.navigate(['./staff/analytics/marketing'])
+          }
+        }else if(role == 'manager'){
+          this.managementPages = [
+            { name: 'Sales Analytics' , href: `sales`},
+            { name: 'Marketing Analytics', href: "marketing"},
+          ]
+        }
       }
-    }else if(this.sessionWrapper.isOrgManager()){
-      this.managementPages = [
-        { name: 'Sales Analytics' , href: `sales`},
-        { name: 'Marketing Analytics', href: "marketing"},
-      ]
-    }
+    )
   }
-
 
 }
 

@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TaskManagementService } from '../../../shared/services/taskmanagement/task-management.service';
 import { CustomersService } from '../../../shared/services/customer/customers.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { MatDialog } from '@angular/material/dialog';
 import { beat } from '../../../shared/custom_dtypes/beats';
 import { customer } from '../../../shared/custom_dtypes/customers';
@@ -25,7 +25,7 @@ export class VisitsComponent {
     private taskService: TaskManagementService,
     private customerService: CustomersService,
     private formBuilder: FormBuilder,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matdialog: MatDialog,
     private router: Router,
     private dateUtils: dateUtils
@@ -58,18 +58,25 @@ export class VisitsComponent {
   public visitsTableColumns: string[] = ['sl_no', 'type_name', 'customer', 'status', 'added_by', 'description', 'location', 'edit']
 
   public salesInvoiceTableColumns: string[] = []
+  public organizationId!: number
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.beatId = params['beat_id']
-      this.fetchBeatInfo()
-      this.fetchTasks()
+      this.meUtility.getCommonData().subscribe(
+        (data: any) => {
+          this.organizationId = data['organization_id']
+          this.fetchBeatInfo()
+          this.fetchTasks()
+        }
+      )
     })
+
   }
 
   fetchCustomers(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.customerService.getCustomer(httpParams).subscribe(
       (data: any) => {
         this.customerList = data['customers']

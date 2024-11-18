@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { addHoliday, deleteHoliday, editHoliday } from '../../../../shared/custom_dtypes/calendar';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { CalendarService } from '../../../../shared/services/calendar.service';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
@@ -18,7 +18,7 @@ export class HolidayComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private calendarService: CalendarService,
     private matdialog: MatDialog,
     private matDialogRef: MatDialogRef<HolidayComponent>
@@ -29,9 +29,14 @@ export class HolidayComponent {
   }
 
   public holidayForm: FormGroup;
+  public organizationId!: number
 
   ngOnInit() {
-
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      }
+    )
   }
 
   submit() {
@@ -52,7 +57,7 @@ export class HolidayComponent {
       let body: addHoliday = {
         'name': this.holidayForm.value.name,
         'date': this.data.date,
-        'organization_id': Number(this.sessionWrapper.getItem('organization_id'))
+        'organization_id': Number(this.organizationId)
       }
       this.calendarService.addHoliday(body).subscribe(
         (data: any) => {

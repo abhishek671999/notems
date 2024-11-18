@@ -1,12 +1,12 @@
 <div class="main-container">
     <div class="filter-section">
-      <h2 style="text-align: left; margin: 0;">Sales</h2>
       <mat-form-field class="form-field">
         <mat-label>Select time frame</mat-label>
         <mat-select
           [(value)]="selectedTimeFrame"
           (selectionChange)="fetchSalesAnalytics()"
         >
+        <mat-checkbox (change)="fetchSalesAnalytics()" [(ngModel)]="selectByModifiedDate">Fetch by modified date</mat-checkbox>
           <mat-option *ngFor="let time of timeFrames" [value]="time.actualValue">
             {{ time.displayValue }}
           </mat-option>
@@ -98,6 +98,11 @@
       <ng-container matColumnDef="received_amount">
         <th mat-header-cell *matHeaderCellDef>Received amount</th>
         <td mat-cell *matCellDef="let element">{{element.received_amount}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="locality">
+        <th mat-header-cell *matHeaderCellDef>Locality</th>
+        <td mat-cell *matCellDef="let element">{{element.locality}}</td>
       </ng-container>
 
       <ng-container matColumnDef="recorded_by">

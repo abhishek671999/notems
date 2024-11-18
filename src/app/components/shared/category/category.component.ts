@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CategoryService } from '../../../shared/services/category/category.service';
 import { category, deleteCategory, editCategory } from '../../../shared/custom_dtypes/category';
 import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
 import { SuccessMsgComponent } from '../dialog-box/success-msg/success-msg.component';
@@ -19,17 +19,27 @@ export class CategoryComponent {
 
   constructor(
     private categoryService: CategoryService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matdialog: MatDialog,
     private matbottomSheet: MatBottomSheet
   ) { }
 
   public categoryDataSource: category[] = []
   public categoryDataTableColumns = ['sl_no', 'category_name', 'edit', 'delete']
+  public organizationId!: number
 
   ngOnInit() {
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchCategories()
+      }
+    )
+  }
+  
+  fetchCategories(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.categoryService.getCategories(httpParams).subscribe(
       (data: any) => {
         data['categories'].forEach((category: category)=> {

@@ -43,13 +43,11 @@ export class LoginService {
         (data) => {
           this.logginStatus = false
           console.log('Logging out', data);
-          sessionStorage.clear();
           this.meAPIUtility.removeMeData();
           this._router.navigate(['login']);
         },
         (error) => {
           alert('Failed to Logout. Try again. Contact Takemo if persists');
-          sessionStorage.clear();
           this.meAPIUtility.removeMeData();
           this._router.navigate(['login']);
         }

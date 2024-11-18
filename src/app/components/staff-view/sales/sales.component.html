@@ -11,6 +11,7 @@
                   [(value)]="selectedTimeFrame"
                   (selectionChange)="fetchSales()"
                 >
+                <mat-checkbox (change)="fetchSales()" [(ngModel)]="selectByModifiedDate">Fetch by modified date</mat-checkbox>
                   <mat-option *ngFor="let time of timeFrames" [value]="time.actualValue">
                     {{ time.displayValue }}
                   </mat-option>

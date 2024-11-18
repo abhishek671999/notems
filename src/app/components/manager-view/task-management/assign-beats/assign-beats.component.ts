@@ -8,8 +8,7 @@ import { beat } from '../../../../shared/custom_dtypes/beats';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { assignBeat, unassignBeat, viewAssignedBeat } from '../../../../shared/custom_dtypes/tasks';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
-import { sessionWrapper } from '../../../../shared/site-variables';
-import { DataSource } from '@angular/cdk/collections';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { AssignBeatComponent } from '../../dialog-box/assign-beat/assign-beat.component';
 import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';
 import { EditAssignedBeatComponent } from '../../dialog-box/edit-assigned-beat/edit-assigned-beat.component';
@@ -25,7 +24,7 @@ export class AssignBeatsComponent {
     private teamService: TeamManagementService,
     private matdialog: MatDialog,
     private dateUtils: dateUtils,
-    private sessionWrapper: sessionWrapper
+    private meUtility: meAPIUtility
   ) {
 
   }
@@ -34,6 +33,7 @@ export class AssignBeatsComponent {
   public selectedType: number = 1
   public selectedTeam: any;
   public selectedTeamMember: any;
+  public organizationId!: number;
 
   public availableType = [
     { typeId: 3, typeName: 'Single day' },
@@ -52,12 +52,17 @@ export class AssignBeatsComponent {
   public beatsColumns = ['sl_no', 'team_type', 'assignee_name', 'frequency', 'edit' ,'unassign']
 
   ngOnInit() {
-    this.fetchBeatAssignees()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+      this.organizationId = data['organization_id']
+      this.fetchBeatAssignees()
+      }
+  )
   }
 
   fetchBeatAssignees(){
     let httpParams = new HttpParams()
-    httpParams = httpParams.append('organization_id', Number(this.sessionWrapper.getItem('organization_id')))
+    httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.taskManagementService.getAssigneeBeats(httpParams).subscribe(
       (data: any) => {
         this.assigneebeatsSource = data['beat_assignees']

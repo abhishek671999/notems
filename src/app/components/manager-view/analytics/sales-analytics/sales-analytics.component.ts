@@ -2,9 +2,8 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
-import { FormControl, FormGroup } from '@angular/forms';
 import { customer } from '../../../../shared/custom_dtypes/customers';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
@@ -24,7 +23,7 @@ export class SalesAnalyticsComponent {
   constructor(
     private taskService: TaskManagementService,
     private teamMembersService: TeamManagementService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private customerService: CustomersService,
     private matdialog: MatDialog
   ) { }
@@ -77,12 +76,18 @@ export class SalesAnalyticsComponent {
   ]
   public customerList: customer[] = []
   public visibleCustomerList: customer[] = []
+  public organizationId!: number;
 
   
   ngOnInit() {
-    this.fetchCustomer()
-    this.fetchSalesAnalytics()
-    this.fetchTeamMembers()
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchCustomer()
+        this.fetchSalesAnalytics()
+        this.fetchTeamMembers()
+      }
+    )
     
   }
 
@@ -150,7 +155,7 @@ export class SalesAnalyticsComponent {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     if (this.selectedCustomerType) {
       httpParams = httpParams.append('type', this.selectedCustomerType)

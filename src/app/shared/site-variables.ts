@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { MeService } from './services/register/me.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { organization, team } from './custom_dtypes/me';
 
 export let host = 'http://139.84.139.204:8001/api/v1/'
 //export let host = 'https://notems.in/api/v1/' //Prod
@@ -74,96 +75,107 @@ export class meAPIUtility {
     return meDataObservable;
   }
 
+  setOrganization(organization: organization, duration=6000){
+    this.cookieService.delete('team', '/')
+    let expiryDuration = duration; // min
+    this.cookieService.set(
+      'organization',
+      JSON.stringify(organization),
+      new Date(new Date().getTime() + expiryDuration * 60 * 1000),
+      '/'
+    );
+  }
+
+  setTeam(team: team, duration=6000){
+    this.cookieService.delete('organization', '/')
+    let expiryDuration = duration; // min
+    this.cookieService.set(
+      'team',
+      JSON.stringify(team),
+      new Date(new Date().getTime() + expiryDuration * 60 * 1000),
+      '/'
+    );
+  }
+
+  getOrganization(){
+    let organizationObservable = new Observable((observer) => {
+      let organizationData = this.cookieService.get('organization')
+      if(!(typeof(organizationData) == "undefined" || organizationData === "" || organizationData == "undefined")){
+        let data = JSON.parse(organizationData)
+        observer.next(data)
+      } else {
+        this.getMeData().subscribe((data: any) => {
+          if(data['organizations'].length > 0){
+            let firstOrganizationtInList = data['organizations'][0]
+            this.setOrganization(firstOrganizationtInList)
+            observer.next(firstOrganizationtInList)
+          }
+        })
+      }
+    })
+    return organizationObservable
+  }
+
+  getCommonData(){
+    let organizationObservable = new Observable((observer) => {
+      let organizationData = this.cookieService.get('organization')
+      let TeamData = this.cookieService.get('team')
+      if(!(typeof(organizationData) == "undefined" || organizationData === "" || organizationData == "undefined")){
+        let data = JSON.parse(organizationData)
+        observer.next(data)
+      }
+      else if(!(typeof(TeamData) == "undefined" || TeamData === "" || TeamData == "undefined")){
+        let data = JSON.parse(TeamData)
+        observer.next(data)
+      } else {
+        this.getMeData().subscribe((data: any) => {
+          if(data['organizations'].length > 0){
+            let firstOrganizationtInList = data['organizations'][0]
+            this.setOrganization(firstOrganizationtInList)
+            observer.next(firstOrganizationtInList)
+          } else if(data['teams'].length > 0){
+            let firstTeamInList = data['teams'][0]
+            this.setTeam(firstTeamInList)
+            observer.next(firstTeamInList)
+          }
+        })
+      }
+    }
+    )
+    return organizationObservable
+  }
+
+
+  getTeam(){
+    let teamObservable = new Observable((observer) => {
+      let TeamData = this.cookieService.get('team')
+      if(!(typeof(TeamData) == "undefined" || TeamData === "" || TeamData == "undefined")){
+        let data = JSON.parse(TeamData)
+        observer.next(data)
+      } else {
+        this.getMeData().subscribe((data: any) => {
+          if(data['teams'].length > 0){
+            let firstTeamInList = data['teams'][0]
+            this.setTeam(firstTeamInList)
+            observer.next(firstTeamInList)
+          }
+        })
+      }
+    })
+    return teamObservable
+  }
+
   removeMeData() {
     this.cookieService.deleteAll('/');
     this.cookieService.delete('token');
     this.cookieService.delete('me');
+    this.cookieService.delete('teams')
+    this.cookieService.delete('organization')
     if (this.cookieService.getAll()) {
       this.cookieService.delete('token');
       this.cookieService.deleteAll('/');
+      this.cookieService.delete('teams')
+      this.cookieService.delete('organization')
     }
-  }
-}
-
-
-@Injectable({
-  providedIn: 'root'
-})
-export class localStorageWrapper{
-  constructor(){} // todo
-
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-export class sessionWrapper {
-
-  constructor(public meAPIUtility: meAPIUtility) { }
-
-  async setSessionVariables() {
-    return new Promise((resolve, reject) => {
-      this.meAPIUtility.getMeData().subscribe((data: any) => {
-        sessionStorage.setItem('user_id', data['user_id'])
-        resolve(true)
-      }),
-        (error: any) => reject(false)
-    })
-    
-  }
-
-  getItem(key: string)  {
-      let item = sessionStorage.getItem(key);
-      if (item) return(item);
-      else {
-        this.setSessionVariables()
-      return sessionStorage.getItem(key) === null ? '': sessionStorage.getItem(key)
-    }
-  }
-
-  setTeamSessionVariables(team: any){
-    sessionStorage.setItem('organization_id', team['organization_id'])
-    if(String(team['role']).toLowerCase() == 'team member') sessionStorage.setItem('is_team_member', 'true')
-    if(String(team['role']).toLowerCase() == 'manager') sessionStorage.setItem('is_team_manager', 'true')
-    if(team['team_type']) sessionStorage.setItem('team_type', team['team_type'].toLowerCase())
-  }
-
-  setOrgSessionVariables(org: any){
-    sessionStorage.setItem('organization_id', org['organization_id'])
-    sessionStorage.setItem('organization_name', org['organization_name'])
-    if (String(org['role']).toLowerCase() == 'manager') sessionStorage.setItem('is_org_manager', 'true')
-  }
-
-  isTeamMember(){
-    return this.getItem('is_team_member') == 'true'? true: false
-  }
-
-  isTeamManager(){
-    return this.getItem('is_team_manager') == 'true' ? true: false
-  }
-
-  isOrgManager(){
-    return this.getItem('is_org_manager') == 'true' ? true: false
-  }
-
-
-  isCounterManagementEnabled() {
-    return this.getItem('counter_management') == 'true' ? true: false
-  }
-
-  isExpenseManagementEnabled() {
-    return this.getItem('expense_management') == 'true' ? true: false
-  }
-
-  isInventoryManagementEnabled() {
-    return this.getItem('inventory_management') == 'true' ? true: false
-  }
-
-  isTableManagementEnabled() {
-    return this.getItem('table_management') == 'true' ? true : false;
-  }
-  
-  isMobileOrderingEnabled() {
-    return this.getItem('mobile_ordering') == 'true' ? true : false;
   }
 }

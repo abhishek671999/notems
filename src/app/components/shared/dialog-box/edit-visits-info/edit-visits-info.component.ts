@@ -4,9 +4,6 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { editTask } from '../../../../shared/custom_dtypes/tasks';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
-import { HttpParams } from '@angular/common/http';
-import { sessionWrapper } from '../../../../shared/site-variables';
-import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 
@@ -20,10 +17,8 @@ export class EditVisitsInfoComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private taskService: TaskManagementService,
-    private customerService: CustomersService,
     private formBuilder: FormBuilder,
     private matdialogRef: MatDialogRef<EditVisitsInfoComponent>,
-    private sessionWrapper: sessionWrapper,
     private matdialog: MatDialog
 
   ){

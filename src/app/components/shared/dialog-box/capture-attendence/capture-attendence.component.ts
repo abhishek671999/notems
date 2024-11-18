@@ -45,7 +45,6 @@ export class CaptureAttendenceComponent {
     if(this.clockInButton) this.clockInButton._elementRef.nativeElement.disabled = true
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        debugger
         const formData = new FormData();
         if(this.file) formData.append('file', this.file);
         if(this.attendenceForm.value.starting_km) formData.append('starting_km', this.attendenceForm.value.starting_km)
@@ -123,7 +122,6 @@ export class CaptureAttendenceComponent {
     this.uploadResult = '';
     this.fileName = '';
     this.uploadStatus = undefined;
-    debugger
     this.file = event.dataTransfer?.files[0] || event.target?.files[0];
     if(this.file){
       this.fileName = this.file.name;

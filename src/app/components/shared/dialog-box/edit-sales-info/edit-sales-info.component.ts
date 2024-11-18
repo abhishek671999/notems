@@ -1,20 +1,19 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { ItemsService } from '../../../../shared/services/items/items.service';
 import { ImagesService } from '../../../../shared/services/images/images.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { item } from '../../../../shared/custom_dtypes/items';
 import { HttpParams } from '@angular/common/http';
 import { AddItemsToSaleComponent } from '../add-items-to-sale/add-items-to-sale.component';
 import { ConfirmationBoxComponent } from '../confirmation-box/confirmation-box.component';
-import { deleteSaleInvoiceLineItem, editSaleInvoiceHeader, editSaleLineItems, updateSalesInvoiceLineItem } from '../../../../shared/custom_dtypes/tasks';
+import { deleteSaleInvoiceLineItem, editSaleInvoiceHeader, updateSalesInvoiceLineItem } from '../../../../shared/custom_dtypes/tasks';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
-import { addSalesDiscountValidation, addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
-import { lineItems, sale } from '../../../../shared/custom_dtypes/sales';
+import { addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
+import { sale } from '../../../../shared/custom_dtypes/sales';
 import { of, switchMap } from 'rxjs';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
@@ -27,11 +26,10 @@ import { ViewImageComponent } from '../view-image/view-image.component';
 })
 export class EditSalesInfoComponent {
   constructor(
-    private customerService: CustomersService,
     private taskService: TaskManagementService,
     private itemsService: ItemsService,
     private imageService: ImagesService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
     private matDialogRef: MatDialogRef<EditSalesInfoComponent>,
@@ -83,16 +81,22 @@ export class EditSalesInfoComponent {
   uploadStatus: number | undefined;
 
   public editSalesForm: FormGroup;
+  public organizationId!: number
 
   ngOnInit() {
-    this.fetchItems()
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchItems()
+      }
+    )
   }
 
   fetchItems(){
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      Number(this.sessionWrapper.getItem('organization_id'))
+      Number(this.organizationId)
     );
     this.itemsService.getItems(httpParams).subscribe(
       (data: any) => {
@@ -237,7 +241,6 @@ export class EditSalesInfoComponent {
 
   onKey(event: Event, searchField: string) { 
     let searchText: string = (event.target as HTMLInputElement).value
-
     if(searchField == 'customer') this.visibleCustomerList = this.searchCustomer(searchText);
     else if(searchField == 'staff') this.visibleStaffList = this.searchStaff(searchText)
   }

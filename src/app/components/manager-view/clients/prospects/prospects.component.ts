@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
-import { AddCustomerComponent } from '../../dialog-box/add-customer/add-customer.component';
+import { AddCustomerComponent } from '../../../shared/dialog-box/add-customer/add-customer.component';
 import { EditCustomerProspectComponent } from '../../dialog-box/edit-customer-prospect/edit-customer-prospect.component';
 import { deleteCustomer } from '../../../../shared/custom_dtypes/customers';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
@@ -17,8 +17,8 @@ import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-ms
 export class ProspectsComponent {
   constructor(
     private customerService: CustomersService,
-    private sessionWrapper: sessionWrapper,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private meUtility: meAPIUtility
   ) {}
 
   public customerDataSource = [];
@@ -31,11 +31,22 @@ export class ProspectsComponent {
     'delete',
   ];
 
+  private organizationId!: number;
+
   ngOnInit() {
+    this.meUtility.getOrganization().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchCustomer()
+      }
+    )
+  }
+
+  fetchCustomer(){
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     httpParams = httpParams.append('type', 2);
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {

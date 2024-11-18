@@ -3,8 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { getTasks } from '../../../../shared/custom_dtypes/tasks';
 import { HttpParams } from '@angular/common/http';
 import { customer } from '../../../../shared/custom_dtypes/customers';
-import { FormControl, FormGroup } from '@angular/forms';
-import { sessionWrapper } from '../../../../shared/site-variables';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
@@ -20,7 +19,7 @@ export class MarketingAnalyticsComponent {
   constructor(
     private taskService: TaskManagementService,
     private customerService: CustomersService,
-    private sessionWrapper: sessionWrapper,
+    private meUtility: meAPIUtility,
     private matdialog: MatDialog
   ) { }
   
@@ -61,18 +60,23 @@ export class MarketingAnalyticsComponent {
   ]
 
   public customerList: customer[] = []
-
+  public organizationId!: number
 
   ngOnInit() {
-    this.fetchTasksAnalytics()
-    this.fetchCustomer()
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']
+        this.fetchTasksAnalytics()
+        this.fetchCustomer()
+      }
+    )
   }
 
   fetchCustomer() {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'organization_id',
-      String(this.sessionWrapper.getItem('organization_id'))
+      String(this.organizationId)
     );
     if (this.selectedCustomerType) {
       httpParams = httpParams.append('type', this.selectedCustomerType)

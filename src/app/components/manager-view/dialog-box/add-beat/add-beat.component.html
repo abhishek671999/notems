@@ -35,5 +35,5 @@
 </div>
 <mat-dialog-actions>
     <button mat-button [mat-dialog-close]="" cdkFocusInitial>Close</button>
-    <button mat-raised-button (click)="addBeatCall()">Submit</button>
+    <button mat-raised-button [disabled]="newBeat.invalid" (click)="addBeatCall()">Submit</button>
 </mat-dialog-actions>

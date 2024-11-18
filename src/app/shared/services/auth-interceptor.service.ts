@@ -32,7 +32,6 @@ export function intercept(request: HttpRequest<unknown>, next: HttpHandlerFn): O
          else if (error.status != 400 && error.error.detail?.toLowerCase().startsWith('invalid token')) {
           if (loggedInFlag) {
             loggedInFlag = false
-            sessionStorage.clear();
             _meAPIUtility.removeMeData();
             router.navigate(['login']);
             alert('Session over. Please login')

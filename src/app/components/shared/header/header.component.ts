@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../../../shared/services/register/login.service';
 import { Router } from '@angular/router';
-import { meAPIUtility, sessionWrapper } from '../../../shared/site-variables';
+import { meAPIUtility } from '../../../shared/site-variables';
 import { team } from '../../../shared/custom_dtypes/team';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
@@ -81,10 +81,10 @@ export class HeaderComponent {
             )
           }
       },
-      'support': {
-        name: 'Support',
-        action: () => this.router.navigate(['./user/support'])
-      },
+      // 'support': {
+      //   name: 'Support',
+      //   action: () => this.router.navigate(['./user/support'])
+      // },
       'calendar': {
         name: 'Calendar',
         action: () => this.router.navigate(['./manager/calendar'])
