@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { meAPIUtility } from '../../../../shared/site-variables';
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
@@ -9,6 +9,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { getSales, sale } from '../../../../shared/custom_dtypes/sales';
 import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
+import { MatSort, Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -22,6 +24,10 @@ export class SalesAnalyticsComponent {
     private customerService: CustomersService,
     private matdialog: MatDialog
   ) { }
+
+  private _liveAnnouncer = inject(LiveAnnouncer);
+  @ViewChild(MatSort)
+  sort: MatSort = new MatSort;
 
   timeFrames = [
     { displayValue: 'Today', actualValue: 'today' },
@@ -44,9 +50,10 @@ export class SalesAnalyticsComponent {
   public totalAmount = 0
   public discount = 0
   public totalAmountReceived = 0
+  public collectedAmount = 0
   
   public saleInvoiceDatasource: [] = []
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'locality', 'recorded_by', 'more']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'collected_amount', 'locality', 'recorded_by', 'more']
   
   length = 50;
   pageSize = 50;
@@ -102,6 +109,7 @@ export class SalesAnalyticsComponent {
           this.totalAmount = data['total_amount']
           this.discount = data['total_discount']
           this.totalAmountReceived = data['total_amount_received']
+          this.collectedAmount = data['collected_amount']
         },
         (error: any) => {
           console.log(error)
@@ -133,5 +141,17 @@ export class SalesAnalyticsComponent {
 
   openMoreInfoWindow(row: sale){
     this.matdialog.open(SalesMoreInfoComponent, { data: row} )
+  }
+
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 }

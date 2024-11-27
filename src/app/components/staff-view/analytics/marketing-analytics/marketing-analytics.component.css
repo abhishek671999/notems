@@ -19,3 +19,7 @@ td, th {
 .mat-sort-header-container {
     justify-content: center !important;
 }
+
+.table-section{
+    overflow: auto;
+}

@@ -30,3 +30,7 @@ td, th {
 .sub-header-section h3{
     margin: 0;
 }
+
+.table-section{
+    overflow: auto;
+}
