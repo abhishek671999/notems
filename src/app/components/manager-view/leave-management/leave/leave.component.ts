@@ -28,6 +28,7 @@ export class LeaveComponent {
 
   leaveTableColumn: string[] = [
     'sl_no',
+    'applied_at',
     'user',
     'leave_type',
     'from_date',

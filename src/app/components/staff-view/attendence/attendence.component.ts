@@ -159,6 +159,11 @@ export class AttendenceComponent {
     let dialogRef = this.matDialog.open(ApplyLeaveComponent, {
       data: { leaveTypes: this.LeaveType, leaveCount: this.LeaveCount },
     });
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if(data?.result) this.ngOnInit()
+      }
+    )
   }
 
   toggleCalendar() {

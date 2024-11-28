@@ -24,13 +24,15 @@ export class LocalityComponent {
   ) { }
 
   public localityDataSource: locality[] = []
-  public localityDataTableColumns = ['sl_no', 'locality_name', 'edit', 'delete']
+  public localityDataTableColumns = ['sl_no', 'locality_name', 'edit']
   public organizationId!: number
 
   ngOnInit() {
     this.meUtility.getCommonData().subscribe(
       (data: any) => {
         this.organizationId = data['organization_id']
+        let role = data['role'].toLowerCase()
+        if(role == 'manager' && !this.localityDataTableColumns.includes('delete')) this.localityDataTableColumns.push('delete');
         this.fetchLocalities()
       }
     )

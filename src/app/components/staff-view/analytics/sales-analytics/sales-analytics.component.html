@@ -121,6 +121,21 @@
           <th mat-header-cell *matHeaderCellDef>Recorded by</th>
           <td mat-cell *matCellDef="let element">{{element.recorded_by}}</td>
         </ng-container>
+
+        <ng-container matColumnDef="recorded_at">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Recorded at</th>
+          <td mat-cell *matCellDef="let element">{{element.recorded_at}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="last_modified_at">
+          <th mat-header-cell *matHeaderCellDef>Last recorded at</th>
+          <td mat-cell *matCellDef="let element">{{element.last_modified_at}}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="last_modified_by">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Last recorded by</th>
+          <td mat-cell *matCellDef="let element">{{element.last_modified_by}}</td>
+        </ng-container>
         
         <ng-container matColumnDef="more">
           <th mat-header-cell *matHeaderCellDef>More</th>

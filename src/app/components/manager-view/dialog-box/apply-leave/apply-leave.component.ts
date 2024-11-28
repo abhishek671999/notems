@@ -99,7 +99,7 @@ export class ApplyLeaveComponent {
         this.matDialog.open(SuccessMsgComponent, {
           data: { msg: 'Leave applied successfully' },
         });
-        this.matdialogRef.close();
+        this.matdialogRef.close({result: true});
       },
       (error: any) => {
         this.matDialog.open(ErrorMsgComponent, {

@@ -54,8 +54,8 @@ export class CustomersComponent {
   public customerDataSource: any;
 
   public customerTableColumns = [
-    'locality',
     'sl_no',
+    'locality',
     'customer_name',
     'type_name',
     'contact_persons_details',

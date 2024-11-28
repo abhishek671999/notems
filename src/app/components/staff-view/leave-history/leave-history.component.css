@@ -7,3 +7,7 @@
     width: 100%;
     justify-content: space-between;
 }
+
+.my-leaves-section{
+    overflow: auto;
+}

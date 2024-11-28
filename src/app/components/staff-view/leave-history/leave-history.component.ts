@@ -26,7 +26,7 @@ export class LeaveHistoryComponent {
   public leaveCount: {} = {}
   public leaveTypes: [] = []
   public myAppliedLeavesDataSource: appliedLeaves[] = []
-  public myAppliedLeavesTableColumns = ["sl_no", "from_date", "to_date", "status", "type"]
+  public myAppliedLeavesTableColumns = ["sl_no", 'applied_at', "from_date", "to_date", "status", "type"]
   public organizationId!: number
   
   ngOnInit(){
@@ -61,6 +61,11 @@ export class LeaveHistoryComponent {
     let dialogRef = this.matDialog.open(ApplyLeaveComponent, {
       data: { leaveTypes: this.leaveTypes, leaveCount: this.leaveCount },
     });
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if(data?.result) this.ngOnInit()
+      } 
+    )
   }
 
   fetchLeaveTypes(){
