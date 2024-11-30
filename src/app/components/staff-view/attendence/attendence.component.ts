@@ -195,8 +195,8 @@ export class AttendenceComponent {
     let httpParams = new HttpParams()
     httpParams = httpParams.append('time_frame', this.selectedTimeFrame)
     if(this.selectedTimeFrame == 'custom') {
-      httpParams = httpParams.append('start_date', String(this.dateUtils.getStandardizedDateFormate(this.selectedFromDate)))
-      httpParams = httpParams.append('end_date', String(this.dateUtils.getStandardizedDateFormate(this.selectedToDate)) )
+      httpParams = httpParams.append('from_date', String(this.dateUtils.getStandardizedDateFormate(this.selectedFromDate)))
+      httpParams = httpParams.append('to_date', String(this.dateUtils.getStandardizedDateFormate(this.selectedToDate)) )
     }
     if((this.selectedTimeFrame != 'custom') || (this.selectedTimeFrame == 'custom' && this.selectedFromDate && this.selectedToDate)){
       this.attendenceService.getMyAttendence(httpParams).subscribe(

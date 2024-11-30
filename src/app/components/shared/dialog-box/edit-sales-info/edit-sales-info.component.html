@@ -147,7 +147,7 @@
     </form>
     <br>
     <div style="text-align: center;">
-        <button  mat-flat-button [disabled]="!(editSalesForm.valid)" (click)="editSales()">Edit Sale</button>
+        <button  mat-flat-button id="editSaleButton" [disabled]="!(editSalesForm.valid)" (click)="editSales()">Edit Sale</button>
         <mat-error style="font-size: x-small;" *ngIf="editSalesForm.hasError('incorrectDiscount')">Discount should be less than amount</mat-error>
         <mat-error style="font-size: x-small;" *ngIf="editSalesForm.hasError('incorrectReceivedAmount')">Received amount should be less than selling price</mat-error>
         <mat-error style="font-size: x-small;" *ngIf="editSalesForm.hasError('incorrectSellingAmount')">Selling amount should be less than amount</mat-error>

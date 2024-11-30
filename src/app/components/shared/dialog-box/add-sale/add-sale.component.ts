@@ -5,11 +5,12 @@ import { customer } from '../../../../shared/custom_dtypes/customers';
 import { item } from '../../../../shared/custom_dtypes/items';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
-import { of, switchMap } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 import { ImagesService } from '../../../../shared/services/images/images.service';
 import { AddItemsToSaleComponent } from '../add-items-to-sale/add-items-to-sale.component';
 import { addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
+import { ImageCompressorService } from '../../../../shared/services/image-compressor/image-compressor.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class AddSaleComponent {
     private imageService: ImagesService,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
+    private imageCompressor: ImageCompressorService,
     private matDialogRef: MatDialogRef<AddSaleComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
 
@@ -101,6 +103,7 @@ export class AddSaleComponent {
         item_details: this.itemsAdded
       }
       if(this.addSalesForm.value.staff_id) body['user_id'] = this.addSalesForm.value.staff_id
+      const formData = new FormData();
       this.taskService
         .addSale(body)
         .pipe(
@@ -109,15 +112,23 @@ export class AddSaleComponent {
             if (this.file && response['created']) {
               this.fileName = this.file.name;
               this.fileSize = `${(this.file.size / 1024).toFixed(2)} KB`;
-              this.outputBoxVisible = true;
-              const formData = new FormData();
-              formData.append('file', this.file);
+              this.outputBoxVisible = true;              
               formData.append('invoice_id', response['invoice_id']);
-              return this.imageService.uploadImage(formData);
+              return this.imageCompressor.compressImage(this.file).pipe(
+                catchError((error: any) => {
+                  return of(null)
+                }),
+              )
             } else {
               return of(null);
             }
-          })
+          }),
+          switchMap((compressedImage: any) => {
+              if (compressedImage) formData.append('file', compressedImage);
+              else if(this.file) formData.append('file', this.file)
+              return this.imageService.uploadImage(formData);
+            },
+          )
         )
         .subscribe(
           (data: any) => {
@@ -127,6 +138,7 @@ export class AddSaleComponent {
             this.matDialogRef.close({result: true})
           },
           (error: any) => {
+            console.log(error)
             if(this.addSaleButton) this.addSaleButton._elementRef.nativeElement.disabled = false
           }
         );
@@ -138,7 +150,6 @@ export class AddSaleComponent {
     let dialogRef = this.matDialog.open(AddItemsToSaleComponent, {data: this.itemsAdded})
     dialogRef.afterClosed().subscribe(
       (data: any) => {
-        console.log('data receivd:', data)
         if (data?.length > 0) {
           this.itemsAdded = data
           let totalAmount = Number(this.addSalesForm.value.amount)

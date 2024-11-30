@@ -105,10 +105,10 @@ export class ReceiptsComponent {
       (data: any) => {
         let role = data['role'].toLowerCase()
         if(['manager', 'team member'].includes(role) && data['team_type'] == 'sales'){
-            this.saleInvoiceTableColumns.push('edit_receipt')
+          if(!this.saleInvoiceTableColumns.includes('edit_receipt')) this.saleInvoiceTableColumns.push('edit_receipt')
         }else if (role == 'manager' && !data['team_type']){
           this.isOrgManager = true
-          this.saleInvoiceTableColumns.push('edit_sale')
+          if(!this.saleInvoiceTableColumns.includes('edit_sale')) this.saleInvoiceTableColumns.push('edit_sale')
         }
         this.organizationId = data['organization_id']
         this.fetchCustomer()

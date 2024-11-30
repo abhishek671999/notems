@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { ItemsService } from '../../../../shared/services/items/items.service';
@@ -14,10 +14,11 @@ import { deleteSaleInvoiceLineItem, editSaleInvoiceHeader, updateSalesInvoiceLin
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 import { addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
 import { sale } from '../../../../shared/custom_dtypes/sales';
-import { of, switchMap } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { ViewImageComponent } from '../view-image/view-image.component';
+import { ImageCompressorService } from '../../../../shared/services/image-compressor/image-compressor.service';
 
 @Component({
   selector: 'app-edit-sales-info',
@@ -25,6 +26,9 @@ import { ViewImageComponent } from '../view-image/view-image.component';
   styleUrl: './edit-sales-info.component.css'
 })
 export class EditSalesInfoComponent {
+
+  @ViewChild('editSaleButton') editSaleButton: any;
+
   constructor(
     private taskService: TaskManagementService,
     private itemsService: ItemsService,
@@ -32,6 +36,7 @@ export class EditSalesInfoComponent {
     private meUtility: meAPIUtility,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
+    private imageCompressor: ImageCompressorService,
     private matDialogRef: MatDialogRef<EditSalesInfoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -159,6 +164,7 @@ export class EditSalesInfoComponent {
 
 
   editSales() {
+    if(this.editSaleButton) this.editSaleButton._elementRef.nativeElement.disabled = true
     let body: editSaleInvoiceHeader = {
       recorded_user_id: this.editSalesForm.value.staff_id,
       invoice_id: this.saleData.invoice_id,
@@ -169,20 +175,30 @@ export class EditSalesInfoComponent {
       note: this.editSalesForm.value.note,
       beat_id: this.saleData.beat_id
     }
+    const formData = new FormData();
     this.taskService.editSaleInvoiceHeader(body).pipe(
       switchMap((response: any) => {
+        debugger
         if (this.file && response['updated']) {
           this.fileName = this.file.name;
           this.fileSize = `${(this.file.size / 1024).toFixed(2)} KB`;
           this.outputBoxVisible = true;
-          const formData = new FormData();
-          formData.append('file', this.file);
           formData.append('invoice_id', String(this.saleData.invoice_id));
-          return this.imageService.uploadImage(formData);
+          return this.imageCompressor.compressImage(this.file).pipe(
+            catchError((error: any) => {
+              return of(null)
+            }),
+          );
         } else {
           return of(null);
         }
-      })
+      }),
+      switchMap((compressedImage: any) => {
+          if(compressedImage) formData.append('file', compressedImage);
+          else if(this.file) formData.append('file', this.file)
+          return this.imageService.uploadImage(formData)
+      }
+    )
     ).subscribe(
           (data: any) => {
             this.matDialog.open(SuccessMsgComponent, {
@@ -190,6 +206,13 @@ export class EditSalesInfoComponent {
             });
             this.matDialogRef.close({result: true})
           },
+          (error: any) => {
+            this.matDialog.open(ErrorMsgComponent, {
+              data: { msg: 'Failed to edited' },
+            });
+            this.matDialogRef.close({result: false})
+            if(this.editSaleButton) this.editSaleButton._elementRef.nativeElement.disabled = false
+          }
         );
     // this.taskService.editSaleLineItems(body2)
   }
