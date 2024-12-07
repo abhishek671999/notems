@@ -1,4 +1,5 @@
 <div class="main-container">
+    <mat-progress-bar *ngIf="loader" mode="indeterminate"></mat-progress-bar>
     <div class="box-wrapper">
         <div class="beat-box" *ngFor="let beat of beats; let i=index" (click)="openBeat(beat)">
             <h2>{{beat.title}}</h2>
@@ -8,6 +9,9 @@
                 <p>{{beat.team_type}}</p>
             </div>
         </div>
+    </div>
+    <div *ngIf="beats.length == 0 && !loader">
+        <h2 style="text-align: center;">No beats assigned</h2>
     </div>
 
 </div>

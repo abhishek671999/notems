@@ -12,11 +12,13 @@ import { AddItemComponent } from '../dialog-box/add-item/add-item.component';
 import { category } from '../../../shared/custom_dtypes/category';
 import { CategoryService } from '../../../shared/services/category/category.service';
 import { Router } from '@angular/router';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { DistributorOptionsComponent } from '../bottom-sheet/distributor-options/distributor-options.component';
 
 @Component({
   selector: 'app-items',
   templateUrl: './items.component.html',
-  styleUrl: './items.component.css'
+  styleUrls: ['./items.component.css',  './../../../app.component.css']
 })
 export class ItemsComponent {
 
@@ -26,7 +28,8 @@ export class ItemsComponent {
     private router: Router,
     private meUtility: meAPIUtility,
     private formBuilder: FormBuilder,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private matbottomSheet: MatBottomSheet
   ) {
     this.newItem = this.formBuilder.group({
       "item_name": ['', [Validators.required]],
@@ -90,7 +93,8 @@ export class ItemsComponent {
       )
     }
 
-  editItem(item: item) {
+  editItem(item: item, event: Event) {
+    event.stopPropagation()
     item.is_edit = !item.is_edit
   }
 
@@ -120,7 +124,8 @@ export class ItemsComponent {
     
   }
 
-  deleteItem(item: item) {
+  deleteItem(item: item, event: Event) {
+    event.stopPropagation()
     let dialogRef = this.matDialog.open(ConfirmationBoxComponent, {
       data: {
         msg: `Are you sure want to delete ${item.item_name}?`,
@@ -143,5 +148,14 @@ export class ItemsComponent {
         )
       }
     })
+  }
+
+  openDistributorOptions(item: item){
+    let bottomSheetRef = this.matbottomSheet.open(DistributorOptionsComponent, {data: item})
+    bottomSheetRef.afterDismissed().subscribe(
+      (data) => {
+        this.ngOnInit()
+      }
+    )
   }
 }

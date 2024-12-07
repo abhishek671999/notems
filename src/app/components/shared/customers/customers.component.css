@@ -8,13 +8,14 @@
 
 .header-section{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
 }
 
-.action-section{
-    place-self: left;
+.action-section button{
+    margin: 0 0.2em;
 }
 
 .customer-table{
@@ -26,10 +27,8 @@
     padding-left: 1em;
 }
 
-
-@media screen and (max-width: 450px) {
-    table th,td{
-        padding: 3px;
-        font-size: small;
-    }
+.form-field{
+    width: calc(100vw/2.1);
+    margin: 0.2em;
 }
+

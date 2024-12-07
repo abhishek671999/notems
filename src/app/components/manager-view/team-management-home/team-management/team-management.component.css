@@ -6,6 +6,8 @@
 
 .team-management{
     margin: 1em;
+    overflow: auto;
+    text-align: center;
 }
 
 .action-buttons{
@@ -17,3 +19,6 @@
     cursor: pointer;
 }
 
+mat-form-field{
+    width: calc(100vw/3.1);
+}

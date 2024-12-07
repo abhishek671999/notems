@@ -11,6 +11,7 @@ import { getSales, sale } from '../../../../shared/custom_dtypes/sales';
 import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-info/sales-more-info.component';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { dateUtils } from '../../../../shared/utils/date_utils';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -22,7 +23,8 @@ export class SalesAnalyticsComponent {
     private taskService: TaskManagementService,
     private meUtility: meAPIUtility,
     private customerService: CustomersService,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private dateUtils: dateUtils
   ) { }
 
   private _liveAnnouncer = inject(LiveAnnouncer);
@@ -93,8 +95,8 @@ export class SalesAnalyticsComponent {
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
-        body['from_date'] = this.selectedFromDate
-        body['to_date'] = this.selectedToDate
+        body['from_date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedFromDate))
+        body['to_date'] =  this.dateUtils.getStandardizedDateFormate(new Date(this.selectedToDate))
       }
       else {
         body = {}

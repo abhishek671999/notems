@@ -67,6 +67,7 @@ export class CustomersComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
   public organizationId!: number
+  public loader: boolean = true
 
   ngOnInit() {
     this.meUtility.getCommonData().subscribe(
@@ -96,6 +97,7 @@ export class CustomersComponent {
   }
 
   fetchCustomers(){
+    this.loader = true
     let httpParams = new HttpParams();
     httpParams = httpParams.append('organization_id', String(this.organizationId));
     if(this.selectedLocality) httpParams = httpParams.append('locality_id', Number(this.selectedLocality))
@@ -103,6 +105,7 @@ export class CustomersComponent {
       this.customerDataSource = new MatTableDataSource<customer>(data['customers']);
       this.customerDataSource.paginator = this.paginator;
       this.length = data['total_count']
+      this.loader = false
     });
   }
 

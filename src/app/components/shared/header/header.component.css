@@ -11,6 +11,14 @@
     padding: 0.5em;
 }
 
+.production{
+    background-color: rgb(65, 104, 244);
+}
+
+.non-production{
+    background-color: rgb(52, 152, 2);
+}
+
 .logo-home a img{
     display: block;
     width: 100px;

@@ -40,7 +40,8 @@ export class PostLoginComponent {
         } else if (this.myInfo['teams'].length > 0) {
           this.meAPIUtility.setTeam(this.myInfo['teams'][0])
           if (String(this.myInfo['teams'][0]['role']).toLowerCase() == 'team member') {
-            this.router.navigate(['staff/attendence'])
+            if(this.myInfo['teams'][0].is_distributors_team) this.router.navigate(['./staff/beats'])
+            else this.router.navigate(['staff/attendence'])
           } else if(String(this.myInfo['teams'][0]['role']).toLowerCase() == 'manager'){
             this.router.navigate(['manager/task/tasks'])            
           }

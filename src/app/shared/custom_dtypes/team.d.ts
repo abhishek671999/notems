@@ -4,7 +4,8 @@ export type team = {
     team_organization_id: number,
     team_type: string,
     type_id: number
-    is_edit?: boolean
+    is_edit?: boolean,
+    is_distributors_team: boolean
 }
 
 export type teamMember = {

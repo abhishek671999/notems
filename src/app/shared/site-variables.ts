@@ -5,9 +5,9 @@ import { MeService } from './services/register/me.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { organization, team } from './custom_dtypes/me';
+import { environment } from '../../environments/environment';
 
-export let host = 'http://139.84.139.204:8001/api/v1/'
-//export let host = 'https://notems.in/api/v1/' //Prod
+export let host = environment.host
 
 @Injectable({
   providedIn: 'root',

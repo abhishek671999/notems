@@ -117,9 +117,7 @@ export class AssignBeatsComponent {
     let dialogRef = this.matdialog.open(AssignBeatComponent , { width: '85vw', maxWidth: '85vw'})
     dialogRef.afterClosed().subscribe(
       (data: any) => {
-        if(data?.result){
           this.ngOnInit()
-        }
       }
     )
   }
@@ -128,9 +126,7 @@ export class AssignBeatsComponent {
     let dialogRef = this.matdialog.open(EditAssignedBeatComponent, {data: assignBeat, width: '100vw', maxWidth: '85vw'})
     dialogRef.afterClosed().subscribe(
       (data: any) => {
-        if(data?.result){
           this.ngOnInit()
-        }
       }
     )
   }

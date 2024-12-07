@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTableDataSource } from '@angular/material/table';
+import { dateUtils } from '../../../../shared/utils/date_utils';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -25,7 +26,8 @@ export class SalesAnalyticsComponent {
     private teamMembersService: TeamManagementService,
     private meUtility: meAPIUtility,
     private customerService: CustomersService,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private dateUtils: dateUtils
   ) { }
 
   private _liveAnnouncer = inject(LiveAnnouncer);
@@ -116,8 +118,8 @@ export class SalesAnalyticsComponent {
     if (this.selectByModifiedDate) body.get_modified_records = this.selectByModifiedDate
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
-        body['from_date'] = this.selectedFromDate
-        body['to_date'] = this.selectedToDate
+        body['from_date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedFromDate))
+        body['to_date'] =  this.dateUtils.getStandardizedDateFormate(new Date(this.selectedToDate))
       }
       else {
         body = {}

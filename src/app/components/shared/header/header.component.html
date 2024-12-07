@@ -1,4 +1,4 @@
-<div class="main-header">
+<div class="main-header" [ngClass]="isProduction ?'production': 'non-production' ">
     <div class="right-section">
       <!-- <a style="text-decoration: none; color: rgb(225, 223, 223);" href="support"><mat-icon>contact_support</mat-icon></a> -->
       <a style="text-decoration: none; color: rgb(225, 223, 223);" href="profile"><mat-icon>person_outline</mat-icon></a>

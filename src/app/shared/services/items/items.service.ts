@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { host } from '../../site-variables';
-import { addItem, deleteItem, editItem } from '../../custom_dtypes/items';
+import { addItem, deleteItem, editItem, updateTeamItem } from '../../custom_dtypes/items';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class ItemsService {
   private editItemEndpoint = host + 'sales/edit_item/'
   private getItemEndpoint = host + 'sales/get_items/'
   private deleteItemEndpoint = host + 'sales/delete_item/'
+  private updateTeamItemInventoryEndpoint = host + 'sales/update_team_item_inventory/'
 
   constructor(private httpClient: HttpClient) { }
 
@@ -29,6 +30,10 @@ export class ItemsService {
 
   deleteItems(body: deleteItem) {
     return this.httpClient.delete(this.deleteItemEndpoint, {body: body})
+  }
+
+  updateTeamItemInventory(body: updateTeamItem){
+    return this.httpClient.post(this.updateTeamItemInventoryEndpoint, body)
   }
 
 }

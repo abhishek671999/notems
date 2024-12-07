@@ -19,6 +19,7 @@ import {MatSort, Sort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AddSaleComponent } from '../dialog-box/add-sale/add-sale.component';
+import { dateUtils } from '../../../shared/utils/date_utils';
 
 @Component({
   selector: 'app-receipts',
@@ -34,6 +35,7 @@ export class ReceiptsComponent {
     private customerService: CustomersService,
     private matdialog: MatDialog,
     private matbottomSheet: MatBottomSheet,
+    private dateUtils: dateUtils
   ) { }
 
   ngAfterViewInit(){
@@ -139,8 +141,8 @@ export class ReceiptsComponent {
     if (this.selectByModifiedDate) body.get_modified_records = this.selectByModifiedDate
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
-        body['from_date'] = this.selectedFromDate
-        body['to_date'] = this.selectedToDate
+        body['from_date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedFromDate))
+        body['to_date'] =  this.dateUtils.getStandardizedDateFormate(new Date(this.selectedToDate))
       }
       else {
         body = {}

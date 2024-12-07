@@ -21,7 +21,8 @@ export type users = {
 export type addTeam = {
     name: string,
     type: number,
-    organization_id: number
+    organization_id: number,
+    is_distributors_team: boolean
 }
 
 export type deleteTeam = {
@@ -31,5 +32,6 @@ export type deleteTeam = {
 export type editTeam = {
     name: string,
     type: number,
-    team_id: number
+    team_id: number,
+    is_distributors_team: boolean
 }

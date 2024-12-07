@@ -1,4 +1,13 @@
 .form-section{
+    width: 100%;
     display: flex;
     flex-direction: column;
+}
+
+mat-form-field{
+    width: 100%;
+}
+
+.sub-mat-form{
+    width: 50%;
 }

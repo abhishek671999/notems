@@ -47,6 +47,7 @@ import { ReimbursementComponent } from '../reimbursement/reimbursement.component
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ItemWiseAnalyticsComponent } from '../analytics/item-wise-analytics/item-wise-analytics.component';
 import { MatSortModule } from '@angular/material/sort';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { MatSortModule } from '@angular/material/sort';
     TaskManagementHomeModule,
     MatCheckboxModule,
     MatSortModule,
+    MatProgressBarModule
   ],
 })
 export class HomeModule {}

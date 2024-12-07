@@ -5,6 +5,7 @@ import { meAPIUtility } from '../../../shared/site-variables';
 import { team } from '../../../shared/custom_dtypes/team';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class HeaderComponent {
     private matdialog: MatDialog
   ) {
     }
+    public isProduction = environment.production
     AvailableDropdownList: any = {
       'profile': {
         name: 'Profile',
@@ -104,7 +106,7 @@ export class HeaderComponent {
     addManagerNavOptions(organaization: any){
       this.location = organaization.organization_name
       let managerNavOptions: Array<string>
-      managerNavOptions = ['profile', 'calendar', 'manager_reimbursement', 'analytics','task_management', 'team_management', 'manager_attendence', 'staff_attendence', 'customer', 'items_manager']
+      managerNavOptions = ['receipt', 'profile', 'calendar', 'manager_reimbursement', 'analytics','task_management', 'team_management', 'manager_attendence', 'staff_attendence', 'customer', 'items_manager']
       for(let option of managerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -113,7 +115,7 @@ export class HeaderComponent {
     }
 
     addTeamManagerNavOptions(team: team){
-      let teamManagerNavOptions = ['profile', 'task_management', 'staff_analytics', 'staff_attendence', 'manager_attendence', 'manager_self_tasks_management', 'customer' ,'staff_leave_history']
+      let teamManagerNavOptions = ['receipt', 'profile', 'task_management', 'staff_analytics', 'staff_attendence', 'manager_attendence', 'manager_self_tasks_management', 'customer' ,'staff_leave_history']
       for(let option of teamManagerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -123,7 +125,7 @@ export class HeaderComponent {
   
 
   addStaffNavOptions(team: any){
-    let staffNavOptions = ['profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'customer', 'staff_leave_history']
+    let staffNavOptions = !team.is_distributors_team? ['receipt', 'profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'customer', 'staff_leave_history']:['profile' ,'staff_task_management','staff_analytics', 'customer'] 
     for(let option of staffNavOptions){
       if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
         this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -132,7 +134,7 @@ export class HeaderComponent {
   }
 
     
-  dropdownList = [ this.AvailableDropdownList['receipt'], this.AvailableDropdownList['logout']]
+  dropdownList = [ this.AvailableDropdownList['logout']]
   username: string = ''
   message: string = ''
   location: string = ''

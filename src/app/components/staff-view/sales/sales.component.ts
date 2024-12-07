@@ -89,8 +89,8 @@ export class SalesComponent {
     if(this.selectedCustomer) body['customer_id'] = Number(this.selectedCustomer)
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
-        body['from_date'] = this.selectedFromDate
-        body['to_date'] = this.selectedToDate
+        body['from_date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedFromDate))
+        body['to_date'] =  this.dateUtils.getStandardizedDateFormate(new Date(this.selectedToDate))
       }
       else {
         body = {}

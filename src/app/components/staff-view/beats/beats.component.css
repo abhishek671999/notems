@@ -4,13 +4,13 @@
 .box-wrapper{
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 }
 
 .beat-box{
     display: flex;
     flex-direction: column;
-    width: calc(100vw/2);
+    width: calc(100vw/2.3);
     padding: 0.5em;
     margin: 0.5em;
     background-color: rgb(115, 186, 249);

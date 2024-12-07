@@ -20,6 +20,7 @@ export class BeatsComponent {
 
   public beats: beat[]= []
   private userId!: number;
+  public loader = false
   
   ngOnInit() {
     this.meUtility.getMeData().subscribe(
@@ -31,15 +32,18 @@ export class BeatsComponent {
   }
 
   fetchDailyBeats(){
+    this.loader = true
     let httpParams = new HttpParams()
     httpParams = httpParams.append('assignee_id', Number(this.userId))
     this.tasksService.getDailyBeats(httpParams).subscribe(
       (data: any) => {
         this.beats = data['beats']
         console.log(this.beats)
+        this.loader = false
       },
       (error: any) => {
         console.log(error)
+        this.loader = false
       }
     )
   }

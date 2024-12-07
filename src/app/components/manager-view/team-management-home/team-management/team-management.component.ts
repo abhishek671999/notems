@@ -24,7 +24,7 @@ export class TeamManagementComponent {
   ) { }
 
   public teamDataSource: any = []
-  public teamDataSourceColumns: string[] = ['sl_no', 'team_name', 'department', 'edit', 'delete']
+  public teamDataSourceColumns: string[] = ['sl_no', 'team_name', 'department', 'is_distributor', 'edit', 'delete']
 
   public newTeam = ''
   public selectedDepartment = ''
@@ -32,6 +32,7 @@ export class TeamManagementComponent {
     { id: 2, name: 'Sales' },
     {id: 1, name: 'Marketing'}
   ]
+  public isDistributor = true
   public organizationId!: number;
 
   ngOnInit() {
@@ -63,7 +64,8 @@ export class TeamManagementComponent {
     let body: addTeam = {
       name: this.newTeam,
       type: Number(this.selectedDepartment),
-      organization_id: Number(this.organizationId)
+      organization_id: Number(this.organizationId),
+      is_distributors_team: this.isDistributor
     }
     this.teammanagementService.addTeam(body).subscribe(
       (data: any) => {
@@ -109,7 +111,8 @@ export class TeamManagementComponent {
     let body: editTeam = {
       name: team.team_name,
       type: team.type_id,
-      team_id: team.team_id
+      team_id: team.team_id,
+      is_distributors_team: team.is_distributors_team
     }
     this.teammanagementService.editTeam(body).subscribe(
       (data: any) => { 

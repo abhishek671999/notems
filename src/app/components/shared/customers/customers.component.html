@@ -2,7 +2,6 @@
   <h2 style="text-align: center; margin: 0;">Customers</h2>
   <div class="header-section">
     <div class="filter-section">
-
       <mat-form-field class="form-field">
         <mat-label>Select Locality</mat-label>
         <mat-select
@@ -19,16 +18,15 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field">
         <mat-label>Search customer</mat-label>
         <input matInput (input)="filterCustomer($event)" placeholder="Type to search...">
       </mat-form-field>
-      
     </div>
 
     <div class="action-section">
-      <button style="text-align: center;" (click)="addCustomer()" mat-flat-button>Add customer</button>
-      <button  style="text-align: right;" (click)="redirectToLocalities()" mat-flat-button>Modify Localities</button>
+      <button (click)="addCustomer()" mat-flat-button>Add customer</button>
+      <button (click)="redirectToLocalities()" mat-flat-button>Modify Localities</button>
     </div>
   </div>
 
@@ -94,6 +92,7 @@
       
     </table>
   </div>
+  <mat-progress-bar *ngIf="loader" mode="indeterminate"></mat-progress-bar>
 
     <div style="margin-top: 1em;">
         <mat-paginator #paginator

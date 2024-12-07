@@ -8,11 +8,11 @@
             </mat-form-field>
             <div formArrayName="contact_persons_details">
                 <div *ngFor="let control of contactPersonsFormArray().controls; let i=index" [formGroupName]="i" >
-                    <mat-form-field>
+                    <mat-form-field class="sub-mat-form">
                         <mat-label>Enter name {{i + 1}}</mat-label>
                         <input matInput formControlName="contact_person_name">
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="sub-mat-form">
                         <mat-label>Enter email/mobile  {{i + 1}}</mat-label>
                         <input matInput formControlName="email_or_phone">
                     </mat-form-field>

@@ -53,6 +53,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ImageLoaderComponent } from '../subcomponents/image-loader/image-loader.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { DistributorOptionsComponent } from '../bottom-sheet/distributor-options/distributor-options.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ReceiptsComponent,
     ClickOutsideDirective,
     ReceiptMoreInfoComponent,
-    ImageLoaderComponent
+    ImageLoaderComponent,
+    DistributorOptionsComponent
   ],
   imports: [
     CommonModule, 
@@ -114,7 +117,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatDialogModule,
     MatSortModule,
     MatRadioModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressBarModule
   ],
   exports: [HeaderComponent, FooterComponent, BeatInfoComponent, ImageLoaderComponent]
 })

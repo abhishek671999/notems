@@ -30,6 +30,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import { AddReimbursementComponent } from '../bottom-sheet/add-reimbursement/add-reimbursement.component';
 import { MatSortModule } from '@angular/material/sort';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     SharedModulesModule,
     MatBadgeModule,
     MatSortModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressBarModule
   ]
 })
 export class HomeModule { }
