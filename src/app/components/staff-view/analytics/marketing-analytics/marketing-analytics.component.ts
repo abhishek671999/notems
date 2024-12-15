@@ -8,6 +8,7 @@ import { CustomersService } from '../../../../shared/services/customer/customers
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddCustomerComponent } from '../../../shared/dialog-box/add-customer/add-customer.component';
 
 @Component({
   selector: 'app-marketing-analytics',
@@ -127,6 +128,15 @@ export class MarketingAnalyticsComponent {
     let location = attendence.split(',');
     this.matdialog.open(MapViewComponent, {
       data: { longitude: location[1], latitude: location[0] },
+    });
+  }
+
+    addCustomer() {
+    let dialogRef = this.matdialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      this.ngOnInit();
     });
   }
 }

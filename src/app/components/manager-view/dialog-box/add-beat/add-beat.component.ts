@@ -15,6 +15,8 @@ import { CustomersService } from '../../../../shared/services/customer/customers
 import { MatSelect } from '@angular/material/select';
 import { LocalityService } from '../../../../shared/services/locality/locality.service';
 import { locality } from '../../../../shared/custom_dtypes/locality';
+import { AddLocalityComponent } from '../../../shared/bottom-sheet/add-locality/add-locality.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-add-beat',
@@ -33,6 +35,7 @@ export class AddBeatComponent {
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
     private matdialogRef: MatDialogRef<AddBeatComponent>,
+    private matbottomSheet: MatBottomSheet,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     this.newBeat = this.formBuilder.group({
@@ -136,5 +139,14 @@ export class AddBeatComponent {
       setTimeout(() => this.matSelect?.open(), 0);
     }
   }
+
+    addLocality(){
+      let bottomSheetRef = this.matbottomSheet.open(AddLocalityComponent)
+      bottomSheetRef.afterDismissed().subscribe(
+        (data: any) => {
+          this.ngOnInit()
+        }
+      )
+    }
 
 }

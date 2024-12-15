@@ -20,6 +20,7 @@ import { LocalityService } from '../../../shared/services/locality/locality.serv
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { PayLumpsumComponent } from '../bottom-sheet/pay-lumpsum/pay-lumpsum.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { AddLocalityComponent } from '../bottom-sheet/add-locality/add-locality.component';
 
 @Component({
   selector: 'app-customers',
@@ -32,7 +33,7 @@ export class CustomersComponent {
     private localityService: LocalityService,
     private matDialog: MatDialog,
     private router: Router,
-    private matsheet: MatBottomSheet,
+    private matbottomSheet: MatBottomSheet,
     private meUtility: meAPIUtility
   ) {
     
@@ -182,7 +183,7 @@ export class CustomersComponent {
   }
 
   openPaylumpsumSheet(customer: customer){
-    let matsheetRef = this.matsheet.open(PayLumpsumComponent, {data: customer})
+    let matsheetRef = this.matbottomSheet.open(PayLumpsumComponent, {data: customer})
     matsheetRef.afterDismissed().subscribe(
       (data: any) => {
         if(data?.result){
@@ -201,5 +202,14 @@ export class CustomersComponent {
   search(value: any) { 
     let filter = value.toLowerCase();
     return this.availableLocalityList.filter((locality: locality) => locality.locality_name?.toLowerCase().startsWith(filter));
+  }
+
+  addLocality(){
+    let bottomSheetRef = this.matbottomSheet.open(AddLocalityComponent)
+    bottomSheetRef.afterDismissed().subscribe(
+      (data: any) => {
+        this.ngOnInit()
+      }
+    )
   }
 }

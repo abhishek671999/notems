@@ -12,6 +12,7 @@
             <input matInput (input)="onKey($event)" placeholder="Type to search...">
           </mat-form-field>
         <mat-option>None</mat-option>
+        <mat-option (click)="addLocality()" style="font-weight: bold;">Add locality</mat-option>
           <mat-option *ngFor="let locality of visibleLocalityList" [value]="locality.locality_id">
             {{ locality.locality_name }}
           </mat-option>

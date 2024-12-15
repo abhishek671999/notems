@@ -12,6 +12,7 @@ import { SalesMoreInfoComponent } from '../../../shared/dialog-box/sales-more-in
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { dateUtils } from '../../../../shared/utils/date_utils';
+import { AddCustomerComponent } from '../../../shared/dialog-box/add-customer/add-customer.component';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -155,5 +156,14 @@ export class SalesAnalyticsComponent {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
+  }
+
+    addCustomer() {
+    let dialogRef = this.matdialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      this.ngOnInit();
+    });
   }
 }

@@ -19,6 +19,7 @@ import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { ViewImageComponent } from '../view-image/view-image.component';
 import { ImageCompressorService } from '../../../../shared/services/image-compressor/image-compressor.service';
+import { AddCustomerComponent } from '../add-customer/add-customer.component';
 
 @Component({
   selector: 'app-edit-sales-info',
@@ -280,5 +281,14 @@ export class EditSalesInfoComponent {
 
   openImage(title: string, url: string){
     this.matDialog.open(ViewImageComponent, {data: {title: title, url: url}})
+  }
+
+    addCustomer() {
+    let dialogRef = this.matDialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      this.ngOnInit();
+    });
   }
 }

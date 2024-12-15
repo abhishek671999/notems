@@ -8,6 +8,8 @@ import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { LocalityService } from '../../../../shared/services/locality/locality.service';
 import { HttpParams } from '@angular/common/http';
 import { locality } from '../../../../shared/custom_dtypes/locality';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { AddLocalityComponent } from '../../bottom-sheet/add-locality/add-locality.component';
 
 @Component({
   selector: 'app-add-customer',
@@ -22,6 +24,7 @@ export class AddCustomerComponent {
     private formbuilder: FormBuilder,
     private meUtility: meAPIUtility,
     private matDialog: MatDialog,
+    private matbottomSheet: MatBottomSheet,
     private matDialogRef: MatDialogRef<AddCustomerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
@@ -115,6 +118,15 @@ export class AddCustomerComponent {
       '2': 'Prospect'
     }[Number(this.data.type)]
   }
+
+    addLocality(){
+      let bottomSheetRef = this.matbottomSheet.open(AddLocalityComponent)
+      bottomSheetRef.afterDismissed().subscribe(
+        (data: any) => {
+          this.ngOnInit()
+        }
+      )
+    }
 
 
 }

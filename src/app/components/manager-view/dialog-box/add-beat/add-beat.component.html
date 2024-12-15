@@ -13,9 +13,10 @@
         <mat-form-field >
           <mat-label>Select Locality</mat-label>
           <mat-select formControlName="locality_id">
-              @for (locality of localityList; track locality) {
-              <mat-option [value]="locality.locality_id">{{locality.locality_name}}</mat-option>
-              }
+            <mat-option (click)="addLocality()" style="font-weight: bold;">Add locality</mat-option>
+            @for (locality of localityList; track locality) {
+            <mat-option [value]="locality.locality_id">{{locality.locality_name}}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
 

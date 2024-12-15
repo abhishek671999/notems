@@ -58,9 +58,10 @@
                 <div *ngIf="!element.is_edit">
                   {{element.is_distributors_team == true? 'Yes': 'No'}}
                 </div>
-                <mat-form-field *ngIf="element.is_edit && element.team_type.toLowerCase() == 'sales'">
-                  <mat-checkbox class="example-margin" [(ngModel)]="element.is_distributors_team">Distributor</mat-checkbox>
-                </mat-form-field>
+                <div *ngIf="element.is_edit && element.team_type.toLowerCase() == 'sales'">
+                  <mat-checkbox class="example-margin" [(ngModel)]="element.is_distributors_team" (change)="submitEditTeam(element)" (click)="$event.stopPropagation()" [checked]="element.is_distributors_team">Distributor</mat-checkbox>
+                </div>
+                
               </div>
                 <div *ngIf="!element.team_type && selectedDepartment == '2'">
                   <mat-checkbox class="example-margin" [(ngModel)]="isDistributor">Distributor</mat-checkbox>

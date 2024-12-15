@@ -6,6 +6,7 @@ import { editTask } from '../../../../shared/custom_dtypes/tasks';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
+import { AddCustomerComponent } from '../add-customer/add-customer.component';
 
 @Component({
   selector: 'app-edit-visits-info',
@@ -75,5 +76,14 @@ export class EditVisitsInfoComponent {
         this.matdialog.open(ErrorMsgComponent, {data: {msg: 'Failed to update'}})
       }
     )
+  }
+
+    addCustomer() {
+    let dialogRef = this.matdialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      console.log('Added ')
+    });
   }
 }

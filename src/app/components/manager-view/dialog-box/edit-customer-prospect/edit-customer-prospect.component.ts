@@ -9,6 +9,8 @@ import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-ms
 import { locality } from '../../../../shared/custom_dtypes/locality';
 import { HttpParams } from '@angular/common/http';
 import { LocalityService } from '../../../../shared/services/locality/locality.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { AddLocalityComponent } from '../../../shared/bottom-sheet/add-locality/add-locality.component';
 
 @Component({
   selector: 'app-edit-customer-prospect',
@@ -24,7 +26,8 @@ export class EditCustomerProspectComponent {
     private meUtility: meAPIUtility,
     private matDialog: MatDialog,
     private matDialogRef: MatDialogRef<EditCustomerProspectComponent>,
-    private localityService: LocalityService
+    private localityService: LocalityService,
+    private matbottomSheet: MatBottomSheet
   ) {
 
     console.log('This is type: ', data)
@@ -127,5 +130,13 @@ export class EditCustomerProspectComponent {
     this.contactPersonsFormArray().removeAt(index)
   }
 
-
+    addLocality(){
+      let bottomSheetRef = this.matbottomSheet.open(AddLocalityComponent)
+      bottomSheetRef.afterDismissed().subscribe(
+        (data: any) => {
+          this.ngOnInit()
+        }
+      )
+    }
+    
 }

@@ -9,5 +9,5 @@
 }
 
 .my-leaves-section{
-    overflow: auto;
+    height: fit-content;
 }

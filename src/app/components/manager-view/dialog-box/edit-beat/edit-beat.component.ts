@@ -13,6 +13,8 @@ import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-ms
 import { MatSelect } from '@angular/material/select';
 import { locality } from '../../../../shared/custom_dtypes/locality';
 import { LocalityService } from '../../../../shared/services/locality/locality.service';
+import { AddLocalityComponent } from '../../../shared/bottom-sheet/add-locality/add-locality.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-edit-beat',
@@ -27,6 +29,7 @@ export class EditBeatComponent {
     private meUtility: meAPIUtility,
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
+    private matbottomSheet: MatBottomSheet,
     private matdialogRef: MatDialogRef<EditBeatComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
@@ -131,5 +134,14 @@ export class EditBeatComponent {
     if (opened && this.matSelect?.panelOpen) {
       setTimeout(() => this.matSelect?.open(), 0);
     }
+  }
+
+  addLocality(){
+    let bottomSheetRef = this.matbottomSheet.open(AddLocalityComponent)
+    bottomSheetRef.afterDismissed().subscribe(
+      (data: any) => {
+        this.ngOnInit()
+      }
+    )
   }
 }

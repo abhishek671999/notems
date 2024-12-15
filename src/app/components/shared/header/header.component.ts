@@ -125,7 +125,7 @@ export class HeaderComponent {
   
 
   addStaffNavOptions(team: any){
-    let staffNavOptions = !team.is_distributors_team? ['receipt', 'profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'customer', 'staff_leave_history']:['profile' ,'staff_task_management','staff_analytics', 'customer'] 
+    let staffNavOptions = !team.is_distributors_team? ['receipt', 'profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'customer', 'staff_leave_history']:['profile' ,'staff_task_management','staff_analytics', 'items_manager'] 
     for(let option of staffNavOptions){
       if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
         this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])

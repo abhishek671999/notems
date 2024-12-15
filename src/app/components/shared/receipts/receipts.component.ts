@@ -20,6 +20,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AddSaleComponent } from '../dialog-box/add-sale/add-sale.component';
 import { dateUtils } from '../../../shared/utils/date_utils';
+import { AddLocalityComponent } from '../bottom-sheet/add-locality/add-locality.component';
+import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
 
 @Component({
   selector: 'app-receipts',
@@ -273,4 +275,22 @@ export class ReceiptsComponent {
     this.pageIndex = e.pageIndex;
     this.fetchSalesAnalytics();
   }
+
+    addLocality(){
+    let bottomSheetRef = this.matbottomSheet.open(AddLocalityComponent)
+    bottomSheetRef.afterDismissed().subscribe(
+      (data: any) => {
+        this.ngOnInit()
+      }
+    )
+  }
+
+    addCustomer() {
+      let dialogRef = this.matdialog.open(AddCustomerComponent, {
+        data: { type: 1 },
+      });
+      dialogRef.afterClosed().subscribe((data: any) => {
+        this.ngOnInit();
+      });
+    }
 }

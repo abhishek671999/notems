@@ -11,6 +11,7 @@ import { AddItemsToSaleComponent } from '../add-items-to-sale/add-items-to-sale.
 import { addSalesReceievedAmountValidation, salesSellingPriceValidation } from '../../../../shared/custom_validations/sales';
 import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { ImageCompressorService } from '../../../../shared/services/image-compressor/image-compressor.service';
+import { AddCustomerComponent } from '../add-customer/add-customer.component';
 
 
 @Component({
@@ -213,5 +214,14 @@ export class AddSaleComponent {
   searchStaff(value: any) { 
     let filter = value.toLowerCase();
     return this.staffList.filter((staff: teamMember) => staff.user_identity?.toLowerCase().startsWith(filter));
+  }
+
+    addCustomer() {
+    let dialogRef = this.matDialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      this.ngOnInit();
+    });
   }
 }

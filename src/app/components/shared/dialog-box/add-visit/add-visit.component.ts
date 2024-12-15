@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { SuccessMsgComponent } from '../success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 import { beat } from '../../../../shared/custom_dtypes/beats';
+import { AddCustomerComponent } from '../add-customer/add-customer.component';
 
 @Component({
   selector: 'app-add-visit',
@@ -94,6 +95,15 @@ export class AddVisitComponent {
   search(value: any) { 
     let filter = value.toLowerCase();
     return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
+  }
+
+    addCustomer() {
+    let dialogRef = this.matdialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      console.log('added')
+    });
   }
 
 }

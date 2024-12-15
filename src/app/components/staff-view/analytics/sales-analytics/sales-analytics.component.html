@@ -52,6 +52,7 @@
       <mat-form-field>
         <mat-label>Select customer</mat-label>
         <mat-select [(value)]="selectedCustomer" (selectionChange)="fetchSalesAnalytics()">
+          <mat-option (click)="addCustomer()" style="font-weight: bold;">Add Customer</mat-option>
           <mat-option>None</mat-option>
           @for (customer of customerList; track customer) {
             <mat-option [value]="customer.customer_id">{{customer.customer_name}}</mat-option>

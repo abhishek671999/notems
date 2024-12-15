@@ -8,8 +8,10 @@
                     <input matInput (input)="onKey($event)" placeholder="Type to search...">
                     <mat-icon matPrefix class="edit-icon">search</mat-icon>
                 </mat-form-field>
-
-                <mat-option *ngFor="let customer of visibleCustomerList; let i=index" [value]="customer.customer_id">{{customer.customer_name}}</mat-option>
+                <mat-option (click)="addCustomer()" style="font-weight: bold;">Add Customer</mat-option>
+                <mat-option *ngFor="let customer of visibleCustomerList; let i=index" [value]="customer.customer_id">
+                    {{customer.customer_name}}
+                </mat-option>
             </mat-select>
         </mat-form-field>
 

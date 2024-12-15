@@ -14,6 +14,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTableDataSource } from '@angular/material/table';
 import { dateUtils } from '../../../../shared/utils/date_utils';
+import { AddCustomerComponent } from '../../../shared/dialog-box/add-customer/add-customer.component';
 
 @Component({
   selector: 'app-sales-analytics',
@@ -208,6 +209,15 @@ export class SalesAnalyticsComponent {
 
   ngAfterViewInit(){
     this.saleInvoiceDatasource.sort = this.sort
+  }
+
+    addCustomer() {
+    let dialogRef = this.matdialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      this.ngOnInit();
+    });
   }
 
 }

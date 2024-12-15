@@ -54,6 +54,7 @@
       <mat-form-field>
         <mat-label>Select Locality</mat-label>
         <mat-select [(value)]="selectedLocality" (selectionChange)="selectedCustomer = ''" (selectionChange)="fetchSalesAnalytics()"  (selectionChange)="fetchCustomer()">
+          <mat-option (click)="addLocality()" style="font-weight: bold;">Add locality</mat-option>
           <mat-option>None</mat-option>
           @for (locality of localities; track locality) {
               <mat-option [value]="locality.locality_id">{{locality.locality_name}}</mat-option>
@@ -67,6 +68,7 @@
           <mat-form-field>
             <input matInput (input)="onKey($event)" placeholder="Type to search...">
           </mat-form-field>
+          <mat-option (click)="addCustomer()" style="font-weight: bold;">Add Customer</mat-option>
           <mat-option>None</mat-option>
           @for (customer of visibleCustomerList; track customer) {
             <mat-option [value]="customer.customer_id">{{customer.customer_name}}</mat-option>

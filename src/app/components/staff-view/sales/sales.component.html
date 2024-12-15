@@ -50,6 +50,7 @@
                   <mat-form-field>
                     <input matInput (input)="onKey($event)" placeholder="Type to search...">
                   </mat-form-field>
+                  <mat-option (click)="addCustomer()" style="font-weight: bold;">Add Customer</mat-option>
                   <mat-option>None</mat-option>
                   @for (customer of visibleCustomerList; track customer) {
                     <mat-option [value]="customer.customer_id">{{customer.customer_name || customer.customer_name}}</mat-option>

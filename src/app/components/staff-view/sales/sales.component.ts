@@ -16,6 +16,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTableDataSource } from '@angular/material/table';
+import { AddCustomerComponent } from '../../shared/dialog-box/add-customer/add-customer.component';
 
 @Component({
   selector: 'app-sales',
@@ -179,4 +180,12 @@ export class SalesComponent {
     }
   }
   
+    addCustomer() {
+    let dialogRef = this.matdialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      this.ngOnInit();
+    });
+  }
 }

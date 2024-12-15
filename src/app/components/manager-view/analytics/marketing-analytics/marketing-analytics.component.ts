@@ -10,6 +10,7 @@ import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddCustomerComponent } from '../../../shared/dialog-box/add-customer/add-customer.component';
 
 @Component({
   selector: 'app-marketing-analytics',
@@ -174,6 +175,15 @@ export class MarketingAnalyticsComponent {
   search(value: any) { 
     let filter = value.toLowerCase();
     return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
+  }
+
+    addCustomer() {
+    let dialogRef = this.matdialog.open(AddCustomerComponent, {
+      data: { type: 1 },
+    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+      this.ngOnInit();
+    });
   }
 
 }
