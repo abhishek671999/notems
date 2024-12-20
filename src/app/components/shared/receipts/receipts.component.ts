@@ -79,9 +79,10 @@ export class ReceiptsComponent {
   public discount = 0
   public totalAmountReceived = 0
   public collectedAmount = 0
+  public totalQuantity = 0
   
   public saleInvoiceDatasource = new MatTableDataSource()
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'collected_amount', 'locality', 'recorded_by', 'recorded_at', 'last_modified_at', 'last_modified_by', 'more']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'total_quantity', 'discount', 'received_amount', 'pending_amount', 'collected_amount', 'locality', 'recorded_by', 'recorded_at', 'last_modified_at', 'last_modified_by', 'more']
   public teamMembers: teamMember[] = []
   public localities: locality[] = []
 
@@ -160,6 +161,7 @@ export class ReceiptsComponent {
           this.discount = data['total_discount']
           this.totalAmountReceived = data['total_amount_received']
           this.collectedAmount = data['collected_amount']
+          this.totalQuantity = data['total_quantity']
         },
         (error: any) => {
           console.log(error)

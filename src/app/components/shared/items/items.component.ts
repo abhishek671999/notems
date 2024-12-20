@@ -42,13 +42,16 @@ export class ItemsComponent {
   public categoryList: any[] = []
   public itemsTableColumns = ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'delete']
   public organizationId!: number
+  public userRole!: string
   
   ngOnInit() {
     this.meUtility.getCommonData().subscribe(
       (data: any) => {
+        this.userRole = data['role'].toLowerCase() || null
         this.organizationId = data['organization_id']
         this.fetchCategories()
         this.fetchItems()
+        this.itemsTableColumns = this.userRole == 'manager' ? ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'delete'] : ['sl_no', 'name', 'category', 'price', 'stock']
       }
     )
   }

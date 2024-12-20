@@ -41,6 +41,18 @@
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
 
+      <mat-form-field class="form-field">
+        <mat-label>Select representative</mat-label>
+        <mat-select
+          [(value)]="selectedRepresentative"
+          (selectionChange)="fetchSalesAnalytics()"
+        >
+          <mat-option *ngFor="let teamMember of teamMembers" [value]="teamMember.user_id">
+            {{ teamMember.user_identity }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <mat-form-field>
         <mat-label>Select customer type</mat-label>
         <mat-select [(value)]="selectedCustomerType" (selectionChange)="fetchSalesAnalytics()"  (selectionChange)="fetchCustomer()">
@@ -83,6 +95,7 @@
     </div>
     <div class="sub-header-section">
       <h3>Total amount:&nbsp;₹&nbsp;{{totalAmount + discount}}</h3>
+      <h3>Total Quantity:{{totalQuantity}}</h3>
       <h3>Total amount received:&nbsp;₹&nbsp;{{totalAmountReceived}}</h3>
       <h3 *ngIf="selectByModifiedDate">Collected Amount:&nbsp;₹&nbsp;{{collectedAmount}}</h3>
       <h3>Total Pending amount:&nbsp;₹&nbsp;{{totalAmount - totalAmountReceived}}</h3>
@@ -116,6 +129,11 @@
         <ng-container matColumnDef="total_amount">
           <th mat-header-cell *matHeaderCellDef>Total amount</th>
           <td mat-cell *matCellDef="let element">₹&nbsp;{{element.total_amount + element.discount}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total_quantity">
+          <th mat-header-cell *matHeaderCellDef>Total Quantity</th>
+          <td mat-cell *matCellDef="let element">{{element.total_quantity }}</td>
         </ng-container>
       
         <ng-container matColumnDef="discount">
