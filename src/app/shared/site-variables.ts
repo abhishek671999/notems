@@ -3,7 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
 import { MeService } from './services/register/me.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { organization, team } from './custom_dtypes/me';
 import { environment } from '../../environments/environment';
 
@@ -49,6 +49,8 @@ export class meAPIUtility {
     public cookieService: CookieService,
     private _meService: MeService,
   ) {}
+  public locationSubject = new Subject<any>();
+  public locationSubjectObservable = this.locationSubject.asObservable();
 
   setMeData(meData: any) {
     let meDataExpiryDuration = 30; // min

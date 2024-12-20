@@ -7,7 +7,7 @@
   
 <div mat-dialog-content>
         <div>
-            <table mat-table [dataSource]="assigneebeatsSource" class="mat-elevation-z8 demo-table">
+            <table mat-table [dataSource]="assigneebeatsSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8 demo-table">
                 <ng-container matColumnDef="sl_no">
                     <th mat-header-cell *matHeaderCellDef>Sl No.</th>
                     <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
@@ -15,17 +15,27 @@
         
 
                 <ng-container matColumnDef="team_type">
-                    <th mat-header-cell *matHeaderCellDef>Team type</th>
+                    <th mat-header-cell  mat-sort-header *matHeaderCellDef>Team type</th>
                     <td mat-cell *matCellDef="let element">{{element.team_type}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="team_name">
+                    <th mat-header-cell  mat-sort-header *matHeaderCellDef>Team name</th>
+                    <td mat-cell *matCellDef="let element">{{element.team_name}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="beat_title">
+                    <th mat-header-cell  mat-sort-header *matHeaderCellDef>Beat title</th>
+                    <td mat-cell *matCellDef="let element">{{element.beat_title}}</td>
                 </ng-container>
         
                 <ng-container matColumnDef="assignee_name">
-                    <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                    <th mat-header-cell  mat-sort-header *matHeaderCellDef>Assignee</th>
                     <td mat-cell *matCellDef="let element">{{element.assignee_name}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="frequency">
-                    <th mat-header-cell *matHeaderCellDef>Frequency</th>
+                    <th mat-header-cell  mat-sort-header *matHeaderCellDef>Frequency</th>
                     <td mat-cell *matCellDef="let element">{{element.frequency}}</td>
                 </ng-container>
 

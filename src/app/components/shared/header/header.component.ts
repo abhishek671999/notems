@@ -6,6 +6,10 @@ import { team } from '../../../shared/custom_dtypes/team';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
 import { environment } from '../../../../environments/environment';
+import { AttendenceService } from '../../../shared/services/attendence/attendence.service';
+import { recordUserLocation } from '../../../shared/custom_dtypes/attendence';
+import { DataService } from '../../../shared/services/dataService/dataService.service';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -16,12 +20,16 @@ import { environment } from '../../../../environments/environment';
 export class HeaderComponent {
   constructor(
     private _loginService: LoginService, 
+    private attendanceService: AttendenceService,
+    private dataService: DataService,
     private router: Router,
     private _meAPIutility: meAPIUtility,
     private matdialog: MatDialog
-  ) {
-    }
+  ) { }
+    public locationShareInterval: any
     public isProduction = environment.production
+    public componentDestoryed = new Subject<void>()
+
     AvailableDropdownList: any = {
       'profile': {
         name: 'Profile',
@@ -41,7 +49,7 @@ export class HeaderComponent {
       },
       'items_manager': {
         name: 'Items',
-        action: () => this.router.navigate(['./manager/items'])
+        action: () => this.router.navigate(['./general/stock/items'])
       },
       'team_management': {
         name: 'Team management',
@@ -138,10 +146,13 @@ export class HeaderComponent {
   username: string = ''
   message: string = ''
   location: string = ''
+  coordinates: string = ''
+  pollingFrequency: number = 10 // seconds
 
 
   ngOnInit(){
     this._meAPIutility.getMeData().subscribe((data: any) => {
+      console.log(data)
       this.username = data['username'] ? data['username'] : data['email']
       if(data['organizations'].length > 0){
         for(let organaization of data['organizations']){
@@ -166,7 +177,16 @@ export class HeaderComponent {
         }
       }
     })
-    
+
+    this.attendanceService.getMyLeaves()
+    .subscribe((data: any) => {
+      this.dataService.myLeaveSubject.next(data)
+      let isClockedIn = Boolean(data['attendance'].punch_in);
+      if(isClockedIn) localStorage.setItem('isLoggedIn', 'true')
+      else localStorage.setItem('isLoggedIn', 'false')
+    })
+
+    document.addEventListener('visibilitychange', this.sendCurrentLocation);
    }  
 
   onClick(index: number) {
@@ -178,5 +198,31 @@ export class HeaderComponent {
   closeNav(){
     let checkbox = document.getElementById('hamburger-checkbox') as HTMLInputElement;
     checkbox.checked = false
+  }
+
+  sendCurrentLocation(){
+    if(localStorage.getItem('isLoggedIn') === 'true'){
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.coordinates = `${position.coords.latitude},${position.coords.longitude}`
+          let body: recordUserLocation = {
+            location: this.coordinates,
+          }
+          this.attendanceService.recordUserLocation(body).subscribe(
+            (data: any) => {console.log(data)},
+            (error: any) => {console.log(error)}
+          )
+        }, (error) => {console.log(error)})
+      } else {
+        alert('Failed to fetch location')
+      }
+    }
+  }
+
+  ngOnDestroy(){
+    clearInterval(this.locationShareInterval)
+    this.componentDestoryed.next()
+    this.componentDestoryed.complete()
+    document.removeEventListener('visibilitychange', this.sendCurrentLocation);
   }
 }

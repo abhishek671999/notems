@@ -64,6 +64,7 @@ export class ApplyLeaveComponent {
     private matdialogRef: MatDialogRef<ApplyLeaveComponent>
   ) {
     this.leaveTypes = data.leaveTypes;
+    debugger
   }
   public leaveTypes: [leaveType];
   readonly leaveForm = new FormGroup({

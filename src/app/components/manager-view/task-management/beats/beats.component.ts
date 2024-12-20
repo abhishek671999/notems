@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { HttpParams } from '@angular/common/http';
 import { meAPIUtility } from '../../../../shared/site-variables';
@@ -17,6 +17,9 @@ import { EditBeatComponent } from '../../dialog-box/edit-beat/edit-beat.componen
 import { CustomersService } from '../../../../shared/services/customer/customers.service';
 import { customer } from '../../../../shared/custom_dtypes/customers';
 import { PageEvent } from '@angular/material/paginator';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-beats',
@@ -51,17 +54,21 @@ export class BeatsComponent {
   showPageSizeOptions = true;
   showFirstLastButtons = true;
 
+    private _liveAnnouncer = inject(LiveAnnouncer);
+    @ViewChild(MatSort)
+    sort: MatSort= new MatSort;
+
   public newBeat: FormGroup;
   public selectedTeam: any;
   public teams: any;
-  public savedBeats: any = [];
+  public savedBeatsDataSource = new MatTableDataSource();
   public customerList: customer[] = []
   public savedBeatsColumns = ['beat_id', 'title', 'reporter', 'team_name', 'team_type', 'description', 'locality_name', 'create_date', 'edit', 'delete']
   public organizationId!: number;
 
   ngOnInit() {
 
-    this.meUtility.getOrganization().subscribe(
+    this.meUtility.getCommonData().subscribe(
       (data: any) => {
       this.organizationId = data['organization_id']
       this.fetchMyTeams()
@@ -69,6 +76,10 @@ export class BeatsComponent {
       this.fetchBeats()
       }
     )
+  }
+
+  ngAfterViewInit(){
+    this.savedBeatsDataSource.sort = this.sort
   }
 
   fetchMyTeams(){
@@ -96,7 +107,7 @@ export class BeatsComponent {
       if(this.selectedTeam) httpParams = httpParams.append('team_id', this.selectedTeam)
       this.tasksService.getBeats(httpParams).subscribe(
         (data: any) => {
-          this.savedBeats = data['beats']
+          this.savedBeatsDataSource.data = data['beats']
         },
         (error: any) => alert(error)
       )
@@ -144,29 +155,6 @@ export class BeatsComponent {
     )
   }
 
-  getCustomerName(beat: any){
-    let customerName = ''
-    beat.customer_list.forEach(
-      (customer_id: number, index: number) => 
-        {
-          let filteredCustomer = this.customerList.filter((customer: customer) => customer.customer_id == customer_id)
-          customerName += (filteredCustomer.length > 0)? `${index+1}. ${filteredCustomer[0].customer_name} <br>` : ''
-        }
-    )
-    return customerName
-  }
-
-  getLocalityName(beat: any){
-    let customerName = ''
-    beat.customer_list.forEach(
-      (customer_id: number, index: number) => 
-        {
-          let filteredCustomer = this.customerList.filter((customer: customer) => customer.customer_id == customer_id)
-          customerName += (filteredCustomer.length > 0)? `${index+1}. ${filteredCustomer[0].customer_name} <br>` : ''
-        }
-    )
-    return customerName
-  }
   
 
   handlePageEvent(e: PageEvent) {
@@ -175,5 +163,13 @@ export class BeatsComponent {
     this.pageIndex = e.pageIndex;
     this.fetchBeats();
   } 
+
+    announceSortChange(sortState: Sort) {
+      if (sortState.direction) {
+        this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      } else {
+        this._liveAnnouncer.announce('Sorting cleared');
+      }
+    }
 
 }

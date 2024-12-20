@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ImageCompressorService } from '../../../../shared/services/image-compressor/image-compressor.service';
 import { catchError, of, switchMap } from 'rxjs';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
+import { meAPIUtility } from '../../../../shared/site-variables';
 
 @Component({
   selector: 'app-capture-attendence',
@@ -23,7 +24,8 @@ export class CaptureAttendenceComponent {
     private formbuilder: FormBuilder,
     private imageCompressor: ImageCompressorService,
     private matdialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private meutility: meAPIUtility
   ){
     this.attendenceForm = this.formbuilder.group({
       starting_km: [''],
@@ -62,6 +64,8 @@ export class CaptureAttendenceComponent {
           })
         ).subscribe(
           (data) => {
+            localStorage.setItem('isLoggedIn', 'true')
+            this.meutility.locationSubject.next(true)
             this.matdialogRef.close({result: true})
           },
           (error) => {
@@ -101,6 +105,8 @@ export class CaptureAttendenceComponent {
           })
       ).subscribe(
           (data) => {
+            localStorage.setItem('isLoggedIn', 'false')
+            this.meutility.locationSubject.next(true)
             this.matdialogRef.close({result: true})
           },
           (error) => {

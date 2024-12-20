@@ -6,11 +6,11 @@
         <button *ngIf="location" mat-raised-button >Location fetched</button>
       </div>
         <mat-form-field *ngIf="data.clockIn">
-            <mat-label>Enter starting kms</mat-label>
+            <mat-label>Enter start kms</mat-label>
             <input type="number"  matInput formControlName="starting_km">
         </mat-form-field>
         <mat-form-field *ngIf="data.clockOut">
-            <mat-label>Enter ending kms</mat-label>
+            <mat-label>Enter end kms</mat-label>
             <input type="number"  matInput formControlName="ending_km">
         </mat-form-field>
         <div>

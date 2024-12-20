@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { host } from '../../site-variables';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { recordUserLocation } from '../../custom_dtypes/attendence';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AttendenceService {
   private getHolidayListEndpoint = host + 'attendance/get_holiday_list/'
   private getTodaysAttendenceEndpoint = host + 'attendance/get_todays_attendance/'
   private getMyAttendenceEndpoint = host + 'attendance/get_my_attendance/'
-
+  private recordUserLocationEndpoint = host + 'attendance/record_user_location/'
+  private getUserLocationEndpoint = host + 'attendance/get_user_locations/'
   private applyLeaveEndpoint = host + 'attendance/apply_leave/'
   private updateStatusOfLeaveEndpoint = host + 'attendance/update_status_of_leave/'
   private punchInEndpoint = host + 'attendance/punch_in/'
@@ -27,6 +29,14 @@ export class AttendenceService {
   private getKMdrivenDetailsEndpoint = host + 'attendance/get_km_driven_details/'
 
   constructor(private httpClient: HttpClient) { }
+
+  getUserLocation(httpParams: HttpParams){
+    return this.httpClient.get(this.getUserLocationEndpoint, {params: httpParams})
+  }
+
+  recordUserLocation(body: recordUserLocation){
+    return this.httpClient.post(this.recordUserLocationEndpoint, body)
+  }
 
   getKMDrivenDetails(httpParams: HttpParams){
     return this.httpClient.get(this.getKMdrivenDetailsEndpoint, {params: httpParams})

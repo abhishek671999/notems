@@ -5,7 +5,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { MatIcon } from '@angular/material/icon';
 import { MapViewComponent } from '../dialog-box/map-view/map-view.component';
 import { SafePipe } from '../../../shared/pipe/safe.pipe';
-import { ItemsComponent } from '../items/items.component';
+import { ItemsComponent } from '../items-home/items/items.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -55,6 +55,9 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { DistributorOptionsComponent } from '../bottom-sheet/distributor-options/distributor-options.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { ItemsHomeComponent } from '../items-home/items-home.component';
+import { ItemsHomeModule } from '../items-home/items-home.module';
+import { DistributorStockComponent } from '../items-home/distributor-stock/distributor-stock.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MapViewComponent,
     PopUpMsgComponent,
     ItemsComponent,
+    DistributorStockComponent,
     CategoryComponent,
     LocalityComponent,
     ConfirmationBoxComponent,
@@ -91,7 +95,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     ClickOutsideDirective,
     ReceiptMoreInfoComponent,
     ImageLoaderComponent,
-    DistributorOptionsComponent
+    DistributorOptionsComponent,
   ],
   imports: [
     CommonModule, 
@@ -118,7 +122,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatSortModule,
     MatRadioModule,
     MatCheckboxModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    ItemsHomeModule
   ],
   exports: [HeaderComponent, FooterComponent, BeatInfoComponent, ImageLoaderComponent]
 })

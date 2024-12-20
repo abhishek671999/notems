@@ -15,6 +15,7 @@ import { MapViewComponent } from '../../shared/dialog-box/map-view/map-view.comp
 import { CaptureAttendenceComponent } from '../../shared/dialog-box/capture-attendence/capture-attendence.component';
 import { ViewImageComponent } from '../../shared/dialog-box/view-image/view-image.component';
 import { AddReimbursementComponent } from '../bottom-sheet/add-reimbursement/add-reimbursement.component';
+import { DataService } from '../../../shared/services/dataService/dataService.service';
 
 @Component({
   selector: 'app-attendence',
@@ -28,7 +29,8 @@ export class AttendenceComponent {
     private meUtility: meAPIUtility,
     private dateUtils: dateUtils,
     private router: Router,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private myLeveService: DataService
   ) {
     this.LeaveType = null;
     this.currentTime = new Date();
@@ -89,10 +91,11 @@ export class AttendenceComponent {
   }
 
   fetchMyLeave(){
-    this.attendenceService.getMyLeaves().subscribe((data: any) => {
+    this.myLeveService.myLeaveSubjectObservable.subscribe((data: any) => {
       this.attendence = data['attendance'];
       this.LeaveCount = data['leave_count']
       this.isClockedIn = Boolean(this.attendence.punch_in);
+
     });
   }
 
@@ -147,7 +150,6 @@ export class AttendenceComponent {
     captureAttendenceRef.afterClosed().subscribe(
       (data: any) => {
         if(data?.result){
-          debugger
           this.attendence['punch_in'] = this.dateUtils.getStandarizeTimeFormat(this.currentTime);
           this.ngOnInit()
         }

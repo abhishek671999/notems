@@ -38,17 +38,14 @@ export class ReceiptsComponent {
     private matdialog: MatDialog,
     private matbottomSheet: MatBottomSheet,
     private dateUtils: dateUtils
-  ) { }
-
+  ) {
+   }
   ngAfterViewInit(){
     this.saleInvoiceDatasource.sort = this.sort
-    this.saleInvoiceDatasource.paginator = this.paginator;
   }
 
   @ViewChild(MatSort)
   sort: MatSort = new MatSort;
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
 
   private _liveAnnouncer = inject(LiveAnnouncer);
 
@@ -136,6 +133,8 @@ export class ReceiptsComponent {
   fetchSalesAnalytics() {
     let body: getSales = {
       time_frame: this.selectedTimeFrame,
+      offset: this.pageIndex * this.pageSize,
+      count: this.pageIndex * this.pageSize + this.pageSize
     }
     if (this.selectedCustomer) body.customer_id = Number(this.selectedCustomer)
     if (this.selectedCustomerType) body.type = Number(this.selectedCustomerType)
@@ -260,17 +259,13 @@ export class ReceiptsComponent {
   }
 
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
-
+  
   handlePageEvent(e: PageEvent) {
     this.length = e.length;
     this.pageSize = e.pageSize;

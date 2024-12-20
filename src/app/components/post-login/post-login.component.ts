@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConnectcomponentsService } from '../../shared/services/connectcomponents.service';
 import { meAPIUtility } from '../../shared/site-variables';
 import { LoginService } from '../../shared/services/register/login.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -19,7 +18,6 @@ export class PostLoginComponent {
 
   constructor(
     private router: Router,
-    private cc: ConnectcomponentsService, 
     public meAPIUtility: meAPIUtility,
     public loginService: LoginService,
     private matdialog: MatDialog,

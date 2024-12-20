@@ -57,7 +57,8 @@ export class AddBeatComponent {
   public organizationId!: number;
 
   ngOnInit() {
-    this.meUtility.getOrganization().subscribe(
+
+    this.meUtility.getCommonData().subscribe(
       (data: any) => {
         this.organizationId = data['organization_id']
         this.fetchMyTeams()

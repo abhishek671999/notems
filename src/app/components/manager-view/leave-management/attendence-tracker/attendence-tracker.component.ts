@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { dateUtils } from '../../../../shared/utils/date_utils';
 import { ViewImageComponent } from '../../../shared/dialog-box/view-image/view-image.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class AttendenceTrackerComponent {
     private attendenceService: AttendenceService,
     private meUtility: meAPIUtility,
     private matDialog: MatDialog,
-    private dateUtils: dateUtils
+    private dateUtils: dateUtils,
+    private router: Router
   ) {
     this.currentTime = null;
   }
@@ -43,7 +45,9 @@ export class AttendenceTrackerComponent {
     'punch_out',
     'starting_km',
     'ending_km',
-    'total_km'
+    'total_km',
+    'last_location',
+    'location_history'
   ];
 
   attendenceDataSource = [];
@@ -112,5 +116,11 @@ export class AttendenceTrackerComponent {
   openImage(title: string, url: string){
     this.matDialog.open(ViewImageComponent, {data: {title: title, url: url}})
   }
+
+  redirectToLocationHistory(attendence: any){
+    console.log(attendence)
+    this.router.navigate(['./manager/live-location'],{queryParams: {user_id: attendence.user_id, date: this.dateUtils.getStandardizedDateFormate(this.attendenceDate)}})
+  }
+
   
 }

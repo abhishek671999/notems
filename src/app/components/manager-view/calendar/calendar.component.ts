@@ -5,7 +5,7 @@ import { AttendenceService } from '../../../shared/services/attendence/attendenc
 import { CalendarOptions } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { CalendarService } from '../../../shared/services/calendar.service';
+import { CalendarService } from '../../../shared/services/calendar/calendar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HolidayComponent } from '../dialog-box/holiday/holiday.component';
 @Component({

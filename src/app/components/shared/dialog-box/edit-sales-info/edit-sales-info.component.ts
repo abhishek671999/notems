@@ -179,7 +179,6 @@ export class EditSalesInfoComponent {
     const formData = new FormData();
     this.taskService.editSaleInvoiceHeader(body).pipe(
       switchMap((response: any) => {
-        debugger
         if (this.file && response['updated']) {
           this.fileName = this.file.name;
           this.fileSize = `${(this.file.size / 1024).toFixed(2)} KB`;

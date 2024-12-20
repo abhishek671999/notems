@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { host } from '../site-variables';
+import { host } from '../../site-variables';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { addHoliday, deleteHoliday, editHoliday } from '../custom_dtypes/calendar';
+import { addHoliday, deleteHoliday, editHoliday } from '../../custom_dtypes/calendar';
 
 @Injectable({
   providedIn: 'root'

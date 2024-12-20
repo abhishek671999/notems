@@ -130,6 +130,7 @@ export type getItemAnalytics ={
     "to_date"?: string,
     "customer_wise": boolean,
     "item_wise": boolean,
+    representative_id?: number
 }
 
 

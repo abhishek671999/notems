@@ -48,11 +48,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ItemWiseAnalyticsComponent } from '../analytics/item-wise-analytics/item-wise-analytics.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { LiveLocationTrackerComponent } from '../leave-management/live-location-tracker/live-location-tracker.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     AttendenceTrackerComponent,
+    LiveLocationTrackerComponent,
     CustomersComponent,
     ProspectsComponent,
     BeatsComponent,

@@ -12,6 +12,7 @@ import { addSalesReceievedAmountValidation, salesSellingPriceValidation } from '
 import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { ImageCompressorService } from '../../../../shared/services/image-compressor/image-compressor.service';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
+import { dateUtils } from '../../../../shared/utils/date_utils';
 
 
 @Component({
@@ -29,13 +30,15 @@ export class AddSaleComponent {
     private matDialog: MatDialog,
     private imageCompressor: ImageCompressorService,
     private matDialogRef: MatDialogRef<AddSaleComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any
+    @Inject(MAT_DIALOG_DATA) private data: any,
+    private dateUtils: dateUtils
 
   ) {
     console.log(data)
     this.addSalesForm = this.formBuilder.group({
       customer_id: ['', [Validators.required]],
       invoice_number: ['', [Validators.required]],
+      invoice_date: ['', ],
       selling_price: ['', [Validators.required]],
       received_amount: ['', [Validators.required]],
       staff_id: [''],
@@ -97,6 +100,7 @@ export class AddSaleComponent {
       let body: any = {
         customer_id: this.addSalesForm.value.customer_id,
         invoice_number: this.addSalesForm.value.invoice_number,
+        invoice_date: this.dateUtils.getStandardizedDateFormate(this.addSalesForm.value.invoice_date),
         discount: this.addSalesForm.value.amount - this.addSalesForm.value.selling_price,
         received_amount: this.addSalesForm.value.received_amount,
         note: this.addSalesForm.value.note,

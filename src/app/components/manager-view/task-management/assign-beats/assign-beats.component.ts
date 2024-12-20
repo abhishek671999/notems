@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,9 @@ import { meAPIUtility } from '../../../../shared/site-variables';
 import { AssignBeatComponent } from '../../dialog-box/assign-beat/assign-beat.component';
 import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';
 import { EditAssignedBeatComponent } from '../../dialog-box/edit-assigned-beat/edit-assigned-beat.component';
+import { MatSort, Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-assign-beats',
@@ -35,6 +38,10 @@ export class AssignBeatsComponent {
   public selectedTeamMember: any;
   public organizationId!: number;
 
+  private _liveAnnouncer = inject(LiveAnnouncer);
+  @ViewChild(MatSort)
+  sort: MatSort= new MatSort;
+
   public availableType = [
     { typeId: 3, typeName: 'Single day' },
     { typeId: 2, typeName: 'Weekly' },
@@ -48,11 +55,11 @@ export class AssignBeatsComponent {
   public teamMembers: any = []
 
   public assigneeBeats: any
-  public assigneebeatsSource: assignBeat[] = []
-  public beatsColumns = ['sl_no', 'team_type', 'assignee_name', 'frequency', 'edit' ,'unassign']
+  public assigneebeatsSource = new MatTableDataSource()
+  public beatsColumns = ['sl_no', 'team_type', 'team_name', 'beat_title', 'assignee_name', 'frequency', 'edit' ,'unassign']
 
   ngOnInit() {
-    this.meUtility.getOrganization().subscribe(
+    this.meUtility.getCommonData().subscribe(
       (data: any) => {
       this.organizationId = data['organization_id']
       this.fetchBeatAssignees()
@@ -60,12 +67,16 @@ export class AssignBeatsComponent {
   )
   }
 
+  ngAfterViewInit(){
+    this.assigneebeatsSource.sort = this.sort
+  }
+
   fetchBeatAssignees(){
     let httpParams = new HttpParams()
     httpParams = httpParams.append('organization_id', Number(this.organizationId))
     this.taskManagementService.getAssigneeBeats(httpParams).subscribe(
       (data: any) => {
-        this.assigneebeatsSource = data['beat_assignees']
+        this.assigneebeatsSource.data = data['beat_assignees']
       },
       (error: any) => {
         alert('Failed to fetch beats')
@@ -161,5 +172,13 @@ export class AssignBeatsComponent {
     )
   }
 
+    announceSortChange(sortState: Sort) {
+      console.log(sortState)
+      if (sortState.direction) {
+        this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      } else {
+        this._liveAnnouncer.announce('Sorting cleared');
+      }
+    }
 
 }

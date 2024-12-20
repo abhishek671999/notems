@@ -95,7 +95,6 @@
     </div>
     <div class="sub-header-section">
       <h3>Total amount:&nbsp;₹&nbsp;{{totalAmount + discount}}</h3>
-      <h3>Total Quantity:{{totalQuantity}}</h3>
       <h3>Total amount received:&nbsp;₹&nbsp;{{totalAmountReceived}}</h3>
       <h3 *ngIf="selectByModifiedDate">Collected Amount:&nbsp;₹&nbsp;{{collectedAmount}}</h3>
       <h3>Total Pending amount:&nbsp;₹&nbsp;{{totalAmount - totalAmountReceived}}</h3>
@@ -208,8 +207,15 @@
         <tr mat-row *matRowDef="let row; columns: saleInvoiceTableColumns;"></tr>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="pageSizeOptions"
-      showFirstLastButtons
+    <mat-paginator        
+    (page)="handlePageEvent($event)"
+    [length]="length"
+    [pageSize]="pageSize"
+    [showFirstLastButtons]="showFirstLastButtons"
+    [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+    [hidePageSize]="hidePageSize"
+    [pageIndex]="pageIndex"
       aria-label="Select page of periodic elements">
     </mat-paginator>
+
 </div>

@@ -86,6 +86,15 @@
         </mat-form-field>
 
         <mat-form-field >
+          <mat-label>Enter Invoice date </mat-label>
+          <input matInput [matDatepicker]="picker2"
+                formControlName="invoice_date">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+
+        <mat-form-field >
           <mat-label>Enter received amount</mat-label>
           <input type="number" matInput placeholder="Received amount" formControlName="received_amount">
           <mat-error *ngIf="addSalesForm.controls['received_amount'].hasError('required')">Required</mat-error>

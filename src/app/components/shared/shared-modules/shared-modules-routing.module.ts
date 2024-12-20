@@ -10,9 +10,13 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: 'customers', component: CustomersComponent },
-      { path: 'receipt', component: ReceiptsComponent}
+      { path: 'receipt', component: ReceiptsComponent},
+      {
+        path: 'stock',
+        loadChildren: () => import('./../items-home/items-home.module').then(m => m.ItemsHomeModule)
+      }
     ]
-  }
+  },
   
 ];
 

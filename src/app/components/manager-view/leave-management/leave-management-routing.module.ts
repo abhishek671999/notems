@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LeaveComponent } from './leave/leave.component';
 import { AttendenceTrackerComponent } from './attendence-tracker/attendence-tracker.component';
 import { LeaveManagementComponent } from './home/leave-management.component';
+import { LiveLocationTrackerComponent } from './live-location-tracker/live-location-tracker.component';
 
 const routes: Routes = [
   {
@@ -12,7 +13,8 @@ const routes: Routes = [
       { path: 'leave', component: LeaveComponent },
       { path: 'attendence', component: AttendenceTrackerComponent}
     ]
-  }
+  },
+
 ];
 
 @NgModule({

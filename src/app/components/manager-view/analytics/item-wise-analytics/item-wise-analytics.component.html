@@ -39,6 +39,18 @@
               </mat-form-field>
           </div>
 
+          <mat-form-field class="form-field">
+            <mat-label>Select representative</mat-label>
+            <mat-select
+              [(value)]="selectedRepresentative"
+              (selectionChange)="fetchItemAnalytics()"
+            >
+              <mat-option *ngFor="let teamMember of teamMembers" [value]="teamMember.user_id">
+                {{ teamMember.user_identity }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
           <mat-radio-group
           aria-labelledby="example-radio-group-label"
           class="example-radio-group"
@@ -53,6 +65,10 @@
             {{ group.displayValue }}
           </mat-radio-button>
         </mat-radio-group>
+
+        <div class="clear-filter">
+          <button (click)="clearFilters()" mat-raised-button>Clear filters</button>
+        </div>
     </div>
 
 
@@ -69,7 +85,7 @@
           </ng-container>
 
         <ng-container matColumnDef="customer">
-          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let element; let i=index">{{ element.customer_name }}</td>
         </ng-container>
         

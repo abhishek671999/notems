@@ -10,6 +10,8 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { item } from '../../../../shared/custom_dtypes/items';
 import { organization } from '../../../../shared/custom_dtypes/me';
+import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
+import { teamMember } from '../../../../shared/custom_dtypes/team';
 
 @Component({
   selector: 'app-item-wise-analytics',
@@ -17,17 +19,19 @@ import { organization } from '../../../../shared/custom_dtypes/me';
   styleUrl: './item-wise-analytics.component.css'
 })
 export class ItemWiseAnalyticsComponent {
-
+  
+    @ViewChild(MatSort)
+    sort: MatSort = new MatSort;
 
   constructor(
     private taskService: TaskManagementService,
     private dateUtils: dateUtils,
-    private meUtility: meAPIUtility
+    private meUtility: meAPIUtility,
+    private teamMembersService: TeamManagementService
   ){
   }
 
-  @ViewChild(MatSort)
-  sort: MatSort = new MatSort;
+  public teamMembers: teamMember[] = []
 
   ngAfterViewInit(){
     this.itemSalesDataSource.sort = this.sort
@@ -55,6 +59,7 @@ export class ItemWiseAnalyticsComponent {
 
   public selectedGroup: string = this.groupList[0].actualValue;
   public selectedTimeFrame: string = this.timeFrames[0].actualValue;
+  public selectedRepresentative = ''
 
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
@@ -70,6 +75,7 @@ export class ItemWiseAnalyticsComponent {
       (data: any) => {
         this.organizationId = data['organization_id']
         this.fetchItemAnalytics()
+        this.fetchTeamMembers()
       }
     )
   }
@@ -81,6 +87,7 @@ export class ItemWiseAnalyticsComponent {
       customer_wise: this.selectedGroup == 'customer_wise' ? true: false,
       item_wise: this.selectedGroup == 'item_wise'? true: false
     }
+    if (this.selectedRepresentative) body.representative_id = Number(this.selectedRepresentative)
     if(this.selectedTimeFrame == 'custom'){
       if (this.range.value.start && this.range.value.end) {
         body.from_date = this.dateUtils.getStandardizedDateFormate(
@@ -93,7 +100,7 @@ export class ItemWiseAnalyticsComponent {
         body = null;
       }
     }
-    this.itemSalesTableColumns = this.selectedGroup == 'customer_wise'? ['sl_no', 'customer', 'total_amount', 'item_description']:['sl_no', 'item_name', 'quantity']
+    this.itemSalesTableColumns = this.selectedGroup == 'customer_wise'? ['sl_no', 'customer', 'total_amount', 'quantity', 'item_description']:['sl_no', 'item_name', 'quantity']
     if(body){
       this.taskService.getItemsAnalytics(body).subscribe(
         (data: any) => {
@@ -102,6 +109,7 @@ export class ItemWiseAnalyticsComponent {
             if(this.selectedGroup == 'customer_wise'){
               response.forEach((element: any) => {
                 element['item_description'] = this.formatItems(element['items'])
+                element['quantity'] = this.formatQuantity(element['items'])
               })
             }
             console.log(response)
@@ -123,15 +131,40 @@ export class ItemWiseAnalyticsComponent {
     return itemsString
   }
 
+  formatQuantity(items: item[]){
+    let itemQuantity = 0
+    items.forEach((item: item) => {
+      itemQuantity += item.quantity || 0
+    })
+    return itemQuantity
+  }
+
+  fetchTeamMembers(){
+    let httpParams = new HttpParams()
+    httpParams = httpParams.append('team_type_id', 2) // hardcode
+    this.teamMembersService.getUsers(httpParams).subscribe(
+      (data: any) => {
+        this.teamMembers = data['users']
+      },
+      (error: any) => {
+        alert('Failed to fetch team members')
+      }
+    )
+  }
+
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
+
+  clearFilters(){
+    this.selectedTimeFrame = this.timeFrames[0].actualValue
+    this.selectedRepresentative = ''
+    this.selectedGroup = this.groupList[0].actualValue;
+    this.fetchItemAnalytics()
+  }
+
 }

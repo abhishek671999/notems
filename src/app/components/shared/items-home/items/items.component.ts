@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
-import { ItemsService } from '../../../shared/services/items/items.service';
-import { meAPIUtility } from '../../../shared/site-variables';
+import { ItemsService } from '../../../../shared/services/items/items.service';
+import { meAPIUtility } from '../../../../shared/site-variables';
 import { HttpParams } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { deleteItem, editItem, item } from '../../../shared/custom_dtypes/items';
+import { deleteItem, editItem, item } from '../../../../shared/custom_dtypes/items';
 import { MatDialog } from '@angular/material/dialog';
-import { SuccessMsgComponent } from '../dialog-box/success-msg/success-msg.component';
-import { ErrorMsgComponent } from '../dialog-box/error-msg/error-msg.component';
-import { ConfirmationBoxComponent } from '../dialog-box/confirmation-box/confirmation-box.component';
-import { AddItemComponent } from '../dialog-box/add-item/add-item.component';
-import { category } from '../../../shared/custom_dtypes/category';
-import { CategoryService } from '../../../shared/services/category/category.service';
+import { SuccessMsgComponent } from '../../dialog-box/success-msg/success-msg.component';
+import { ErrorMsgComponent } from '../../dialog-box/error-msg/error-msg.component';
+import { ConfirmationBoxComponent } from '../../dialog-box/confirmation-box/confirmation-box.component';
+import { AddItemComponent } from '../../dialog-box/add-item/add-item.component';
+import { category } from '../../../../shared/custom_dtypes/category';
+import { CategoryService } from '../../../../shared/services/category/category.service';
 import { Router } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { DistributorOptionsComponent } from '../bottom-sheet/distributor-options/distributor-options.component';
+import { DistributorOptionsComponent } from '../../bottom-sheet/distributor-options/distributor-options.component';
 
 @Component({
   selector: 'app-items',
   templateUrl: './items.component.html',
-  styleUrls: ['./items.component.css',  './../../../app.component.css']
+  styleUrls: ['./items.component.css',  './../../../../app.component.css']
 })
 export class ItemsComponent {
 
@@ -51,7 +51,7 @@ export class ItemsComponent {
         this.organizationId = data['organization_id']
         this.fetchCategories()
         this.fetchItems()
-        this.itemsTableColumns = this.userRole == 'manager' ? ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'delete'] : ['sl_no', 'name', 'category', 'price', 'stock']
+        this.itemsTableColumns = ((this.userRole == 'manager') &&  !isNaN(this.organizationId))? ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'delete'] : ['sl_no', 'name', 'category', 'price', 'stock']
       }
     )
   }

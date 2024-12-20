@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { addHoliday, deleteHoliday, editHoliday } from '../../../../shared/custom_dtypes/calendar';
 import { meAPIUtility } from '../../../../shared/site-variables';
-import { CalendarService } from '../../../../shared/services/calendar.service';
+import { CalendarService } from '../../../../shared/services/calendar/calendar.service';
 import { SuccessMsgComponent } from '../../../shared/dialog-box/success-msg/success-msg.component';
 import { ErrorMsgComponent } from '../../../shared/dialog-box/error-msg/error-msg.component';
 import { ConfirmationBoxComponent } from '../../../shared/dialog-box/confirmation-box/confirmation-box.component';

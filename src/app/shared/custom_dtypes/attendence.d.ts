@@ -14,3 +14,7 @@ export interface addReimbursement{
     reimbursement_amount: string,
     reimbursement_reason: number
 }
+
+export type recordUserLocation = {
+    location: string
+}
