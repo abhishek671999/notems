@@ -1,7 +1,7 @@
 <div class="main-container">
   <div class="header-section">
-    <button (click)="addItem()" mat-flat-button>Add Item</button>
-    <button class="category-button" mat-flat-button (click)="redirectToCategories()">Open Categories</button>
+    <button *ngIf="isOrgManager" mat-flat-button (click)="addItem()">Add Item</button>
+    <button *ngIf="isOrgManager" mat-flat-button (click)="redirectToCategories()">Open Categories</button>
   </div>
   <div class="table-section">
     <table mat-table [dataSource]="itemSource" >
@@ -69,6 +69,11 @@
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef> Edit </th>
         <td mat-cell *matCellDef="let element"><span (click)="editItem(element, $event)" class="material-symbols-outlined">edit</span></td>
+      </ng-container>
+
+      <ng-container matColumnDef="item_history">
+        <th mat-header-cell *matHeaderCellDef> Stock history</th>
+        <td mat-cell *matCellDef="let element"><span (click)="openItemHistory(element, $event)" class="material-symbols-outlined">inventory</span></td>
       </ng-container>
   
       <ng-container matColumnDef="delete">

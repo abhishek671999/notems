@@ -16,6 +16,7 @@ import { CaptureAttendenceComponent } from '../../shared/dialog-box/capture-atte
 import { ViewImageComponent } from '../../shared/dialog-box/view-image/view-image.component';
 import { AddReimbursementComponent } from '../bottom-sheet/add-reimbursement/add-reimbursement.component';
 import { DataService } from '../../../shared/services/dataService/dataService.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-attendence',
@@ -35,6 +36,14 @@ export class AttendenceComponent {
     this.LeaveType = null;
     this.currentTime = new Date();
   }
+
+  length = 50;
+  pageSize = 20;
+  pageIndex = 0;
+  pageSizeOptions = [20, 50, 100];
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -69,10 +78,14 @@ export class AttendenceComponent {
   public reimbursementDataSource: any[] = []
   public reimbursementTableColumns: string[] = ['sl_no', 'amount', 'reason', 'image']
 
+  public leaveDataSource = [];
+  public leaveTableColumn: string[] = [ 'sl_no', 'applied_at', 'leave_type', 'from_date', 'to_date', 'reason', 'status'];
+
   private LeaveType: leaveType[] | null;
-  private intervalId: any
+  private intervalId: any;
   private LeaveCount: {} = {}
   private organizationId!: number;
+
 
   ngOnInit() {
     this.meUtility.getCommonData().subscribe(
@@ -80,7 +93,7 @@ export class AttendenceComponent {
         this.organizationId = data['organization_id']
         this.fetchLeaveType()
         this.fetchHolidayList()
-        this.fetchMyLeave()
+        this.fetchMyLeave()        
       }
     )
     this.fetchMyAttendenceRecords()
@@ -94,6 +107,7 @@ export class AttendenceComponent {
     this.myLeveService.myLeaveSubjectObservable.subscribe((data: any) => {
       this.attendence = data['attendance'];
       this.LeaveCount = data['leave_count']
+      this.leaveDataSource = data['leaves']
       this.isClockedIn = Boolean(this.attendence.punch_in);
 
     });
@@ -163,7 +177,14 @@ export class AttendenceComponent {
     });
     dialogRef.afterClosed().subscribe(
       (data) => {
-        if(data?.result) this.ngOnInit()
+        if(data?.result) {
+          this.ngOnInit()
+          this.attendenceService.getMyLeaves().subscribe(
+            (data: any) => {
+              this.LeaveCount = data['leave_count']
+            }
+          )
+        }
       }
     )
   }

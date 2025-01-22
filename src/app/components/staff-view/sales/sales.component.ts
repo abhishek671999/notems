@@ -17,6 +17,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTableDataSource } from '@angular/material/table';
 import { AddCustomerComponent } from '../../shared/dialog-box/add-customer/add-customer.component';
+import { SalesMoreInfoComponent } from '../../shared/dialog-box/sales-more-info/sales-more-info.component';
 
 @Component({
   selector: 'app-sales',
@@ -130,7 +131,7 @@ export class SalesComponent {
   }
 
   viewMore(element: any) {
-    this.matdialog.open(ViewMoreSalesInfoComponent, { data: element })
+    this.matdialog.open(SalesMoreInfoComponent, { data: element })
   }
 
   editSales(element: sale) {

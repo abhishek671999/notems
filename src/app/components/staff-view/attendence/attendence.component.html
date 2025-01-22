@@ -20,8 +20,8 @@
         </div>
     </div>
     <br>
-    <div class="my-leaves-section">
-        <h3 style="text-align: center; margin: 0;">Attendence history</h3>
+    <div class="my-attandence-section">
+        <h3 style="text-align: center; margin: 0;">Attandence history</h3>
         <div class="filter-section">
             <mat-form-field class="form-field">
                 <mat-label>Select time frame</mat-label>
@@ -140,7 +140,7 @@
                 <ng-container matColumnDef="image">
                     <th mat-header-cell *matHeaderCellDef>Image</th>
                     <td mat-cell *matCellDef="let element" >
-                        <span *ngIf="element.image_url" (click)="openImage('End KM image', element.image_url)">
+                        <span *ngIf="element.image_url" (click)="openImage('Reimbursement image', element.image_url)">
                         <span class="material-symbols-outlined" *ngIf="element.image_url">image</span>
                         </span>
                     </td>
@@ -153,5 +153,57 @@
             <h3 *ngIf="reimbursementTableColumns.length == 0" style="text-align: center;">No records</h3>
         </div>
     </div>
+
+    <div class="my-leaves-section">
+        <h2 style="text-align: center; margin: 0;">My leaves</h2>
+        <div class="attendence">
+                <table mat-table [dataSource]="leaveDataSource" class="mat-elevation-z8 demo-table">
+                  <ng-container matColumnDef="sl_no">
+                    <th mat-header-cell *matHeaderCellDef>Sl No.</th>
+                    <td mat-cell *matCellDef="let element; let i=index">{{i + 1}}</td>
+                  </ng-container>
+            
+                  <ng-container matColumnDef="applied_at">
+                    <th mat-header-cell *matHeaderCellDef>Applied at</th>
+                    <td mat-cell *matCellDef="let element">{{element.applied_at}}</td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="user">
+                    <th mat-header-cell *matHeaderCellDef>User</th>
+                    <td mat-cell *matCellDef="let element">{{element.name || element.user}}</td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="leave_type">
+                    <th mat-header-cell *matHeaderCellDef>Leave type</th>
+                    <td mat-cell *matCellDef="let element">{{element.type}}</td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="from_date">
+                    <th mat-header-cell *matHeaderCellDef>From date</th>
+                    <td mat-cell *matCellDef="let element">{{element.from_date}}</td>
+                  </ng-container>
+            
+                  <ng-container matColumnDef="to_date">
+                      <th mat-header-cell *matHeaderCellDef>To date</th>
+                      <td mat-cell *matCellDef="let element">{{element.to_date}}</td>
+                  </ng-container>
+            
+                  <ng-container matColumnDef="reason">
+                    <th mat-header-cell *matHeaderCellDef>Reason</th>
+                    <td mat-cell *matCellDef="let element">{{element.reason}}</td>
+                  </ng-container>
+            
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let element">{{element.status}}</td>
+                  </ng-container>
+            
+                  <tr mat-header-row *matHeaderRowDef="leaveTableColumn"></tr>
+                  <tr mat-row *matRowDef="let row; columns: leaveTableColumn;"></tr>
+                </table>
+
+                <h3 *ngIf="leaveDataSource.length == 0" style="text-align: center;">No records</h3>
+        </div>
+        
 
 </div>

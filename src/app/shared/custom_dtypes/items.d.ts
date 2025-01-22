@@ -42,3 +42,12 @@ export type updateTeamItem = {
     item_id: number,
     new_stock: number
 }
+
+export type getInventoryStockEndpoint = {
+    offset?: number,
+    count?: number,
+    organization_id: number,
+    team_id?: number,
+    date?: string,
+    item_id: number
+}

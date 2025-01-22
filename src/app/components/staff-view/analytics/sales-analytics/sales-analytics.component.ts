@@ -54,6 +54,7 @@ export class SalesAnalyticsComponent {
   public discount = 0
   public totalAmountReceived = 0
   public collectedAmount = 0
+  public visibleCustomerList: customer[] = []
   
   public saleInvoiceDatasource: [] = []
   public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'collected_amount', 'locality', 'recorded_by', 'recorded_at', 'last_modified_at', 'last_modified_by', 'more']
@@ -132,6 +133,7 @@ export class SalesAnalyticsComponent {
     }
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
       this.customerList = data['customers'];
+      this.visibleCustomerList = this.customerList;
     });
   }
 
@@ -165,5 +167,15 @@ export class SalesAnalyticsComponent {
     dialogRef.afterClosed().subscribe((data: any) => {
       this.ngOnInit();
     });
+  }
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
   }
 }

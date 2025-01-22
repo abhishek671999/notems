@@ -155,9 +155,9 @@ export class AddSaleComponent {
     let dialogRef = this.matDialog.open(AddItemsToSaleComponent, {data: this.itemsAdded})
     dialogRef.afterClosed().subscribe(
       (data: any) => {
-        if (data?.length > 0) {
+        if (data) {
           this.itemsAdded = data
-          let totalAmount = Number(this.addSalesForm.value.amount)
+          let totalAmount = 0
           this.itemsAdded.forEach((item: item) => {
             totalAmount += item.price * (item.quantity? item.quantity: 0)
           })

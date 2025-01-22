@@ -79,7 +79,7 @@ export class ReceiptsComponent {
   public totalQuantity = 0
   
   public saleInvoiceDatasource = new MatTableDataSource()
-  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'total_quantity', 'discount', 'received_amount', 'pending_amount', 'collected_amount', 'locality', 'recorded_by', 'recorded_at', 'last_modified_at', 'last_modified_by', 'more']
+  public saleInvoiceTableColumns: string[] = ['sl_no', 'customer', 'invoice_number', 'total_amount', 'discount', 'received_amount', 'pending_amount', 'collected_amount', 'locality', 'recorded_by', 'recorded_at', 'last_modified_at', 'last_modified_by', 'more']
   public teamMembers: teamMember[] = []
   public localities: locality[] = []
 

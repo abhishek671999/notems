@@ -34,7 +34,10 @@ export class PostLoginComponent {
           if (String(this.myInfo['organizations'][0]['role']).toLowerCase() == 'manager') {
             this.router.navigate(['manager/attendence/attendence']);
           }
-          else alert('Unknow error in redirection')
+          else {
+            debugger
+            alert('Unknow error in redirection')
+          }
         } else if (this.myInfo['teams'].length > 0) {
           this.meAPIUtility.setTeam(this.myInfo['teams'][0])
           if (String(this.myInfo['teams'][0]['role']).toLowerCase() == 'team member') {
@@ -43,7 +46,10 @@ export class PostLoginComponent {
           } else if(String(this.myInfo['teams'][0]['role']).toLowerCase() == 'manager'){
             this.router.navigate(['manager/task/tasks'])            
           }
-          else alert('Unknow error in redirection')
+          else{
+            debugger
+            alert('Unknow error in redirection')
+          } 
         }
         else {
           this.matdialog.open(PopUpMsgComponent, { data: { title: 'Team not assigned', content: 'Please contact admin' } })

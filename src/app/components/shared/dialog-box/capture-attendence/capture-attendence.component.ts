@@ -6,6 +6,7 @@ import { ImageCompressorService } from '../../../../shared/services/image-compre
 import { catchError, of, switchMap } from 'rxjs';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 import { meAPIUtility } from '../../../../shared/site-variables';
+import { ConfirmationBoxComponent } from '../confirmation-box/confirmation-box.component';
 
 @Component({
   selector: 'app-capture-attendence',
@@ -86,7 +87,7 @@ export class CaptureAttendenceComponent {
     else return of(null)
   }
   
-  clockOut() {
+  clockOutConfirmed() {
     if(this.clockOutButton) this.clockOutButton._elementRef.nativeElement.disabled = true
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -142,6 +143,13 @@ export class CaptureAttendenceComponent {
         `Browser doesn't support location service. Please use other browser`
       );
     }
+  }
+  
+  clockOut() {
+    let matdialog = this.matdialog.open(ConfirmationBoxComponent, {data: {msg: 'Are you sure you want to clock out?'}})
+    matdialog.afterClosed().subscribe((data) => {
+      if(data?.result) this.clockOutConfirmed()
+    })
   }
   
   fetchLocation() {

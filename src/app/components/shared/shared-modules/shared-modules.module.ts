@@ -58,6 +58,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { ItemsHomeComponent } from '../items-home/items-home.component';
 import { ItemsHomeModule } from '../items-home/items-home.module';
 import { DistributorStockComponent } from '../items-home/distributor-stock/distributor-stock.component';
+import { ItemHistoricStockComponent } from '../dialog-box/item-historic-stock/item-historic-stock.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { DistributorStockComponent } from '../items-home/distributor-stock/distr
     LocalityComponent,
     ConfirmationBoxComponent,
     AddItemComponent,
+    ItemHistoricStockComponent,
     ViewCalendarComponent,
     AddCategoryComponent,
     AddLocalityComponent,

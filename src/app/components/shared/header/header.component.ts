@@ -40,7 +40,7 @@ export class HeaderComponent {
         action: () => this.router.navigate(['./manager/analytics/sales'])
       },
       'manager_attendence': {
-        name: 'Team Attendence',
+        name: 'Team Attandence',
         action: () => this.router.navigate(['./manager/attendence/leave'])
       },
       'customer': {
@@ -52,11 +52,11 @@ export class HeaderComponent {
         action: () => this.router.navigate(['./general/stock/items'])
       },
       'team_management': {
-        name: 'Team management',
+        name: 'Teams',
         action: () => this.router.navigate(['./manager/team-management'])
       },
       'task_management': {
-        name: 'Task management',
+        name: 'Tasks',
         action: () => this.router.navigate(['./manager/task/tasks'])
       },
       'staff_task_management': {
@@ -68,7 +68,7 @@ export class HeaderComponent {
         action: () => this.router.navigate(['./manager/beats'])
       },
       'staff_attendence': {
-        name: 'My Attendence',
+        name: 'My Attendance',
         action: () => this.router.navigate(['./staff/attendence'])
       },
       'staff_analytics': {
@@ -123,7 +123,7 @@ export class HeaderComponent {
     }
 
     addTeamManagerNavOptions(team: team){
-      let teamManagerNavOptions = ['receipt', 'profile', 'task_management', 'staff_analytics', 'staff_attendence', 'manager_attendence', 'manager_self_tasks_management', 'customer' ,'staff_leave_history']
+      let teamManagerNavOptions = !team.is_distributors_team? ['receipt', 'profile', 'task_management', 'staff_analytics', 'staff_attendence', 'manager_attendence', 'manager_self_tasks_management', 'customer' ,'staff_leave_history']: ['receipt', 'profile', 'task_management', 'staff_analytics', 'staff_attendence', 'manager_attendence', 'manager_self_tasks_management' ,'staff_leave_history']
       for(let option of teamManagerNavOptions){
         if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
           this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])
@@ -133,7 +133,7 @@ export class HeaderComponent {
   
 
   addStaffNavOptions(team: any){
-    let staffNavOptions = !team.is_distributors_team? ['receipt', 'profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'customer', 'staff_leave_history']:['profile' ,'staff_task_management','staff_analytics', 'items_manager'] 
+    let staffNavOptions = !team.is_distributors_team? ['profile' ,'staff_task_management','staff_analytics', 'staff_attendence', 'customer', 'staff_leave_history']:['profile' ,'staff_task_management','staff_analytics', 'items_manager'] 
     for(let option of staffNavOptions){
       if(this.dropdownList.indexOf(this.AvailableDropdownList[option]) === -1){
         this.dropdownList.splice(0, 0, this.AvailableDropdownList[option])

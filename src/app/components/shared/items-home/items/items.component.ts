@@ -14,6 +14,7 @@ import { CategoryService } from '../../../../shared/services/category/category.s
 import { Router } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DistributorOptionsComponent } from '../../bottom-sheet/distributor-options/distributor-options.component';
+import { ItemHistoricStockComponent } from '../../dialog-box/item-historic-stock/item-historic-stock.component';
 
 @Component({
   selector: 'app-items',
@@ -40,9 +41,10 @@ export class ItemsComponent {
   public newItem: FormGroup;
   public itemSource: any[] = []
   public categoryList: any[] = []
-  public itemsTableColumns = ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'delete']
+  public itemsTableColumns = ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'item_history', 'delete']
   public organizationId!: number
   public userRole!: string
+  public isOrgManager!: boolean
   
   ngOnInit() {
     this.meUtility.getCommonData().subscribe(
@@ -51,7 +53,8 @@ export class ItemsComponent {
         this.organizationId = data['organization_id']
         this.fetchCategories()
         this.fetchItems()
-        this.itemsTableColumns = ((this.userRole == 'manager') &&  !isNaN(this.organizationId))? ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'delete'] : ['sl_no', 'name', 'category', 'price', 'stock']
+        this.isOrgManager =  ((this.userRole == 'manager') &&  !isNaN(this.organizationId))
+        this.itemsTableColumns = this.isOrgManager? ['sl_no', 'name', 'category', 'price', 'stock', 'edit', 'item_history', 'delete'] : ['sl_no', 'name', 'category', 'price', 'stock']
       }
     )
   }
@@ -61,13 +64,11 @@ export class ItemsComponent {
     httpParams = httpParams.append('organization_id', String(this.organizationId))
     this.itemService.getItems(httpParams).subscribe(
       (data: any) => {
-        data['items'].forEach((item: item) => {
-          item.is_edit = false
-        });
         let itemsPresent: any[] = []
         data['items'].forEach((category: category) => {
           category.items?.forEach((item: item) => {
             itemsPresent.push(item)
+            item.is_edit = false
           }
           )
         })
@@ -99,6 +100,13 @@ export class ItemsComponent {
   editItem(item: item, event: Event) {
     event.stopPropagation()
     item.is_edit = !item.is_edit
+  }
+
+  openItemHistory(item: item, event: Event) {
+    event.stopPropagation()
+    let dialogRef = this.matDialog.open(ItemHistoricStockComponent, {
+      data: {item: item}
+    })
   }
 
   redirectToCategories() {

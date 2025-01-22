@@ -5,11 +5,13 @@
         <mat-form-field *ngIf="!data.disableCustomer">
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id">
-              <input matInput (input)="onKey($event, 'customer')" placeholder="Type to search...">
+              <mat-form-field>
+                <input matInput (input)="onKey($event, 'customer')" placeholder="Type to search...">
+              </mat-form-field>
               <mat-option (click)="addCustomer()" style="font-weight: bold;">Add Customer</mat-option>
               <mat-option *ngFor="let customer of customerList; let i=index" [value]="customer.customer_id">
                 {{customer.customer_name}}
-              <mat-option (click)="addCustomer()" style="font-weight: bold;">Add Customer</mat-option></mat-option>
+            </mat-option>
             </mat-select>
         </mat-form-field>
 

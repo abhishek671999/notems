@@ -26,7 +26,7 @@ export class MarketingAnalyticsComponent {
   
   public tasksInvoiceDatasource: [] = []
   public tasksInvoiceTableColumns: string[] =  ['sl_no', 'customer', 'added_by', 'created_at', 'status', 'location', 'locality', 'description', 'note']
-
+  public visibleCustomerList: customer[] = []
 
   timeFrames = [
     { displayValue: 'Today', actualValue: 'today' },
@@ -84,6 +84,7 @@ export class MarketingAnalyticsComponent {
     }
     this.customerService.getCustomer(httpParams).subscribe((data: any) => {
       this.customerList = data['customers'];
+      this.visibleCustomerList = this.customerList;
     });
   }
 
@@ -138,5 +139,15 @@ export class MarketingAnalyticsComponent {
     dialogRef.afterClosed().subscribe((data: any) => {
       this.ngOnInit();
     });
+  }
+
+  onKey(event: Event) { 
+    let searchText: string = (event.target as HTMLInputElement).value
+    this.visibleCustomerList = this.search(searchText);
+  }
+
+  search(value: any) { 
+    let filter = value.toLowerCase();
+    return this.customerList.filter((customer: customer) => customer.customer_name?.toLowerCase().startsWith(filter));
   }
 }

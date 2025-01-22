@@ -9,14 +9,10 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { HttpParams } from '@angular/common/http';
 import { deleteItem, distributorStock, editItem, item, updateTeamItem } from '../../../../shared/custom_dtypes/items';
 import { category } from '../../../../shared/custom_dtypes/category';
-import { AddItemComponent } from '../../dialog-box/add-item/add-item.component';
-import { ConfirmationBoxComponent } from '../../dialog-box/confirmation-box/confirmation-box.component';
-import { SuccessMsgComponent } from '../../dialog-box/success-msg/success-msg.component';
-import { ErrorMsgComponent } from '../../dialog-box/error-msg/error-msg.component';
-import { DistributorOptionsComponent } from '../../bottom-sheet/distributor-options/distributor-options.component';
 import { team } from '../../../../shared/custom_dtypes/me';
 import { TeamManagementService } from '../../../../shared/services/team-management/team-management.service';
 import { Observable } from 'rxjs';
+import { ItemHistoricStockComponent } from '../../dialog-box/item-historic-stock/item-historic-stock.component';
 
 @Component({
   selector: 'app-distributor-stock',
@@ -27,11 +23,9 @@ export class DistributorStockComponent {
 constructor(
     private itemService: ItemsService,
     private categoryService: CategoryService,
-    private router: Router,
+    private matDialog: MatDialog,
     private meUtility: meAPIUtility,
     private formBuilder: FormBuilder,
-    private matDialog: MatDialog,
-    private matbottomSheet: MatBottomSheet,
     private teamService: TeamManagementService,
   ) {
     this.newItem = this.formBuilder.group({
@@ -43,7 +37,7 @@ constructor(
   public newItem: FormGroup;
   public itemSource: any[] = []
   public categoryList: any[] = []
-  public itemsTableColumns = ['sl_no', 'name', 'category', 'stock', 'edit', 'delete']
+  public itemsTableColumns = ['sl_no', 'name', 'category', 'stock', 'edit', 'item_history','delete']
   public organizationId!: number
   public userRole!: string;
   public teams: team[] = []
@@ -59,7 +53,7 @@ constructor(
         this.fetchTeams().subscribe(
           (data) => this.fetchItems()
         )
-        this.itemsTableColumns = this.userRole == 'manager' ? ['sl_no', 'name', 'category','stock', 'edit'] : ['sl_no', 'name', 'category', 'price', 'stock']
+        this.itemsTableColumns = this.userRole == 'manager' ? ['sl_no', 'name', 'category','stock', 'edit', 'item_history'] : ['sl_no', 'name', 'category', 'price', 'stock']
       }
     )
   }
@@ -114,8 +108,13 @@ constructor(
         } 
       )
     })
+  }
 
-
+  openItemHistory(item: item, event: Event) {
+    event.stopPropagation()
+    let dialogRef = this.matDialog.open(ItemHistoricStockComponent, {
+      data: {item: item, team_id: this.selectedTeam}
+    })
   }
 
   editItem(item: item, event: Event) {

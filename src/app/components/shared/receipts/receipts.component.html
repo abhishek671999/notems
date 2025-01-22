@@ -3,7 +3,6 @@
     <div class="filter-section">
       <mat-form-field class="form-field">
         <mat-label>Select time frame</mat-label>
-
         <mat-select
           [(value)]="selectedTimeFrame"
           (selectionChange)="fetchSalesAnalytics()"
@@ -96,6 +95,7 @@
     <div class="sub-header-section">
       <h3>Total amount:&nbsp;₹&nbsp;{{totalAmount + discount}}</h3>
       <h3>Total amount received:&nbsp;₹&nbsp;{{totalAmountReceived}}</h3>
+      <h3>Total discount:&nbsp;₹&nbsp;{{discount}}</h3>
       <h3 *ngIf="selectByModifiedDate">Collected Amount:&nbsp;₹&nbsp;{{collectedAmount}}</h3>
       <h3>Total Pending amount:&nbsp;₹&nbsp;{{totalAmount - totalAmountReceived}}</h3>
       <div *ngIf="isOrgManager">

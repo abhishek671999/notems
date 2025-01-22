@@ -20,6 +20,7 @@ import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { ViewImageComponent } from '../view-image/view-image.component';
 import { ImageCompressorService } from '../../../../shared/services/image-compressor/image-compressor.service';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
+import { category } from '../../../../shared/custom_dtypes/category';
 
 @Component({
   selector: 'app-edit-sales-info',
@@ -73,7 +74,6 @@ export class EditSalesInfoComponent {
 
   public beatId: number = 0;
   public location: string = '';
-  public itemListsource: item[] = [];
   public itemListColumns = ['sl_no', 'item_name', 'item_price', 'quantity', 'delete'];
 
   public itemsAdded: item[] = [];
@@ -93,32 +93,10 @@ export class EditSalesInfoComponent {
     this.meUtility.getCommonData().subscribe(
       (data: any) => {
         this.organizationId = data['organization_id']
-        this.fetchItems()
       }
     )
   }
 
-  fetchItems(){
-    let httpParams = new HttpParams();
-    httpParams = httpParams.append(
-      'organization_id',
-      Number(this.organizationId)
-    );
-    this.itemsService.getItems(httpParams).subscribe(
-      (data: any) => {
-        this.itemListsource = data['items'];
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
-  }
-
-  areItemsAdded() {
-    return (
-      this.itemListsource.filter((item: any) => item.quantity > 0).length > 0
-    );
-  }
 
 
   getDiscountAmount(){
@@ -183,20 +161,29 @@ export class EditSalesInfoComponent {
           this.fileName = this.file.name;
           this.fileSize = `${(this.file.size / 1024).toFixed(2)} KB`;
           this.outputBoxVisible = true;
-          formData.append('invoice_id', String(this.saleData.invoice_id));
           return this.imageCompressor.compressImage(this.file).pipe(
             catchError((error: any) => {
-              return of(null)
+              return of({imageCompressError: true})
             }),
           );
-        } else {
-          return of(null);
+        } else if(response['updated']) {
+          return of({responseError: false});
+        }
+        else {
+          return of({responseError: true});
         }
       }),
-      switchMap((compressedImage: any) => {
-          if(compressedImage) formData.append('file', compressedImage);
-          else if(this.file) formData.append('file', this.file)
-          return this.imageService.uploadImage(formData)
+      switchMap((response: any) => {
+          if(response?.responseError) return of(false)
+          if(this.file){
+            if(response?.imageCompressError) formData.append('file', response);
+            else if(this.file) formData.append('file', this.file)
+            formData.append('invoice_id', String(this.saleData.invoice_id));
+            return this.imageService.uploadImage(formData)
+          }else{
+            return of(true)
+          }
+          
       }
     )
     ).subscribe(
