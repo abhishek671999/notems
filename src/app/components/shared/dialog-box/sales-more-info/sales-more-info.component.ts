@@ -4,6 +4,8 @@ import { lineItems } from '../../../../shared/custom_dtypes/sales';
 import { HttpParams } from '@angular/common/http';
 import { TaskManagementService } from '../../../../shared/services/taskmanagement/task-management.service';
 import { ViewImageComponent } from '../view-image/view-image.component';
+import { PrintConnectorService } from '../../../../shared/services/printer/print-connector.service';
+import { ReceiptPrintFormatter } from '../../../../shared/utils/receiptPrint';
 
 @Component({
   selector: 'app-sales-more-info',
@@ -15,7 +17,9 @@ export class SalesMoreInfoComponent {
   constructor(
     public taskManagement: TaskManagementService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    public printerConn: PrintConnectorService,
+    private receiptPrintFormatter: ReceiptPrintFormatter,
   ){
     console.log(data)
     this.lineItemsSource = data.line_items
@@ -28,6 +32,7 @@ export class SalesMoreInfoComponent {
   public receiptMoreInfoDataColumns = ['sl_no', 'old_amount', 'new_amount', 'total_amount_received', 'pending_amount', 'activity_by', 'activity_time']
 
   ngOnInit(){
+    this.receiptPrintFormatter.printObj = this.data
     this.fetchReceiptMoreInfo()
   }
 
@@ -44,6 +49,14 @@ export class SalesMoreInfoComponent {
 
   openImage(url: string){
     this.matdialog.open(ViewImageComponent, {data: {title: 'Receipt', url: url }})
+  }
+
+  printReceipt(){
+    let printConnect = this.printerConn.printService.init();
+    this.receiptPrintFormatter.getReciptPrintObjects().forEach(
+      (content) => printConnect.writeCustomLine(content)
+    );
+    printConnect.feed(5).cut().flush();
   }
 
 }

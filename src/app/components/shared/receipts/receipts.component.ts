@@ -22,6 +22,7 @@ import { AddSaleComponent } from '../dialog-box/add-sale/add-sale.component';
 import { dateUtils } from '../../../shared/utils/date_utils';
 import { AddLocalityComponent } from '../bottom-sheet/add-locality/add-locality.component';
 import { AddCustomerComponent } from '../dialog-box/add-customer/add-customer.component';
+import { PrintConnectorService } from '../../../shared/services/printer/print-connector.service';
 
 @Component({
   selector: 'app-receipts',
@@ -37,7 +38,8 @@ export class ReceiptsComponent {
     private customerService: CustomersService,
     private matdialog: MatDialog,
     private matbottomSheet: MatBottomSheet,
-    private dateUtils: dateUtils
+    private dateUtils: dateUtils,
+    public printerConn: PrintConnectorService,
   ) {
    }
   ngAfterViewInit(){
@@ -289,5 +291,18 @@ export class ReceiptsComponent {
       dialogRef.afterClosed().subscribe((data: any) => {
         this.ngOnInit();
       });
+    }
+
+    testPrint() {
+      let printConnect = this.printerConn.printService.init();
+      let content = [
+        {
+          text: 'This is Test print'.toUpperCase().repeat(5),
+          size: 'normal',
+          justification: 'left',
+        },
+      ];
+      content.forEach((ele) => printConnect.writeCustomLine(ele));
+      printConnect.feed(5).cut().flush();
     }
 }

@@ -13,6 +13,10 @@ import { teamMember } from '../../../../shared/custom_dtypes/team';
 import { ImageCompressorService } from '../../../../shared/services/image-compressor/image-compressor.service';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
 import { dateUtils } from '../../../../shared/utils/date_utils';
+import { meAPIUtility } from '../../../../shared/site-variables';
+import { PrintConnectorService } from '../../../../shared/services/printer/print-connector.service';
+import { sale } from '../../../../shared/custom_dtypes/sales';
+import { ReceiptPrintFormatter } from '../../../../shared/utils/receiptPrint';
 
 
 @Component({
@@ -31,8 +35,10 @@ export class AddSaleComponent {
     private imageCompressor: ImageCompressorService,
     private matDialogRef: MatDialogRef<AddSaleComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any,
-    private dateUtils: dateUtils
-
+    private dateUtils: dateUtils,
+    private meUtility: meAPIUtility,
+    public printerConn: PrintConnectorService,
+    private receiptPrintFormatter: ReceiptPrintFormatter
   ) {
     console.log(data)
     this.addSalesForm = this.formBuilder.group({
@@ -75,9 +81,32 @@ export class AddSaleComponent {
   uploadStatus: number | undefined;
 
   public addSalesForm: FormGroup;
-
+  isOrgManager: boolean = false;
+  myName!:string
+  organizationId!: number;
 
   ngOnInit() {
+    this.meUtility.getMeData().subscribe(
+      (data: any) => {
+        
+        this.myName = data['first_name']
+        console.log(this.data, this.myName)
+      }
+    )
+    this.meUtility.getCommonData().subscribe(
+      (data: any) => {
+        this.organizationId = data['organization_id']       
+        let role = data['role'].toLowerCase()
+        if(['manager', 'team member'].includes(role) && data['team_type'] == 'sales'){
+        }else if (role == 'manager' && !data['team_type']){
+          this.isOrgManager = true
+        }
+      }
+    )
+  }
+
+  checkPrinterValidation(){
+    return !this.isOrgManager || this.printerConn.usbSought
   }
 
   getDiscountAmount(){
@@ -141,6 +170,37 @@ export class AddSaleComponent {
               data: { msg: 'Sale added successfully' },
             });
             this.matDialogRef.close({result: true})
+            if(this.isOrgManager){
+              let printObj: sale = {
+                invoice_id: data['invoice_id'],
+                locality: 'None',
+                invoice_number: body.invoice_number,
+                discount: body.discount,
+                received_amount: body.received_amount,
+                note: body.note,
+                beat_id: body.beat_id,
+                line_items: body.item_details,
+                customer_id: body.customer_id,
+                recorded_user_id: 1,
+                type_id: 1,
+                type_name: 'Sales',
+                customer: this.customerList.find((customer: customer) => customer.customer_id == body.customer_id)?.customer_name || '',
+                recorded_at : this.dateUtils.getDateForRecipePrint(new Date()),
+                recorded_by: this.myName + ' | ' + this.staffList.find((staff: teamMember) => staff.user_id == body.user_id)?.user_identity || '',
+                total_amount: this.addSalesForm.value.amount,
+                image_details: [],
+                organization_id: this.organizationId
+              } 
+              this.receiptPrintFormatter.printObj = printObj
+              let printConnect = this.printerConn.printService.init();
+              this.receiptPrintFormatter.getReciptPrintObjects().forEach(
+                (content) => printConnect.writeCustomLine(content)
+              );
+              printConnect.feed(5).cut().flush();
+            }
+
+
+
           },
           (error: any) => {
             console.log(error)

@@ -10,6 +10,7 @@ import { AttendenceService } from '../../../shared/services/attendence/attendenc
 import { recordUserLocation } from '../../../shared/custom_dtypes/attendence';
 import { DataService } from '../../../shared/services/dataService/dataService.service';
 import { Subject, takeUntil } from 'rxjs';
+import { PrintConnectorService } from '../../../shared/services/printer/print-connector.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class HeaderComponent {
     private dataService: DataService,
     private router: Router,
     private _meAPIutility: meAPIUtility,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    public printerConn: PrintConnectorService
   ) { }
     public locationShareInterval: any
     public isProduction = environment.production
@@ -217,6 +219,10 @@ export class HeaderComponent {
         alert('Failed to fetch location')
       }
     }
+  }
+
+  connectToPrinter(){
+    this.printerConn.seekUSB()
   }
 
   ngOnDestroy(){

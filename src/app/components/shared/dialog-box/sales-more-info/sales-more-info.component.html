@@ -101,4 +101,9 @@
 
 <mat-dialog-actions>
     <button [mat-dialog-close] mat-raised-button>Okay</button>
+    <!-- <div>
+      <button mat-raised-button [disabled]="!printerConn.usbSought" (click)="printReceipt()">Print</button>
+      <small class="text-danger" style="display: block" *ngIf="!printerConn.usbSought"> Printer not connected</small>
+    </div> -->
+
 </mat-dialog-actions>

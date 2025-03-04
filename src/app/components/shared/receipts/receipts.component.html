@@ -98,8 +98,9 @@
       <h3>Total discount:&nbsp;₹&nbsp;{{discount}}</h3>
       <h3 *ngIf="selectByModifiedDate">Collected Amount:&nbsp;₹&nbsp;{{collectedAmount}}</h3>
       <h3>Total Pending amount:&nbsp;₹&nbsp;{{totalAmount - totalAmountReceived}}</h3>
-      <div *ngIf="isOrgManager">
+      <div *ngIf="isOrgManager" class="org-manager-buttons">
         <button mat-raised-button (click)="openAddSaleWindow()">Add receipt</button>
+        <button mat-raised-button [hidden]="!printerConn.usbSought" (click)="testPrint()" color="primary"> Test print </button>
       </div>
     </div>
 

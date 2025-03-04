@@ -31,7 +31,9 @@ export type sale = {
     "organization_id": number,
     "invoice_number": string,
     "invoice_id": number,
-    "line_items": lineItems[]
+    "line_items": lineItems[],
+    "locality"?: string,
+    
 }
 
 export type getSales = {

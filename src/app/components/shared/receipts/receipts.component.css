@@ -12,6 +12,12 @@
     width: 100%;
 }
 
+.org-manager-buttons{
+    display: flex;
+    gap: 1em;
+    justify-content: center
+}
+
 td, th {
     text-align: center !important;
     vertical-align: middle !important;
