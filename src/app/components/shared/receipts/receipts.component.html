@@ -100,7 +100,6 @@
       <h3>Total Pending amount:&nbsp;₹&nbsp;{{totalAmount - totalAmountReceived}}</h3>
       <div *ngIf="isOrgManager" class="org-manager-buttons">
         <button mat-raised-button (click)="openAddSaleWindow()">Add receipt</button>
-        <button mat-raised-button [hidden]="!printerConn.usbSought" (click)="testPrint()" color="primary"> Test print </button>
       </div>
     </div>
 

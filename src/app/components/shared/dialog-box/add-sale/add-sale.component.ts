@@ -17,6 +17,7 @@ import { meAPIUtility } from '../../../../shared/site-variables';
 import { PrintConnectorService } from '../../../../shared/services/printer/print-connector.service';
 import { sale } from '../../../../shared/custom_dtypes/sales';
 import { ReceiptPrintFormatter } from '../../../../shared/utils/receiptPrint';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -38,7 +39,8 @@ export class AddSaleComponent {
     private dateUtils: dateUtils,
     private meUtility: meAPIUtility,
     public printerConn: PrintConnectorService,
-    private receiptPrintFormatter: ReceiptPrintFormatter
+    private receiptPrintFormatter: ReceiptPrintFormatter,
+    public matSnakBar: MatSnackBar
   ) {
     console.log(data)
     this.addSalesForm = this.formBuilder.group({
@@ -49,7 +51,9 @@ export class AddSaleComponent {
       received_amount: ['', [Validators.required]],
       staff_id: [''],
       note: ['', ],
-      amount: [0,]
+      amount: [0,],
+      isReturnReceipt: [false]
+
     },{
       validators: [addSalesReceievedAmountValidation(), salesSellingPriceValidation()]
     }
@@ -82,6 +86,7 @@ export class AddSaleComponent {
 
   public addSalesForm: FormGroup;
   isOrgManager: boolean = false;
+  
   myName!:string
   organizationId!: number;
 
@@ -97,8 +102,7 @@ export class AddSaleComponent {
       (data: any) => {
         this.organizationId = data['organization_id']       
         let role = data['role'].toLowerCase()
-        if(['manager', 'team member'].includes(role) && data['team_type'] == 'sales'){
-        }else if (role == 'manager' && !data['team_type']){
+        if(['manager'].includes(role) && data['team_type']?.toLowerCase()  == 'sales'){
           this.isOrgManager = true
         }
       }
@@ -125,13 +129,16 @@ export class AddSaleComponent {
 
   addSales() {
     if(this.addSaleButton) this.addSaleButton._elementRef.nativeElement.disabled = true
-    console.log(event)
+    let returnReceiptCoding = this.addSalesForm.value.isReturnReceipt ? -1 : 1 
+    this.itemsAdded.forEach((item: item) => {
+      item['quantity'] = (item.quantity ? item.quantity : 0 )* returnReceiptCoding
+    })
       let body: any = {
         customer_id: this.addSalesForm.value.customer_id,
         invoice_number: this.addSalesForm.value.invoice_number,
         invoice_date: this.dateUtils.getStandardizedDateFormate(this.addSalesForm.value.invoice_date),
-        discount: this.addSalesForm.value.amount - this.addSalesForm.value.selling_price,
-        received_amount: this.addSalesForm.value.received_amount,
+        discount: returnReceiptCoding * (this.addSalesForm.value.amount - this.addSalesForm.value.selling_price),
+        received_amount: returnReceiptCoding * this.addSalesForm.value.received_amount,
         note: this.addSalesForm.value.note,
         beat_id: this.data.beatId,
         item_details: this.itemsAdded
@@ -166,10 +173,6 @@ export class AddSaleComponent {
         )
         .subscribe(
           (data: any) => {
-            this.matDialog.open(SuccessMsgComponent, {
-              data: { msg: 'Sale added successfully' },
-            });
-            this.matDialogRef.close({result: true})
             if(this.isOrgManager){
               let printObj: sale = {
                 invoice_id: data['invoice_id'],
@@ -186,7 +189,7 @@ export class AddSaleComponent {
                 type_name: 'Sales',
                 customer: this.customerList.find((customer: customer) => customer.customer_id == body.customer_id)?.customer_name || '',
                 recorded_at : this.dateUtils.getDateForRecipePrint(new Date()),
-                recorded_by: this.myName + ' | ' + this.staffList.find((staff: teamMember) => staff.user_id == body.user_id)?.user_identity || '',
+                recorded_by: this.myName,
                 total_amount: this.addSalesForm.value.amount,
                 image_details: [],
                 organization_id: this.organizationId
@@ -198,9 +201,10 @@ export class AddSaleComponent {
               );
               printConnect.feed(5).cut().flush();
             }
-
-
-
+            this.matDialog.open(SuccessMsgComponent, {
+              data: { msg: 'Sale added successfully' },
+            });
+            this.matDialogRef.close({result: true})
           },
           (error: any) => {
             console.log(error)
@@ -210,12 +214,19 @@ export class AddSaleComponent {
 
   }
 
+  showSnakBar(){
+    let receiptType = this.addSalesForm.value.isReturnReceipt ? 'Return' : 'Sale'
+    let snakbarMessage = `You are adding ${receiptType} receipt`
+    this.matSnakBar.open(snakbarMessage, '', {duration: 3 * 1000})
+  }
+
 
   addItems() {
     let dialogRef = this.matDialog.open(AddItemsToSaleComponent, {data: this.itemsAdded})
     dialogRef.afterClosed().subscribe(
       (data: any) => {
         if (data) {
+          debugger
           this.itemsAdded = data
           let totalAmount = 0
           this.itemsAdded.forEach((item: item) => {

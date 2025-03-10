@@ -2,6 +2,8 @@
 <div mat-dialog-content class="main-container">
     <form class="new-task-form" [formGroup]="addSalesForm">
 
+      <mat-checkbox class="example-margin" formControlName="isReturnReceipt" (change)="showSnakBar()">Return receipt</mat-checkbox>
+
         <mat-form-field>
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id" >
@@ -153,7 +155,7 @@
 <mat-dialog-actions style="text-align: center;">
   <button mat-raised-button [mat-dialog-close]>Close</button>
   <div>
-    <button [disabled]='!(addSalesForm.valid && itemsAdded.length > 0 && this.file && checkPrinterValidation())' (click)="addSales()" mat-flat-button #addSaleButton >Add Sale</button>
+    <button [disabled]='!(addSalesForm.valid && itemsAdded.length > 0 && this.file )' (click)="addSales()" mat-flat-button #addSaleButton >Add Sale</button>
     <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectDiscount')">Discount should be less than amount</mat-error>
     <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectReceivedAmount')">Received amount should be less than selling amount</mat-error>
     <mat-error style="font-size: x-small;" *ngIf="addSalesForm.hasError('incorrectSellingAmount')">Selling amount should be less than amount</mat-error>

@@ -24,8 +24,8 @@ export class ReceiptPrintFormatter{
 
     public getReciptPrintObjects(){
       console.log(this._printObj)
-      let sectionSeperatorCharacters = '-'.repeat(42);
-      let tableHeader = '           ITEM            QTY  RATE   AMT';
+      let sectionSeperatorCharacters = '-'.repeat(30);
+      let tableHeader = '    ITEM       QTY  RATE   AMT';
       let printObj = [
         {
           text: this.getFormattedReceiptDetails(),
@@ -61,8 +61,8 @@ export class ReceiptPrintFormatter{
       itemList.forEach((lineItem: lineItems, index) => {
       if (lineItem.quantity > 0) {
         let trimmedName = this.getFixedLengthString(
-            lineItem.item_name.substring(0, 23),
-          23,
+            lineItem.item_name.substring(0, 14),
+          14,
           false,
           ' '
         );
@@ -71,8 +71,8 @@ export class ReceiptPrintFormatter{
             ? ''
             : ' ' +
               this.getFixedLengthString(
-                lineItem.item_name.substring(23, 48),
-                40,
+                lineItem.item_name.substring(15, 48),
+                30,
                 false,
                 ' '
               ) +
