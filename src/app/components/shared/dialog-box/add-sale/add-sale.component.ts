@@ -102,7 +102,7 @@ export class AddSaleComponent {
       (data: any) => {
         this.organizationId = data['organization_id']       
         let role = data['role'].toLowerCase()
-        if(['manager'].includes(role) && data['team_type']?.toLowerCase()  == 'sales'){
+        if(['manager'].includes(role)){
           this.isOrgManager = true
         }
       }

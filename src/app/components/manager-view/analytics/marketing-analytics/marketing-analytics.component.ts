@@ -11,6 +11,7 @@ import { TeamManagementService } from '../../../../shared/services/team-manageme
 import { MapViewComponent } from '../../../shared/dialog-box/map-view/map-view.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCustomerComponent } from '../../../shared/dialog-box/add-customer/add-customer.component';
+import { dateUtils } from '../../../../shared/utils/date_utils';
 
 @Component({
   selector: 'app-marketing-analytics',
@@ -24,7 +25,8 @@ export class MarketingAnalyticsComponent {
     private taskService: TaskManagementService,
     private customerService: CustomersService,
     private meUtility: meAPIUtility,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private dateUtils: dateUtils
   ) { }
   
   public tasksInvoiceDatasource: [] = []
@@ -121,8 +123,8 @@ export class MarketingAnalyticsComponent {
       if (this.selectedRepresentative) body.added_by = Number(this.selectedRepresentative)
     if (this.selectedTimeFrame == 'custom') {
       if (this.selectedFromDate && this.selectedToDate) {
-        body['from_date'] = this.selectedFromDate
-        body['to_date'] = this.selectedToDate
+        body['from_date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedFromDate))
+        body['to_date'] = this.dateUtils.getStandardizedDateFormate(new Date(this.selectedToDate))
       }
       else {
         body = {}
