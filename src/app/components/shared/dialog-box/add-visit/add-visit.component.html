@@ -5,7 +5,7 @@
             <mat-label>Select customer</mat-label>
             <mat-select formControlName="customer_id" >
                 <mat-form-field>
-                    <input matInput (input)="onKey($event)" placeholder="Type to search...">
+                    <input matInput (input)="onKey($event)" (keydown.space)="$event.stopPropagation()" placeholder="Type to search...">
                     <mat-icon matPrefix class="edit-icon">search</mat-icon>
                 </mat-form-field>
                 <mat-option (click)="addCustomer()" style="font-weight: bold;">Add Customer</mat-option>

@@ -9,7 +9,7 @@
           (selectionChange)="fetchCustomers()"
           >
           <mat-form-field>
-            <input matInput (input)="onKey($event)" placeholder="Type to search...">
+            <input matInput (input)="onKey($event)" (keydown.space)="$event.stopPropagation()" placeholder="Type to search...">
           </mat-form-field>
         <mat-option>None</mat-option>
         <mat-option (click)="addLocality()" style="font-weight: bold;">Add locality</mat-option>
